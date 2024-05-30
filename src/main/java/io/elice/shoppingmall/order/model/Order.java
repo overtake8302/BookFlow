@@ -2,12 +2,16 @@ package io.elice.shoppingmall.order.model;
 
 import io.elice.shoppingmall.audit.BaseEntity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "orders")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Order extends BaseEntity {
 
     @Id
