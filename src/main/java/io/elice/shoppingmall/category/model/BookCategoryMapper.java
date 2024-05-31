@@ -18,7 +18,8 @@ public class BookCategoryMapper {
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
-    private Integer categoryId;
+//    private Integer categoryId;
+    private Category category;
 
     private Boolean isDeleted;
 

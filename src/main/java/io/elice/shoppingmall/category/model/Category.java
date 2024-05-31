@@ -23,6 +23,6 @@ public class Category {
 
     private Boolean isDeleted;
 
-    @OneToMany(mappedBy = "category_id", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<BookCategoryMapper> book_category_mapper;
 }
