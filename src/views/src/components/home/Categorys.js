@@ -6,9 +6,14 @@ function Categorys() {
     
     useEffect(() => {
         const getCategorys = async () => {
-            const response = await fetch('http://localhost:8080/api/category');
+            try {
+               const response = await fetch('http://localhost:8080/api/category');
             const json = await response.json();
-            setCategorys(json);
+            setCategorys(json); 
+            } catch (e) {
+                console.error("백엔드 접속 에러", e);
+            }
+            
         };
         getCategorys();
     }, []);
@@ -16,7 +21,10 @@ function Categorys() {
     return (
         <div>
             <h2>카테고리</h2>
-            <ul>
+            {
+                categorys.length > 0 ? (
+
+                    <ul>
                 {categorys.slice(0, 6).map((category, index) => (
                     <li key={index}>
                         <Link to={`/category/${category.category_id}`}>{category.category_name}</Link>
@@ -28,6 +36,8 @@ function Categorys() {
                     </li>
                 )}
             </ul>
+                ) : <h2>카테고리가 없습니다.</h2>
+            }
         </div>
     );
 }
