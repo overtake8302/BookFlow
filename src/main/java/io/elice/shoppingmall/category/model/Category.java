@@ -1,6 +1,7 @@
 package io.elice.shoppingmall.category.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,8 +9,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "category")
-@Getter
-@Setter
+//@Getter
+//@Setter
+@Data
 public class Category {
 
     @Id
