@@ -18,7 +18,10 @@ public class Order extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
 
-    private String orderStatus;
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus;
+
+
     private int orderTotalPrice;
     private String orderRequest;
     private String orderSummaryTitle;
