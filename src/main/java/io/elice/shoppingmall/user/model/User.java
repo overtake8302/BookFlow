@@ -7,14 +7,12 @@ import lombok.Setter;
 import java.util.List;
 
 @Entity
-@Table(name = "user")
 @Getter
 @Setter
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private Long userId;
+    private Long user_id;
 
     @Column(name = "user_username")
     private String username;
@@ -22,8 +20,8 @@ public class User {
     @Column(name = "user_password")
     private String password;
 
-    @Column(name = "user_role")
-    private String role;
+    @Column(name = "user_roles")
+    private String roles;
 
     @Column(name = "user_name")
     private String name;
@@ -32,7 +30,7 @@ public class User {
     private String address;
 
     @Column(name = "is_deleted")
-    private boolean isDeleted;
+    private boolean idDeleted;
 
 //    @OneToMany(mappedBy = "user")
 //    private List<Order> orders;
