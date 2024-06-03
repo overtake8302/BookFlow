@@ -1,6 +1,8 @@
 package io.elice.shoppingmall.order.controller;
 
 
+import io.elice.shoppingmall.order.model.Order;
+import io.elice.shoppingmall.order.model.OrderStatus;
 import io.elice.shoppingmall.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -12,5 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class OrderController {
 
     private final OrderService orderService;
+
 
 }
