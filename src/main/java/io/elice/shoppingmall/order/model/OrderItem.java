@@ -3,8 +3,12 @@ package io.elice.shoppingmall.order.model;
 import io.elice.shoppingmall.audit.BaseEntity;
 import io.elice.shoppingmall.user.model.User;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class OrderItem extends BaseEntity {
 
     @Id
