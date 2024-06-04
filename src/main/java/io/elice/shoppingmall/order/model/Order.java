@@ -32,16 +32,13 @@ public class Order extends BaseEntity {
     @Column(length = 50)
     private String orderRequest;
 
-    @Column(length = 200)
+    @Column(nullable = false, length = 200)
     private String orderSummaryTitle;
 
     private boolean isDeleted;
 
     @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItems = new ArrayList<>();
-
-    @OneToOne(mappedBy = "order")
-    private OrderDelivery orderDelivery;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
