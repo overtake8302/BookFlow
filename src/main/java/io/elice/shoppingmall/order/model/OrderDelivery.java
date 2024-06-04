@@ -35,7 +35,8 @@ public class OrderDelivery extends BaseEntity {
 
     private boolean isDeleted;
 
-    @OneToOne
+    // 양방향 참조로 인한 무한루프?로 에러 발생
+    /*@OneToOne
     @JoinColumn(name = "order_id")
-    private Order order;
+    private Order order;*/
 }

@@ -10,8 +10,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class OrderExceptionAdvice {
 
     @ExceptionHandler
-    @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public ResponseEntity<NoOrdersException> exceptionHandle(NoOrdersException e) {
+        return new ResponseEntity<>(e, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<OrderNotFoundException> exceptionHandle(OrderNotFoundException e) {
         return new ResponseEntity<>(e, HttpStatus.NOT_FOUND);
     }
 }

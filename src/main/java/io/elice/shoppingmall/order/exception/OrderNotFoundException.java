@@ -6,9 +6,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class NoOrdersException extends RuntimeException {
+public class OrderNotFoundException extends RuntimeException {
 
     private OrderErrorMessages orderErrorMessages;
 }

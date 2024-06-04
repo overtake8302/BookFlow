@@ -31,6 +31,7 @@ public class OrderItem extends BaseEntity {
 
     private boolean isDeleted;
 
+    //양방향 참조시 순환참조로 에러 발생
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
