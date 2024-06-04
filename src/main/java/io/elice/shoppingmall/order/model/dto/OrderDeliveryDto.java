@@ -1,23 +1,16 @@
-package io.elice.shoppingmall.order.model;
+package io.elice.shoppingmall.order.model.dto;
 
-
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter
-public class OrderCreateDto {
-
-    @Min(1)
-    private int orderTotalPrice;
-
-    private String orderRequest;
+@AllArgsConstructor
+@NoArgsConstructor
+public class OrderDeliveryDto {
 
     @NotBlank
     private String orderDeliveryReceiverName;
@@ -33,8 +26,4 @@ public class OrderCreateDto {
 
     @NotBlank
     private String orderDeliveryAddress2;
-
-    @NotEmpty
-    List<OrderItemDto> orderItemDtos = new ArrayList<>();
-
 }

@@ -1,15 +1,15 @@
-package io.elice.shoppingmall.order.model;
+package io.elice.shoppingmall.order.model.dto;
 
+import io.elice.shoppingmall.order.model.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Setter
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class OrderResponseDto {
 
     private Long orderId;
@@ -22,8 +22,6 @@ public class OrderResponseDto {
 
     private String orderSummaryTitle;
 
-    private List<OrderItem> orderItems = new ArrayList<>();
 
-    private OrderDelivery orderDelivery;
 
 }

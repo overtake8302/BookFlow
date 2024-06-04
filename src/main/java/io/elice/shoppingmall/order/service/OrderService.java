@@ -3,15 +3,12 @@ package io.elice.shoppingmall.order.service;
 
 import io.elice.shoppingmall.order.exception.NoOrdersException;
 import io.elice.shoppingmall.order.exception.OrderErrorMessages;
-import io.elice.shoppingmall.order.exception.OrderExceptionAdvice;
-import io.elice.shoppingmall.order.model.Order;
-import io.elice.shoppingmall.order.model.OrderDelivery;
-import io.elice.shoppingmall.order.model.OrderItem;
-import io.elice.shoppingmall.order.model.OrderStatus;
+import io.elice.shoppingmall.order.exception.OrderNotFoundException;
+import io.elice.shoppingmall.order.model.*;
+import io.elice.shoppingmall.order.model.dto.OrderCreateDto;
 import io.elice.shoppingmall.order.repository.OrderDeliveryRepository;
 import io.elice.shoppingmall.order.repository.OrderItemRepository;
 import io.elice.shoppingmall.order.repository.OrderRepository;
-import io.elice.shoppingmall.user.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -29,15 +25,16 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
     private final OrderDeliveryRepository orderDeliveryRepository;
+    private final OrderMapper orderMapper;
 //    private final UserService userService;
 
-    public String getCurrentUsername() {
+    private String getCurrentUsername() {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication.getName();
     }
 
-/*    public User getCurrentUser() {
+    /*private User getCurrentUser() {
 
         User currentUser = userService.findUser(getCurrentUsername());
         return currentUser;
@@ -53,8 +50,9 @@ public class OrderService {
         Order savedOrder = orderRepository.save(requestOrder);
         savedOrder.setOrderStatus(OrderStatus.PAYMENT_COMPLETED);
 
-        requestOrderDelivery.setOrder(savedOrder);
-        orderDeliveryRepository.save(requestOrderDelivery);
+//        requestOrderDelivery.setOrder(savedOrder);
+        OrderDelivery savedOrderDelivery = orderDeliveryRepository.save(requestOrderDelivery);
+        savedOrder.setOrderDelivery(savedOrderDelivery);
 
         int orderTotalPrice = 0;
 
@@ -65,14 +63,14 @@ public class OrderService {
             //테스트용 임시 가격
             orderItem.setOrderItemPrice(10000);
 
-            int totalPrice = orderItem.getOrderItemPrice() + orderItem.getOrderItemQuantity();
+            int totalPrice = orderItem.getOrderItemPrice() * orderItem.getOrderItemQuantity();
             orderItem.setOrderItemTotalPrice(totalPrice);
             orderTotalPrice += totalPrice;
         }
 
         List<OrderItem> savedOrderItems = orderItemRepository.saveAll(requestOrderItems);
-
         savedOrder.setOrderTotalPrice(orderTotalPrice);
+        savedOrder.setOrderItems(savedOrderItems);
 
         /*String orderSummaryTitle = savedOrderItems.get(0).getBook().getName();
 
@@ -88,19 +86,97 @@ public class OrderService {
         return savedOrder;
     }
 
-    public Order findOrders() {
+    public List<Order> findOrders() {
 
-/*       User currentUser = getCurrentUser();
-       Optional<Order> orders = orderRepository.findById(currentUser.getUserId());*/
+       /*User currentUser = getCurrentUser();
+       Optional<List<Order>> orders = orderRepository.findByUserUserIdAndIsDeletedFalse(currentUser.getId());*/
 
         //테스트용 임시
-        Optional<Order> orders = orderRepository.findById(123L);
+
+        List<Order> orders = orderRepository.findAllByIsDeletedFalse();
+
+
 
 
        if (orders.isEmpty()) {
            throw new NoOrdersException(OrderErrorMessages.NO_ORDERS_FOUND);
        }
 
-       return orders.get();
+       //테스트용 임시
+        return orders;
+
+//       return orders.get();
+    }
+
+    public Order findOrder(Long id) {
+
+       Optional<Order> foundOrder = orderRepository.findByOrderIdAndIsDeletedFalse(id);
+
+       if (foundOrder.isEmpty()) {
+           throw new OrderNotFoundException(OrderErrorMessages.NO_ORDERS_FOUND);
+       }
+
+       return foundOrder.get();
+    }
+
+    @Transactional
+    public void deleteOrder(Long orderId) {
+
+       Order foundOrder = findOrder(orderId);
+
+       foundOrder.setDeleted(true);
+       foundOrder.getOrderDelivery().setDeleted(true);
+       for (OrderItem item : foundOrder.getOrderItems()) {
+           item.setDeleted(true);
+       }
+
+       orderRepository.save(foundOrder);
+    }
+
+    @Transactional
+    public Order editOrder(Long orderId, OrderCreateDto dto) {
+
+       Order oldOrder = findOrder(orderId);
+       List<OrderItem> oldItems = oldOrder.getOrderItems();
+       List<OrderItem> updateRequestOrderItems = orderMapper.orderCreateDtoToOrderItems(dto);
+
+
+//       for (OrderItem newItem : updateRequestOrderItems) {
+//
+//           for (OrderItem oldItem : oldItems) {
+//
+//               boolean isMatch = newItem.getBook().getId() == oldItem.getBook().getId();
+//               if (isMatch) {
+//                   oldItem.setOrderItemQuantity(newItem.getOrderItemQuantity());
+//                   break;
+//               }
+//           }
+//       }
+
+       int newOrderTotalPrice = 0;
+       for (OrderItem item : oldItems) {
+           int totalPrice = 0;
+           totalPrice = item.getOrderItemPrice() * item.getOrderItemQuantity();
+           newOrderTotalPrice += totalPrice;
+           item.setOrderItemTotalPrice(totalPrice);
+       }
+       List<OrderItem> updatedOrderItems = orderItemRepository.saveAll(oldItems);
+       oldOrder.setOrderItems(updatedOrderItems);
+
+       OrderDelivery oldOrderDelivery = oldOrder.getOrderDelivery();
+       OrderDelivery updateRequestOrderDelivery = orderMapper.orderDeliveryDtoToOrderDelivery(dto.getOrderDeliveryDto());
+
+       oldOrderDelivery.setOrderDeliveryReceiverName(updateRequestOrderDelivery.getOrderDeliveryReceiverName());
+       oldOrderDelivery.setOrderDeliveryReceiverPhoneNumber(updateRequestOrderDelivery.getOrderDeliveryReceiverPhoneNumber());
+       oldOrderDelivery.setOrderDeliveryPostalCode(updateRequestOrderDelivery.getOrderDeliveryPostalCode());
+       oldOrderDelivery.setOrderDeliveryAddress1(updateRequestOrderDelivery.getOrderDeliveryAddress1());
+       oldOrderDelivery.setOrderDeliveryAddress2(updateRequestOrderDelivery.getOrderDeliveryAddress2());
+
+       OrderDelivery updatedOrderDelivery = orderDeliveryRepository.save(oldOrderDelivery);
+       oldOrder.setOrderDelivery(updatedOrderDelivery);
+
+       Order updatedOrder = orderRepository.save(oldOrder);
+
+       return updatedOrder;
     }
 }

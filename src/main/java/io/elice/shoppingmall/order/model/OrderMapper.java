@@ -1,9 +1,8 @@
 package io.elice.shoppingmall.order.model;
 
-import io.elice.shoppingmall.book.model.Book;
+import io.elice.shoppingmall.order.model.dto.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,9 +12,38 @@ public interface OrderMapper {
 
     /*@Autowired
     BookService bookservice;*/
+    /*Order orderCreateDtoToOrder(OrderCreateDto orderCreateDto);
+    OrderDelivery orderCreateDtoToOrderDelivery(OrderCreateDto orderCreateDto);*/
+    Order orderDtoToOrder(OrderDto orderDto);
+    OrderDelivery orderDeliveryDtoToOrderDelivery(OrderDeliveryDto orderDeliveryDto);
+    OrderItemResponseDto orderItemToOrderItemResponseDto(OrderItem orderItem);
+    OrderDeliveryResponseDto orderDeliveryToOrderDeliveryResponseDto(OrderDelivery orderDelivery);
     OrderResponseDto orderToOrderResponseDto(Order order);
-    Order orderCreateDtoToOrder(OrderCreateDto orderCreateDto);
-    OrderDelivery orderCreateDtoToOrderDelivery(OrderCreateDto orderCreateDto);
+
+    default OrderResponseCombinedDto orderToOrderResponseCombinedDto(Order order) {
+
+        if (order == null ) {
+            return null;
+        }
+
+        OrderResponseCombinedDto orderResponseCombinedDto = new OrderResponseCombinedDto();
+
+        orderResponseCombinedDto.setOrder(orderToOrderResponseDto(order));
+        orderResponseCombinedDto.setOrderDelivery(orderDeliveryToOrderDeliveryResponseDto(order.getOrderDelivery()));
+
+        List<OrderItemResponseDto> orderItemResponseDtos = new ArrayList<>();
+        List<OrderItem> items = order.getOrderItems();
+        for (OrderItem item : items) {
+
+            orderItemResponseDtos.add(orderItemToOrderItemResponseDto(item));
+        }
+        orderResponseCombinedDto.setOrderItems(orderItemResponseDtos);
+
+        return orderResponseCombinedDto;
+
+    }
+
+
 
     default List<OrderItem> orderCreateDtoToOrderItems(OrderCreateDto orderCreateDto) {
 
@@ -35,4 +63,15 @@ public interface OrderMapper {
 
         return orderItems;
     }
+
+    default OrdersResponseDto ordersToOrdersResponseDto(List<Order> orders) {
+        OrdersResponseDto ordersResponseDto = new OrdersResponseDto();
+
+        for (Order order : orders) {
+            ordersResponseDto.getOrderList().add(orderToOrderResponseCombinedDto(order));
+        }
+
+        return ordersResponseDto;
+    }
+
 }

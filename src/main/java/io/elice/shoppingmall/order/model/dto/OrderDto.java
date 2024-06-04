@@ -1,4 +1,4 @@
-package io.elice.shoppingmall.order.exception;
+package io.elice.shoppingmall.order.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,9 +6,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class NoOrdersException extends RuntimeException {
+public class OrderDto {
 
-    private OrderErrorMessages orderErrorMessages;
+    private String orderRequest;
 }
