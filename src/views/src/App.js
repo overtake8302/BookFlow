@@ -1,14 +1,20 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Order from "./routes/Order";
 import Home from "./routes/Home";
+import OrderDetails from "./routes/order/OrderDetails";
+import OrderList from "./routes/order/OrderList";
 
 function App() {
   return (
     <Router>
     <Switch>
-      <Route path="/order">
-        <Order />
+      <Route path="/orderDetails/:orderId">
+        <OrderDetails />
       </Route>
+      <Route path="/orderList">
+        <OrderList />
+      </Route>
+
+
       <Route path="/">
         <Home />
       </Route>

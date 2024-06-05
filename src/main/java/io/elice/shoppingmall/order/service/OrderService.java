@@ -175,6 +175,8 @@ public class OrderService {
        OrderDelivery updatedOrderDelivery = orderDeliveryRepository.save(oldOrderDelivery);
        oldOrder.setOrderDelivery(updatedOrderDelivery);
 
+       oldOrder.setOrderRequest(dto.getOrderDto().getOrderRequest());
+
        Order updatedOrder = orderRepository.save(oldOrder);
 
        return updatedOrder;

@@ -1,5 +1,6 @@
 package io.elice.shoppingmall.order.model.dto;
 
+import io.elice.shoppingmall.book.model.Book;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,5 +19,5 @@ public class OrderItemDto {
         @Min(1)
         private int bookId;
 
-
+        private Book book;
 }
