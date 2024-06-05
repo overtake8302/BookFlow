@@ -1,8 +1,11 @@
 package io.elice.shoppingmall.user.model;
 
 import io.elice.shoppingmall.audit.BaseEntity;
+import io.elice.shoppingmall.order.model.Order;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 
 @Entity
@@ -38,8 +41,8 @@ public class User extends BaseEntity {
     @Column(name = "is_deleted")
     private boolean isDeleted;
 
-//    @OneToMany(mappedBy = "user")
-//    private List<Order> orders;
+    @OneToMany(mappedBy = "user")
+    private List<Order> orders;
 
     @Getter
     public enum Role {
