@@ -46,6 +46,6 @@ public class Order extends BaseEntity {
     private OrderDelivery orderDelivery;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "id")
     private User user;
 }

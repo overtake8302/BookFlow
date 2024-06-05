@@ -6,6 +6,9 @@ import { useParams } from 'react-router-dom';
 import './OrderDetails.css';
 function OrderDetails() {
 
+    const token = localStorage.getItem('token');
+
+
     const [orderDetails, setOrderDetails] = useState();
     const {orderId} = useParams();
     const orderStatusKorean = {
@@ -22,7 +25,11 @@ function OrderDetails() {
     const [orderRequest, setOrderRequest] = useState("");
 
     useEffect(() => {
-        fetch(`http://localhost:8080/api/user/order/${orderId}`)
+        fetch(`http://localhost:8080/api/user/order/${orderId}`, {
+            headers: {
+                'access': token,
+              }
+        })
         .then((response) => {
             if (!response.ok) {
                 throw new Error("Details 조회 에러");
@@ -61,10 +68,10 @@ function OrderDetails() {
             ]
         };
     
-        // 업데이트된 데이터를 서버에 전송
         fetch(`http://localhost:8080/api/user/order/${orderId}`, {
             method: 'PUT',
             headers: {
+                'access': token,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(updatedDetails)
@@ -84,7 +91,13 @@ function OrderDetails() {
     };
 
     if (!orderDetails) {
-        return "404 Not Found";
+        return (
+            <div>
+                <h1>주문 상세정보를 찾을수 없어요.</h1>
+                <h2><Link to={"/orderList"}>주문내역을 찾으시나요?</Link></h2>
+            </div>
+            
+        );
     }
 
     return (
@@ -107,8 +120,8 @@ function OrderDetails() {
                                         )
                                         : (
                                             <div>
-                                            <span>책 표지가 없습니다.</span>
-                                            <span>책 이름이 없습니다.</span>
+                                            <span>책 표지가 없어요.</span>
+                                            <span>책 이름이 없어요.</span>
                                             <span>{item.orderItemPrice}원</span>
                                             <span>{item.orderItemQuantity}권</span>
                                             </div>
