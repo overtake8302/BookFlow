@@ -4,27 +4,30 @@ import ReactModal from 'react-modal';
 import { Link } from "react-router-dom";
 import './OrderList.css';
 
-const customStyles = {
-    content: {
-      top: '50%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-50%',
-      transform: 'translate(-50%, -50%)'
-    }
-  };
-  
-  ReactModal.setAppElement('#root');
-
-const orderStatusKorean = {
-    PAYMENT_COMPLETED: '결제 완료',
-    SHIPPING: '배송 중',
-    DELIVERED: '배송 완료',
-    PREPARING_PRODUCT: '상품 준비 중'
-  };
-
 function OrderList() {
+
+    const token = localStorage.getItem('token');
+    console.log(localStorage.getItem('token'))
+
+    const customStyles = {
+        content: {
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        marginRight: '-50%',
+        transform: 'translate(-50%, -50%)'
+        }
+    };
+    
+    ReactModal.setAppElement('#root');
+
+    const orderStatusKorean = {
+        PAYMENT_COMPLETED: '결제 완료',
+        SHIPPING: '배송 중',
+        DELIVERED: '배송 완료',
+        PREPARING_PRODUCT: '상품 준비 중'
+    };
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
@@ -46,7 +49,10 @@ function OrderList() {
 
     function cancelOrder() {
         fetch(`http://localhost:8080/api/user/order/${selectedOrderId}`, {
-            method: 'delete'
+            method: 'delete',
+            headers: {
+                'access': token,
+              }
         })
         .then((response) => {
             if (!response.ok) {
@@ -65,28 +71,36 @@ function OrderList() {
 
     function fetchOrderList() {
 
-        fetch("http://localhost:8080/api/user/orders")
+        fetch("http://localhost:8080/api/user/orders", {
+            headers: {
+                'access': token,
+              }
+        })
         .then((response) => {
           if (!response.ok) {
-            throw new Error("ordereList 조회 에러");
+            throw new Error("ordereList 조회 에러1");
           }
           return response.json();
         })
         .then((json) => setOrderList(json.orderList))
-        .catch((e) => console.log("orderList 조회에러", e));
+        .catch((e) => console.log("orderList 조회에러1", e));
     }
 
     useEffect(() => {
-        fetch("http://localhost:8080/api/user/orders")
+        fetch("http://localhost:8080/api/user/orders", {
+            headers: {
+                'access': token,
+              }
+        })
         .then((response) => {
             if (!response.ok) {
-                throw new Error("ordereList 조회 에러");
+                throw new Error("ordereList 조회 에러2");
             }
             return response.json();
         })
         .then((json) => (setOrderList(json.orderList)))
         .catch((e) => (
-            console.log("orderList 조회에러", e)
+            console.log("orderList 조회에러2", e)
         ))
     }, [modalIsOpen]);
 
@@ -107,7 +121,7 @@ function OrderList() {
            <h1>결제하신 내역이에요.</h1>
             <div>
             <table>
-                <thead>
+                <thead className="thead">
                     <tr>
                         <th>주문일</th>
                         <th>주문정보</th>
@@ -123,7 +137,7 @@ function OrderList() {
                             <td><Link className = 'link' to = {`orderDetails/${list.order.orderId}`}>{list.order.orderSummaryTitle}</Link></td>
                             <td>{list.order.orderTotalPrice}</td>
                             <td>{orderStatusKorean[list.order.orderStatus]}</td>
-                            <td><button onClick={() => openModal(list.order.orderId)}>주문취소</button></td>
+                            <td><button className="cancelBtn" onClick={() => openModal(list.order.orderId)}>주문취소</button></td>
                         </tr>
                     ))}
                 </tbody>
@@ -137,9 +151,9 @@ function OrderList() {
             style={customStyles}
             contentLabel="주문 취소 확인"
             >
-            <h2>주문을 취소하시겠습니까?</h2>
-            <button onClick={cancelOrder}>예</button>
-            <button onClick={closeModal}>아니요</button>
+            <h2>주문을 취소하실건가요?</h2>
+            <button className="yesBtn" onClick={cancelOrder}>네, 취소할게요.</button><br />
+            <button className="noBtn" onClick={closeModal}>아니요, 다시생각해 볼게요.</button>
             </ReactModal>
         </div>
         
