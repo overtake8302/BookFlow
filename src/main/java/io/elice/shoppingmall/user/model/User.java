@@ -1,16 +1,17 @@
 package io.elice.shoppingmall.user.model;
 
+import io.elice.shoppingmall.audit.BaseEntity;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-import java.util.List;
 
 @Entity
 @Table(name = "user")
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-public class User {
+public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
@@ -27,6 +28,9 @@ public class User {
 
     @Column(name = "user_name")
     private String name;
+
+    @Column(name = "user_phone_number")
+    private String phoneNumber;
 
     @Column(name = "user_address")
     private String address;

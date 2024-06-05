@@ -1,14 +1,23 @@
 package io.elice.shoppingmall.user.jwt;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.elice.shoppingmall.user.model.LoginDto;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.util.StreamUtils;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -20,8 +29,20 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     // 클라이언트에서 /login 요청시 security에서 클라이언트 요청을 가로챔
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        String username = obtainUsername(request);
-        String password = obtainPassword(request);
+        //String username = obtainUsername(request);
+        //String password = obtainPassword(request);
+
+        LoginDto loginDto = new LoginDto();
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            ServletInputStream inputStream = request.getInputStream();
+            String messageBody = StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8);
+            loginDto = objectMapper.readValue(messageBody, LoginDto.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        String username = loginDto.getUsername();
+        String password = loginDto.getPassword();
 
         if (username == null || password == null) {
             log.error("로그인 유효성 오류");
@@ -38,13 +59,40 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         log.info("jwtUserDetails.getUsername() : " + jwtUserDetails.getUsername());
         log.info("jwtUserDetails.getPassword() : " + jwtUserDetails.getPassword());
         log.info("jwtUserDetails.Role() : " + jwtUserDetails.getRole());
-        jwtUserDetails
-                .getAuthorities()
-                .stream()
-                .forEach(item ->
-                        log.info("jwtUserDetails.getAuthority() : " + item.getAuthority())
-                );
 
         return authenticate;
+    }
+
+
+    //로그인 성공시 실행되는 메서드 (Jwt 토큰 발행)
+    @Override
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) {
+        JwtUserDetails jwtUserDetails = (JwtUserDetails) authentication.getPrincipal();
+        String username = jwtUserDetails.getUsername();
+        String role = jwtUserDetails.getRole();
+        log.info("토큰 생성 username : " + username);
+        log.info("토큰 생성 role : " + role);
+
+        //access 토큰 생성
+        String access = jwtService.createToken("access", username, role, 86400000L); //1일
+
+        //refresh 토큰 생성
+        String refresh = jwtService.createToken("refresh", username, role, 86400000L * 7); //7일
+
+        log.info("access 토큰 : " + access);
+        log.info("refresh 토큰 : " + refresh);
+
+        //refresh 토큰 서버에 저장
+        jwtService.saveRefreshTokenDB(username, refresh, 86400000L);
+
+        response.setHeader("access", access);
+        response.addCookie(jwtService.createCookie("refresh", refresh));
+        response.setStatus(HttpStatus.OK.value());
+    }
+
+    //로그인 실패시 실행되는 메서드
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException {
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     }
 }

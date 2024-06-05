@@ -1,14 +1,13 @@
 package io.elice.shoppingmall.user.jwt;
 
-import jakarta.servlet.http.HttpServletResponse;
-
-import java.util.Optional;
+import jakarta.servlet.http.Cookie;
 
 public interface JwtService {
-    String createAccessToken(String username);
-    Optional<String> getAccessTokenUsername();
-    Optional<String> getAccessTokenRole();
-    void sendAccessToken(HttpServletResponse response, String accessToken);
-    void setAccessTokenHeader(HttpServletResponse response, String accessToken);
+    String createToken(String subject, String username, String role, Long expiredMs);
+    String getTokenSubject(String token);
+    String getTokenUsername(String token);
+    String getTokenRole(String token);
     boolean isTokenExpired(String token);
+    void saveRefreshTokenDB(String username, String refresh, Long expiredMs);
+    Cookie createCookie(String key, String value);
 }

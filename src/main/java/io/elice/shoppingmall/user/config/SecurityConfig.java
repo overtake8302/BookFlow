@@ -1,7 +1,10 @@
 package io.elice.shoppingmall.user.config;
 
 import io.elice.shoppingmall.user.jwt.JwtAuthenticationFilter;
+import io.elice.shoppingmall.user.jwt.JwtGenericFilterBean;
+import io.elice.shoppingmall.user.jwt.JwtOncePerRequestFilter;
 import io.elice.shoppingmall.user.jwt.JwtService;
+import io.elice.shoppingmall.user.repository.RefreshRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +16,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -21,6 +25,7 @@ public class SecurityConfig {
 
     private final CorsConfig corsConfig;
     private final JwtService jwtService;
+    private final RefreshRepository refreshRepository;
     private final AuthenticationConfiguration authenticationConfiguration;
 
     @Bean
@@ -32,17 +37,21 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 );
-        http
-                .addFilterBefore(corsConfig.corsFilter(), UsernamePasswordAuthenticationFilter.class)
-                .addFilterAt(new JwtAuthenticationFilter(authenticationManager(authenticationConfiguration), jwtService), UsernamePasswordAuthenticationFilter.class);
 
         http
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/", "/join", "/login").permitAll()
+                        .requestMatchers("/", "/join", "/login", "/reissue").permitAll()
                         .requestMatchers("/api/user/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().permitAll()
                 );
+        http
+                .addFilter(corsConfig.corsFilter())
+                .addFilterBefore(new JwtOncePerRequestFilter(jwtService), JwtAuthenticationFilter.class)
+                .addFilterAt(new JwtAuthenticationFilter(authenticationManager(authenticationConfiguration), jwtService), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtGenericFilterBean(jwtService, refreshRepository), LogoutFilter.class);
+
+
 
         return http.build();
     }
