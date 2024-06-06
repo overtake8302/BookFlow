@@ -134,6 +134,12 @@ public class OrderService {
            throw new OrderAccessdeniedException(OrderErrorMessages.ACCESS_DENIED);
        }
 
+       OrderStatus status = foundOrder.getOrderStatus();
+
+       if (status.equals(OrderStatus.SHIPPING) || status.equals(OrderStatus.DELIVERED)) {
+           throw new OrderAccessdeniedException(OrderErrorMessages.ACCESS_DENIED);
+       }
+
        foundOrder.setDeleted(true);
        foundOrder.getOrderDelivery().setDeleted(true);
        for (OrderItem item : foundOrder.getOrderItems()) {
@@ -154,6 +160,12 @@ public class OrderService {
        Long oldOrderUserId = oldOrder.getUser().getId();
 
        if (!Objects.equals(currentUserId, oldOrderUserId)) {
+           throw new OrderAccessdeniedException(OrderErrorMessages.ACCESS_DENIED);
+       }
+
+       OrderStatus status = oldOrder.getOrderStatus();
+
+       if (status.equals(OrderStatus.DELIVERED) || status.equals(OrderStatus.SHIPPING)) {
            throw new OrderAccessdeniedException(OrderErrorMessages.ACCESS_DENIED);
        }
 
