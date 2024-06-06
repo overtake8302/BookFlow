@@ -4,6 +4,7 @@ package io.elice.shoppingmall.order.controller;
 import io.elice.shoppingmall.order.model.*;
 import io.elice.shoppingmall.order.model.dto.OrderCreateDto;
 import io.elice.shoppingmall.order.model.dto.OrderResponseCombinedDto;
+import io.elice.shoppingmall.order.model.dto.OrderResponseDto;
 import io.elice.shoppingmall.order.model.dto.OrdersResponseDto;
 import io.elice.shoppingmall.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +44,7 @@ public class UserOrderController {
         return new ResponseEntity<>(orderResponseDto, HttpStatus.OK);
     }
 
+
     @PostMapping("/order")
     public ResponseEntity<?> postOrder(@RequestBody @Validated OrderCreateDto orderCreateDto, BindingResult error) {
 
@@ -62,7 +64,7 @@ public class UserOrderController {
     }
 
     @DeleteMapping("/order/{orderId}")
-    public ResponseEntity<?> deleteOrder(@PathVariable Long orderId) {
+    public ResponseEntity<HttpStatus> deleteOrder(@PathVariable Long orderId) {
 
         orderService.deleteOrder(orderId);
 

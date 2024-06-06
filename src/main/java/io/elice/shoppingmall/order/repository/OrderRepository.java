@@ -18,4 +18,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     //테스트용
     List<Order> findAllByIsDeletedFalse();
+
+    Optional<List<Order>> findAllByUserIdAndIsDeletedFalse(Long id);
 }
