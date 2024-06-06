@@ -10,7 +10,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public enum OrderErrorMessages {
 
-    NO_ORDERS_FOUND("주문 내역이 없습니다.");
+    NO_ORDERS_FOUND("주문 내역이 없습니다."),
+    ACCESS_DENIED("잘못된 요청입니다.");
 
     private String message;
 }

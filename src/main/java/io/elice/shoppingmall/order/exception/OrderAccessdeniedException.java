@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ResponseStatus(HttpStatus.NOT_FOUND)
-public class OrderNotFoundException extends RuntimeException {
+@ResponseStatus(HttpStatus.BAD_REQUEST)
+public class OrderAccessdeniedException extends RuntimeException {
 
     private OrderErrorMessages orderErrorMessages;
 }
