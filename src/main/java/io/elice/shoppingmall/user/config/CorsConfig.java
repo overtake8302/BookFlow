@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.List;
+
 @Configuration
 public class CorsConfig {
 
@@ -14,8 +16,9 @@ public class CorsConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("*"); //모든 도메인 요청 허용
+        config.addAllowedOriginPattern("*");
         config.addAllowedHeader("*"); //HTTP Header
+        config.setExposedHeaders(List.of("access"));
         config.addAllowedMethod("*"); //GET, POST, PUT, DELETE
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
