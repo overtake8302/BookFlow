@@ -1,7 +1,7 @@
 package io.elice.shoppingmall.user.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.elice.shoppingmall.user.model.LoginDto;
+import io.elice.shoppingmall.user.model.dto.LoginDto;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
@@ -84,7 +84,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         //refresh 토큰 서버에 저장
         jwtService.saveRefreshTokenDB(username, refresh, 86400000L);
-
         response.setHeader("access", access);
         response.addCookie(jwtService.createCookie("refresh", refresh));
         response.setStatus(HttpStatus.OK.value());
