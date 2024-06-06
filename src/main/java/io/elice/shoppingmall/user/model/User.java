@@ -18,7 +18,7 @@ public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private Long id;
+    private Long userId;
 
     @Column(name = "user_username")
     private String username;
@@ -46,7 +46,7 @@ public class User extends BaseEntity {
 
     @Getter
     public enum Role {
-        USER("ROLE_USER","일반 회원"), ADMIN("ROLE_ADMIN","관리자");
+        USER("ROLE_USER","일반 사용자"), ADMIN("ROLE_ADMIN","관리자");
 
         private final String key;
         private final String title;

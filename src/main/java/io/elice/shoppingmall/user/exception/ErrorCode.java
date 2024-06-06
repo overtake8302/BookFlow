@@ -5,7 +5,10 @@ import lombok.Getter;
 @Getter
 public enum ErrorCode {
 
-    USER_NOT_FOUND(400, "UserNotFoundException", "사용자를 찾을 수 없습니다.");
+    USER_NOT_EXIST(400, "UserNotExistException", "사용자를 찾을 수 없습니다."),
+    ROLE_NOT_EXIST(400, "RoleNotExistException", "사용자 권한이 존재하지 않습니다."),
+    USERNAME_DUPLICATE(400, "DuplicateUsernameException", "아이디가 중복되었습니다.");
+
 
     private final int status;
     private final String message;

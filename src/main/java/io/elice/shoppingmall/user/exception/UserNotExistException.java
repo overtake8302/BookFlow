@@ -1,9 +1,9 @@
 package io.elice.shoppingmall.user.exception;
 
-public class UserNotFoundException extends RootException{
+public class UserNotExistException extends RootException{
     private String description;
 
-    public UserNotFoundException(String description) {
-        super(ErrorCode.USER_NOT_FOUND);
+    public UserNotExistException(String description) {
+        super(ErrorCode.USER_NOT_EXIST);
     }
 }

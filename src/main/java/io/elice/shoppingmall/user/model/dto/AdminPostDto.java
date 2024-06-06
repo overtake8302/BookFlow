@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AdminPostDto {
-    private Long id;
+    private Long userId;
     private String username;
     private String role;
     private String name;
