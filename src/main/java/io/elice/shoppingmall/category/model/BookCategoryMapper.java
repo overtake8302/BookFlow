@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Table(name = "book_category_mapper")
 @Data
@@ -16,11 +18,8 @@ public class BookCategoryMapper {
 
     private Integer bookId;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
-//    private Integer categoryId;
-    private Category category;
-
     private Boolean isDeleted;
 
+    @ManyToMany(mappedBy = "bookCategoryMappers")
+    private List<Category> categories;
 }

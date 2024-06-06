@@ -1,18 +1,28 @@
 package io.elice.shoppingmall.user.model;
 
+import io.elice.shoppingmall.audit.BaseEntity;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-import java.util.List;
 
 @Entity
+<<<<<<< HEAD
+=======
+@Table(name = "user")
+@AllArgsConstructor
+@NoArgsConstructor
+>>>>>>> 3f15225515fdc2375fbd8e029de668426184e9c7
 @Getter
 @Setter
-public class User {
+public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+<<<<<<< HEAD
     private Long user_id;
+=======
+    @Column(name = "user_id")
+    private Long id;
+>>>>>>> 3f15225515fdc2375fbd8e029de668426184e9c7
 
     @Column(name = "user_username")
     private String username;
@@ -25,6 +35,9 @@ public class User {
 
     @Column(name = "user_name")
     private String name;
+
+    @Column(name = "user_phone_number")
+    private String phoneNumber;
 
     @Column(name = "user_address")
     private String address;
