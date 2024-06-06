@@ -178,12 +178,15 @@ function OrderDetails() {
                         <button type="submit">배송 정보 수정</button>
                     </form>
                 </div>
-                ) : (
-                    <div>
-                        <h3>배송이 시작되었어요.</h3>
-                        <h4>배송정보를 수정할 수 없어요.</h4> 
-                    </div>
-                    
+                ) : orderDetails.order.orderStatus === 'SHIPPING' ? (
+                        <div>
+                            <h3>배송이 시작되었어요.</h3>
+                            <h4>배송정보를 수정할 수 없어요.</h4>
+                        </div>
+                    ) : orderDetails.order.orderStatus === 'DELIVERED' && (
+                        <div>
+                            <h3>배송이 완료되었어요.</h3>
+                        </div>
                 )
             } 
         </div>

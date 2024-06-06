@@ -58,7 +58,10 @@ function OrderList() {
             if (!response.ok) {
                 throw new Error('주문 취소 실패');
             }
-            setOrderList((list) => list.filter((order) => order.orderId !== selectedOrderId));
+            setOrderList((list) => list.filter((order) => order.orderId !== selectedOrderId), () => {
+                closeModal();
+                fetchOrderList();
+            });
             closeModal();
             fetchOrderList();
         })
@@ -104,7 +107,7 @@ function OrderList() {
         ))
     }, [modalIsOpen]);
 
-    if (!orderList) {
+    if (!orderList || orderList.length == 0) {
         return (
             <div className="container">
               <HomeHeader />
@@ -137,7 +140,9 @@ function OrderList() {
                             <td><Link className = 'link' to = {`orderDetails/${list.order.orderId}`}>{list.order.orderSummaryTitle}</Link></td>
                             <td>{list.order.orderTotalPrice}</td>
                             <td>{orderStatusKorean[list.order.orderStatus]}</td>
-                            <td><button className="cancelBtn" onClick={() => openModal(list.order.orderId)}>주문취소</button></td>
+                            <td> { list.order.orderStatus !== 'SHIPPING' && list.order.orderStatus !== 'DELIVERED' && (
+                                <button className="cancelBtn" onClick={() => openModal(list.order.orderId)}>주문취소</button>
+                            )}</td>
                         </tr>
                     ))}
                 </tbody>
