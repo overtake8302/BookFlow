@@ -1,4 +1,4 @@
-package io.elice.shoppingmall.user.model;
+package io.elice.shoppingmall.user.model.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

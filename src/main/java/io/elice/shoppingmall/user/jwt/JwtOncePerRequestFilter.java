@@ -1,6 +1,5 @@
 package io.elice.shoppingmall.user.jwt;
 
-import io.elice.shoppingmall.user.model.LoginDto;
 import io.elice.shoppingmall.user.model.User;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;

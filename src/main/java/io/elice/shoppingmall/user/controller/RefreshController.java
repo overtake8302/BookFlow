@@ -17,7 +17,6 @@ public class RefreshController {
     @PostMapping("/reissue")
     public ResponseEntity<?> reissue(HttpServletRequest request, HttpServletResponse response){
         refreshService.reissueTokens(request, response);
-        ResponseEntity<Object> objectResponseEntity = new ResponseEntity<>(HttpStatus.OK);
-        return objectResponseEntity;
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
