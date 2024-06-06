@@ -1,6 +1,6 @@
 package io.elice.shoppingmall.user.service;
 
-import io.elice.shoppingmall.user.model.JoinDto;
+import io.elice.shoppingmall.user.model.dto.JoinDto;
 import io.elice.shoppingmall.user.model.User;
 import io.elice.shoppingmall.user.model.UserMapper;
 import io.elice.shoppingmall.user.repository.AuthRepository;
