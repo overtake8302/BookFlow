@@ -1,8 +1,13 @@
 package io.elice.shoppingmall.user.model;
 
 import io.elice.shoppingmall.audit.BaseEntity;
+<<<<<<< HEAD
+=======
+import io.elice.shoppingmall.order.model.Order;
+>>>>>>> 3bd465834f53b723681605371ce84809a3467005
 import jakarta.persistence.*;
 import lombok.*;
+
 
 
 @Entity
@@ -11,7 +16,10 @@ import lombok.*;
 @Table(name = "user")
 @AllArgsConstructor
 @NoArgsConstructor
+<<<<<<< HEAD
 >>>>>>> 3f15225515fdc2375fbd8e029de668426184e9c7
+=======
+>>>>>>> 3bd465834f53b723681605371ce84809a3467005
 @Getter
 @Setter
 public class User extends BaseEntity {
@@ -22,7 +30,10 @@ public class User extends BaseEntity {
 =======
     @Column(name = "user_id")
     private Long id;
+<<<<<<< HEAD
 >>>>>>> 3f15225515fdc2375fbd8e029de668426184e9c7
+=======
+>>>>>>> 3bd465834f53b723681605371ce84809a3467005
 
     @Column(name = "user_username")
     private String username;
@@ -45,12 +56,12 @@ public class User extends BaseEntity {
     @Column(name = "is_deleted")
     private boolean idDeleted;
 
-//    @OneToMany(mappedBy = "user")
-//    private List<Order> orders;
+    @OneToMany(mappedBy = "user")
+    private List<Order> orders;
 
     @Getter
     public enum Role {
-        USER("ROLE_USER","일반 회원"), ADMIN("ROLE_ADMIN","관리자");
+        USER("ROLE_USER","일반 사용자"), ADMIN("ROLE_ADMIN","관리자");
 
         private final String key;
         private final String title;

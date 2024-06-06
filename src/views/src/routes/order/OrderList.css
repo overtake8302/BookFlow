@@ -19,4 +19,33 @@ table {
     text-decoration: none;
     color: black;
 }
+<<<<<<< HEAD
   
+=======
+
+.cancelBtn {
+  border: none;
+  font-size:larger;
+  background-color: lightcoral;
+  color: white;
+}
+
+.yesBtn {
+  border: none;
+  font-size: large;
+  margin-bottom: 10px;
+  background-color: lightcoral;
+  color: white;
+}
+
+.noBtn {
+  border: none;
+  font-size: large;
+  background-color: lightblue;
+  color: white;
+}
+
+.thead {
+  margin-bottom: 100px;
+}
+>>>>>>> 3bd465834f53b723681605371ce84809a3467005

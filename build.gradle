@@ -40,7 +40,10 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
 	implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
 	implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
+<<<<<<< HEAD
 	implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.8'
+=======
+>>>>>>> 3bd465834f53b723681605371ce84809a3467005
 }
 
 tasks.named('test') {

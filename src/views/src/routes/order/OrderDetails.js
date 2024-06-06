@@ -6,6 +6,12 @@ import { useParams } from 'react-router-dom';
 import './OrderDetails.css';
 function OrderDetails() {
 
+<<<<<<< HEAD
+=======
+    const token = localStorage.getItem('token');
+
+
+>>>>>>> 3bd465834f53b723681605371ce84809a3467005
     const [orderDetails, setOrderDetails] = useState();
     const {orderId} = useParams();
     const orderStatusKorean = {
@@ -22,7 +28,15 @@ function OrderDetails() {
     const [orderRequest, setOrderRequest] = useState("");
 
     useEffect(() => {
+<<<<<<< HEAD
         fetch(`http://localhost:8080/api/user/order/${orderId}`)
+=======
+        fetch(`http://localhost:8080/api/user/order/${orderId}`, {
+            headers: {
+                'access': token,
+              }
+        })
+>>>>>>> 3bd465834f53b723681605371ce84809a3467005
         .then((response) => {
             if (!response.ok) {
                 throw new Error("Details 조회 에러");
@@ -61,10 +75,17 @@ function OrderDetails() {
             ]
         };
     
+<<<<<<< HEAD
         // 업데이트된 데이터를 서버에 전송
         fetch(`http://localhost:8080/api/user/order/${orderId}`, {
             method: 'PUT',
             headers: {
+=======
+        fetch(`http://localhost:8080/api/user/order/${orderId}`, {
+            method: 'PUT',
+            headers: {
+                'access': token,
+>>>>>>> 3bd465834f53b723681605371ce84809a3467005
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(updatedDetails)
@@ -84,7 +105,17 @@ function OrderDetails() {
     };
 
     if (!orderDetails) {
+<<<<<<< HEAD
         return "404 Not Found";
+=======
+        return (
+            <div>
+                <h1>주문 상세정보를 찾을수 없어요.</h1>
+                <h2><Link to={"/orderList"}>주문내역을 찾으시나요?</Link></h2>
+            </div>
+            
+        );
+>>>>>>> 3bd465834f53b723681605371ce84809a3467005
     }
 
     return (
@@ -107,8 +138,13 @@ function OrderDetails() {
                                         )
                                         : (
                                             <div>
+<<<<<<< HEAD
                                             <span>책 표지가 없습니다.</span>
                                             <span>책 이름이 없습니다.</span>
+=======
+                                            <span>책 표지가 없어요.</span>
+                                            <span>책 이름이 없어요.</span>
+>>>>>>> 3bd465834f53b723681605371ce84809a3467005
                                             <span>{item.orderItemPrice}원</span>
                                             <span>{item.orderItemQuantity}권</span>
                                             </div>
@@ -165,12 +201,24 @@ function OrderDetails() {
                         <button type="submit">배송 정보 수정</button>
                     </form>
                 </div>
+<<<<<<< HEAD
                 ) : (
                     <div>
                         <h3>배송이 시작되었어요.</h3>
                         <h4>배송정보를 수정할 수 없어요.</h4> 
                     </div>
                     
+=======
+                ) : orderDetails.order.orderStatus === 'SHIPPING' ? (
+                        <div>
+                            <h3>배송이 시작되었어요.</h3>
+                            <h4>배송정보를 수정할 수 없어요.</h4>
+                        </div>
+                    ) : orderDetails.order.orderStatus === 'DELIVERED' && (
+                        <div>
+                            <h3>배송이 완료되었어요.</h3>
+                        </div>
+>>>>>>> 3bd465834f53b723681605371ce84809a3467005
                 )
             } 
         </div>

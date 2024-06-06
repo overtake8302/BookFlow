@@ -4,6 +4,10 @@ package io.elice.shoppingmall.order.controller;
 import io.elice.shoppingmall.order.model.*;
 import io.elice.shoppingmall.order.model.dto.OrderCreateDto;
 import io.elice.shoppingmall.order.model.dto.OrderResponseCombinedDto;
+<<<<<<< HEAD
+=======
+import io.elice.shoppingmall.order.model.dto.OrderResponseDto;
+>>>>>>> 3bd465834f53b723681605371ce84809a3467005
 import io.elice.shoppingmall.order.model.dto.OrdersResponseDto;
 import io.elice.shoppingmall.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +20,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+<<<<<<< HEAD
 @CrossOrigin
+=======
+
+>>>>>>> 3bd465834f53b723681605371ce84809a3467005
 @Controller
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
@@ -43,6 +51,10 @@ public class UserOrderController {
         return new ResponseEntity<>(orderResponseDto, HttpStatus.OK);
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3bd465834f53b723681605371ce84809a3467005
     @PostMapping("/order")
     public ResponseEntity<?> postOrder(@RequestBody @Validated OrderCreateDto orderCreateDto, BindingResult error) {
 
@@ -62,7 +74,11 @@ public class UserOrderController {
     }
 
     @DeleteMapping("/order/{orderId}")
+<<<<<<< HEAD
     public ResponseEntity<?> deleteOrder(@PathVariable Long orderId) {
+=======
+    public ResponseEntity<HttpStatus> deleteOrder(@PathVariable Long orderId) {
+>>>>>>> 3bd465834f53b723681605371ce84809a3467005
 
         orderService.deleteOrder(orderId);
 
