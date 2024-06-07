@@ -13,6 +13,31 @@ function OrderListByAdmin() {
     const [currentPage, setCurrentPage] = useState(0);
     const [itemsPerPage, setItemsPerPage] = useState(10);
 
+    function updateOrderStatus(orderId, newStatus) {
+        const orderStatusDto = { orderStatus: newStatus };
+      
+        fetch(`http://localhost:8080/api/admin/order/${orderId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'access': token,
+          },
+          body: JSON.stringify(orderStatusDto)
+        })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('주문 상태 업데이트 실패');
+          }
+          return response;
+        })
+        .then(() => {
+          // 상태 업데이트 후 DTO를 새로고침
+          fetchDto();
+        })
+        .catch((e) => console.log('주문 상태 업데이트 에러', e));
+      }
+      
+
     const handlePageChange = (page) => {
         setCurrentPage(page -1);
       };
@@ -170,7 +195,16 @@ function OrderListByAdmin() {
                             <td>{formatDate(list.order.createdAt)}</td>
                             <td><Link className = 'link' to = {`orderDetailsByadmin/${list.order.orderId}`}>{list.order.orderSummaryTitle}</Link></td>
                             <td>{list.order.orderTotalPrice}</td>
-                            <td>{orderStatusKorean[list.order.orderStatus]}</td>
+                            <td>
+                            <select
+                            value={list.order.orderStatus}
+                            onChange={(e) => updateOrderStatus(list.order.orderId, e.target.value)}
+                            >
+                            {Object.entries(orderStatusKorean).map(([statusKey, statusValue]) => (
+                                <option key={statusKey} value={statusKey}>{statusValue}</option>
+                            ))}
+                            </select>
+                        </td>
                             <td> { list.order.orderStatus !== 'SHIPPING' && list.order.orderStatus !== 'DELIVERED' && (
                                 <button className="cancelBtn" onClick={() => openModal(list.order.orderId)}>주문취소</button>
                             )}</td>
