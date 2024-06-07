@@ -5,6 +5,7 @@ import OrderList from "./routes/order/OrderList";
 import JoinTest from "./routes/loginTest/JoinTest";
 import LoginTest from "./routes/loginTest/LoginTest";
 import OrderCompleted from "./routes/order/OrderCompleted";
+import OrderListByAdmin from "./routes/order/OrderListByAdmin";
 
 function App() {
   return (
@@ -18,6 +19,9 @@ function App() {
       </Route>
       <Route path="/orderCompleted">
         <OrderCompleted />
+      </Route>
+      <Route path="/orderListByAdmin">
+        <OrderListByAdmin />
       </Route>
 
       <Route path="/joinTest">
