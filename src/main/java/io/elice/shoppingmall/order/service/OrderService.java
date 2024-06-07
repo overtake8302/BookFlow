@@ -7,7 +7,6 @@ import io.elice.shoppingmall.order.exception.OrderErrorMessages;
 import io.elice.shoppingmall.order.exception.OrderNotFoundException;
 import io.elice.shoppingmall.order.model.*;
 import io.elice.shoppingmall.order.model.dto.OrderCreateDto;
-import io.elice.shoppingmall.order.model.dto.OrderStatusDto;
 import io.elice.shoppingmall.order.repository.OrderDeliveryRepository;
 import io.elice.shoppingmall.order.repository.OrderItemRepository;
 import io.elice.shoppingmall.order.repository.OrderRepository;
@@ -19,7 +18,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -65,7 +63,8 @@ public class OrderService {
 
             orderItem.setOrder(savedOrder);
 //            orderItem.setOrderItemPrice(orderItem.getBook().getPrice());
-            //테스트용 임시 가격
+
+//            테스트용 임시 가격
             orderItem.setOrderItemPrice(10000);
 
             int totalPrice = orderItem.getOrderItemPrice() * orderItem.getOrderItemQuantity();
@@ -77,7 +76,7 @@ public class OrderService {
         savedOrder.setOrderTotalPrice(orderTotalPrice);
         savedOrder.setOrderItems(savedOrderItems);
 
-        /*String orderSummaryTitle = savedOrderItems.get(0).getBook().getName();
+       /* String orderSummaryTitle = savedOrderItems.get(0).getBook().getName();
 
         int itemsCount = savedOrderItems.size();
         if (itemsCount > 1) {
@@ -169,17 +168,17 @@ public class OrderService {
            throw new OrderAccessdeniedException(OrderErrorMessages.ACCESS_DENIED);
        }
 
-//       for (OrderItem newItem : updateRequestOrderItems) {
-//
-//           for (OrderItem oldItem : oldItems) {
-//
-//               boolean isMatch = newItem.getBook().getId() == oldItem.getBook().getId();
-//               if (isMatch) {
-//                   oldItem.setOrderItemQuantity(newItem.getOrderItemQuantity());
-//                   break;
-//               }
-//           }
-//       }
+       /*for (OrderItem newItem : updateRequestOrderItems) {
+
+           for (OrderItem oldItem : oldItems) {
+
+               boolean isMatch = newItem.getBook().getId() == oldItem.getBook().getId();
+               if (isMatch) {
+                   oldItem.setOrderItemQuantity(newItem.getOrderItemQuantity());
+                   break;
+               }
+           }
+       }*/
 
        int newOrderTotalPrice = 0;
        for (OrderItem item : oldItems) {

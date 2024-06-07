@@ -1,6 +1,6 @@
 package io.elice.shoppingmall.order.model.dto;
 
-import io.elice.shoppingmall.book.model.Book;
+import io.elice.shoppingmall.book.model.Entity.Book;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
