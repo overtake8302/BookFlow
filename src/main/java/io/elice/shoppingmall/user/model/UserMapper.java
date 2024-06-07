@@ -24,7 +24,7 @@ public interface UserMapper {
         List<AdminPostDto> adminPostDtoList = new ArrayList<>();
         for (User user : userList) {
             AdminPostDto dto = new AdminPostDto();
-            dto.setUserId(user.getUserId());
+            dto.setId(user.getId());
             dto.setUsername(user.getUsername());
             dto.setName(user.getName());
             dto.setRole(user.getRole());

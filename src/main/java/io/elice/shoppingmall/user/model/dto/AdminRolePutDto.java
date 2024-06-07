@@ -6,6 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AdminRolePutDto {
-    private Long userId;
+    private Long id;
     private String role;
 }
