@@ -2,12 +2,13 @@ import HomeHeader from "../../components/home/HomeHeader";
 import { useEffect, useState } from "react";
 import ReactModal from 'react-modal';
 import { Link } from "react-router-dom";
-import './OrderList.css';
+import './OrderListByAdmin.css';
 import PaginationComponent from "../../components/order/PaginationComponent";
 
-function OrderList() {
+function OrderListByAdmin() {
 
     const token = localStorage.getItem('token');
+    console.log(localStorage.getItem('token'))
 
     const [currentPage, setCurrentPage] = useState(0);
     const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -15,7 +16,6 @@ function OrderList() {
     const handlePageChange = (page) => {
         setCurrentPage(page -1);
       };
-
 
     const customStyles = {
         content: {
@@ -56,7 +56,7 @@ function OrderList() {
     }
 
     function cancelOrder() {
-        fetch(`http://localhost:8080/api/user/order/${selectedOrderId}`, {
+        fetch(`http://localhost:8080/api/admin/order/${selectedOrderId}`, {
             method: 'delete',
             headers: {
                 'access': token,
@@ -88,7 +88,7 @@ function OrderList() {
 
     function fetchDto() {
 
-        fetch(`http://localhost:8080/api/user/orders?page=${currentPage}&size=${itemsPerPage}`, {
+        fetch(`http://localhost:8080/api/admin/orders?page=${currentPage}&size=${itemsPerPage}`, {
             headers: {
                 'access': token,
               }
@@ -104,7 +104,7 @@ function OrderList() {
     }
 
     useEffect(() => {
-        fetch(`http://localhost:8080/api/user/orders?page=${currentPage}&size=${itemsPerPage}`, {
+        fetch(`http://localhost:8080/api/admin/orders?page=${currentPage}&size=${itemsPerPage}`, {
             headers: {
                 'access': token,
               }
@@ -125,17 +125,34 @@ function OrderList() {
         return (
             <div className="container">
               <HomeHeader />
-              <h2>주문하신 내역이 없어요.</h2>  
+              <h2>아직 주문하신 고객님이 없어요.</h2>  
             </div>
             
         )
     }
-
     return (
         <div className="container">
            <HomeHeader/> 
 
-           <h1 className="h1">결제하신 내역이에요.</h1>
+            <h2>주문관리 (관리자)</h2>
+            <div className="status-summary">
+            <div>
+                <h3>총 주문</h3>
+                <h3>{dto.ordersResponseDto.orderList.length}건</h3>
+            </div>
+            <div>
+                <h3>상품 준비중</h3>
+                <h3>{dto.ordersResponseDto.orderList.filter(order => order.order.orderStatus === 'PREPARING_PRODUCT').length}건</h3>
+            </div>
+            <div>
+                <h3>배송중</h3>
+                <h3>{dto.ordersResponseDto.orderList.filter(order => order.order.orderStatus === 'SHIPPING').length}건</h3>
+            </div>
+            <div>
+                <h3>배송완료</h3>
+                <h3>{dto.ordersResponseDto.orderList.filter(order => order.order.orderStatus === 'DELIVERED').length}건</h3>
+            </div>
+            </div>
             <div>
             <table>
                 <thead className="thead">
@@ -143,15 +160,15 @@ function OrderList() {
                         <th>주문일</th>
                         <th>주문정보</th>
                         <th>결제 금액</th>
-                        <th>상태</th>
-                        <th>주문취소</th>
+                        <th>상태 관리</th>
+                        <th>판매자 취소</th>
                     </tr>
                 </thead>
                 <tbody>
                     {dto.ordersResponseDto.orderList.map((list) => (
                         <tr>
                             <td>{formatDate(list.order.createdAt)}</td>
-                            <td><Link className = 'link' to = {`orderDetails/${list.order.orderId}`}>{list.order.orderSummaryTitle}</Link></td>
+                            <td><Link className = 'link' to = {`orderDetailsByadmin/${list.order.orderId}`}>{list.order.orderSummaryTitle}</Link></td>
                             <td>{list.order.orderTotalPrice}</td>
                             <td>{orderStatusKorean[list.order.orderStatus]}</td>
                             <td> { list.order.orderStatus !== 'SHIPPING' && list.order.orderStatus !== 'DELIVERED' && (
@@ -165,7 +182,6 @@ function OrderList() {
             <div className="page">
                <PaginationComponent totalPages={dto.totalPages} onPageChange={handlePageChange} /> 
             </div>
-            
         </div>
             
             
@@ -173,7 +189,7 @@ function OrderList() {
             isOpen={modalIsOpen}
             onRequestClose={closeModal}
             style={customStyles}
-            contentLabel="주문 취소 확인"
+            contentLabel="판매자 취소 확인"
             >
             <h2>주문을 취소하실건가요?</h2>
             <button className="yesBtn" onClick={cancelOrder}>네, 취소할게요.</button><br />
@@ -183,4 +199,4 @@ function OrderList() {
         
     );
 }
-export default OrderList;
+export default OrderListByAdmin;
