@@ -6,6 +6,7 @@ import JoinTest from "./routes/loginTest/JoinTest";
 import LoginTest from "./routes/loginTest/LoginTest";
 import OrderCompleted from "./routes/order/OrderCompleted";
 import OrderListByAdmin from "./routes/order/OrderListByAdmin";
+import OrderDetailsByAdmin from "./routes/order/OrderDetailsByAdmin";
 
 function App() {
   return (
@@ -13,6 +14,9 @@ function App() {
     <Switch>
       <Route path="/orderDetails/:orderId">
         <OrderDetails />
+      </Route>
+      <Route path="/orderDetailsByAdmin/:orderId">
+        <OrderDetailsByAdmin />
       </Route>
       <Route path="/orderList">
         <OrderList />

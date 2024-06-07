@@ -3,11 +3,19 @@ import { useEffect, useState } from "react";
 import ReactModal from 'react-modal';
 import { Link } from "react-router-dom";
 import './OrderListByAdmin.css';
+import PaginationComponent from "../../components/order/PaginationComponent";
 
 function OrderListByAdmin() {
 
     const token = localStorage.getItem('token');
     console.log(localStorage.getItem('token'))
+
+    const [currentPage, setCurrentPage] = useState(0);
+    const [itemsPerPage, setItemsPerPage] = useState(10);
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page -1);
+      };
 
     const customStyles = {
         content: {
@@ -58,23 +66,29 @@ function OrderListByAdmin() {
             if (!response.ok) {
                 throw new Error('주문 취소 실패');
             }
-            setOrderList((list) => list.filter((order) => order.orderId !== selectedOrderId), () => {
-                closeModal();
-                fetchOrderList();
-            });
-            closeModal();
-            fetchOrderList();
-        })
+            setDto(prevDto => ({
+                ...prevDto,
+                ordersResponseDto: {
+                  ...prevDto.ordersResponseDto,
+                  orderList: prevDto.ordersResponseDto.orderList.filter(orderInfo => orderInfo.order.orderId !== selectedOrderId)
+                }
+              }));
+              closeModal();
+              fetchDto();
+          })
         .catch((e) => (
             console.log('주문 취소 실패', e)
         ));
     }
 
-    const [orderList, setOrderList] = useState();
+    const [dto, setDto] = useState({
+        ordersResponseDto: { orderList: [] },
+        totalPages: 0
+      });
 
-    function fetchOrderList() {
+    function fetchDto() {
 
-        fetch("http://localhost:8080/api/admin/orders", {
+        fetch(`http://localhost:8080/api/admin/orders?page=${currentPage}&size=${itemsPerPage}`, {
             headers: {
                 'access': token,
               }
@@ -85,12 +99,12 @@ function OrderListByAdmin() {
           }
           return response.json();
         })
-        .then((json) => setOrderList(json.orderList))
+        .then((json) => setDto(json))
         .catch((e) => console.log("orderList 조회에러1", e));
     }
 
     useEffect(() => {
-        fetch("http://localhost:8080/api/admin/orders", {
+        fetch(`http://localhost:8080/api/admin/orders?page=${currentPage}&size=${itemsPerPage}`, {
             headers: {
                 'access': token,
               }
@@ -101,13 +115,13 @@ function OrderListByAdmin() {
             }
             return response.json();
         })
-        .then((json) => (setOrderList(json.orderList)))
+        .then((json) => (setDto(json)))
         .catch((e) => (
             console.log("orderList 조회에러2", e)
         ))
-    }, [modalIsOpen]);
+    }, [currentPage, itemsPerPage]);
 
-    if (!orderList || orderList.length == 0) {
+    if (!dto.ordersResponseDto.orderList || dto.ordersResponseDto.orderList.length == 0) {
         return (
             <div className="container">
               <HomeHeader />
@@ -116,7 +130,6 @@ function OrderListByAdmin() {
             
         )
     }
-
     return (
         <div className="container">
            <HomeHeader/> 
@@ -125,19 +138,19 @@ function OrderListByAdmin() {
             <div className="status-summary">
             <div>
                 <h3>총 주문</h3>
-                <h3>{orderList.length}건</h3>
+                <h3>{dto.ordersResponseDto.orderList.length}건</h3>
             </div>
             <div>
                 <h3>상품 준비중</h3>
-                <h3>{orderList.filter(order => order.order.orderStatus === 'PREPARING_PRODUCT').length}건</h3>
+                <h3>{dto.ordersResponseDto.orderList.filter(order => order.order.orderStatus === 'PREPARING_PRODUCT').length}건</h3>
             </div>
             <div>
                 <h3>배송중</h3>
-                <h3>{orderList.filter(order => order.order.orderStatus === 'SHIPPING').length}건</h3>
+                <h3>{dto.ordersResponseDto.orderList.filter(order => order.order.orderStatus === 'SHIPPING').length}건</h3>
             </div>
             <div>
                 <h3>배송완료</h3>
-                <h3>{orderList.filter(order => order.order.orderStatus === 'DELIVERED').length}건</h3>
+                <h3>{dto.ordersResponseDto.orderList.filter(order => order.order.orderStatus === 'DELIVERED').length}건</h3>
             </div>
             </div>
             <div>
@@ -152,10 +165,10 @@ function OrderListByAdmin() {
                     </tr>
                 </thead>
                 <tbody>
-                    {orderList.map((list) => (
+                    {dto.ordersResponseDto.orderList.map((list) => (
                         <tr>
                             <td>{formatDate(list.order.createdAt)}</td>
-                            <td><Link className = 'link' to = {`orderDetails/${list.order.orderId}`}>{list.order.orderSummaryTitle}</Link></td>
+                            <td><Link className = 'link' to = {`orderDetailsByadmin/${list.order.orderId}`}>{list.order.orderSummaryTitle}</Link></td>
                             <td>{list.order.orderTotalPrice}</td>
                             <td>{orderStatusKorean[list.order.orderStatus]}</td>
                             <td> { list.order.orderStatus !== 'SHIPPING' && list.order.orderStatus !== 'DELIVERED' && (
@@ -165,6 +178,10 @@ function OrderListByAdmin() {
                     ))}
                 </tbody>
             </table>
+
+            <div className="page">
+               <PaginationComponent totalPages={dto.totalPages} onPageChange={handlePageChange} /> 
+            </div>
         </div>
             
             
