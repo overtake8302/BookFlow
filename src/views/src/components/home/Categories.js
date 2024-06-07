@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom"; // react-router-dom 라이브러리의 Link 컴포넌트를 사용
+import { Link } from "react-router-dom";
+import './Categories.css';
 
-function Categorys() {
+function Categories() {
     const [categorys, setCategorys] = useState([]);
     
     useEffect(() => {
         const getCategorys = async () => {
             try {
-               const response = await fetch('http://localhost:8080/api/category');
+               const response = await fetch('http://localhost:8080/api/categories');
             const json = await response.json();
             setCategorys(json); 
             } catch (e) {
@@ -19,20 +20,23 @@ function Categorys() {
     }, []);
 
     return (
-        <div>
-            <h2>카테고리</h2>
+        <div className="category-container">
+            <div className="category-header-container">
+                <h2 className="category-header">카테고리</h2>
+                <span className="home-button"><Link to = {'/'}>홈</Link></span>
+            </div>
             {
                 categorys.length > 0 ? (
 
-                    <ul>
+                    <ul className="category-list">
                 {categorys.slice(0, 6).map((category, index) => (
                     <li key={index}>
-                        <Link to={`/category/${category.category_id}`}>{category.category_name}</Link>
+                        <Link to={`/category/${category.categoryId}/books`}>{category.categoryName}</Link>
                     </li>
                 ))}
                 {categorys.length > 6 && (
                     <li>
-                        <Link to="/category">기타</Link>
+                        <Link to="/categories">기타</Link>
                     </li>
                 )}
             </ul>
@@ -42,4 +46,4 @@ function Categorys() {
     );
 }
 
-export default Categorys;
+export default Categories;

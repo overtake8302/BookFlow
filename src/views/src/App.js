@@ -1,15 +1,34 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Order from "./routes/Order";
 import Home from "./routes/Home";
+import OrderDetails from "./routes/order/OrderDetails";
+import OrderList from "./routes/order/OrderList";
+import JoinTest from "./routes/loginTest/JoinTest";
+import LoginTest from "./routes/loginTest/LoginTest";
+import OrderCompleted from "./routes/order/OrderCompleted";
 import Cart from "./routes/Cart";
 
 function App() {
   return (
     <Router>
     <Switch>
-      <Route path="/order">
-        <Order />
+      <Route path="/orderDetails/:orderId">
+        <OrderDetails />
       </Route>
+      <Route path="/orderList">
+        <OrderList />
+      </Route>
+      <Route path="/orderCompleted">
+        <OrderCompleted />
+      </Route>
+
+      <Route path="/joinTest">
+        <JoinTest />
+      </Route>
+      <Route path="/loginTest">
+        <LoginTest />
+      </Route>
+
+
       <Route path="/cart">
         <Cart />
       </Route>

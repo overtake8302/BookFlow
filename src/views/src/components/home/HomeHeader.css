@@ -1,4 +1,4 @@
-/* HomeHeader 컴포넌트의 최상위 div에 적용할 스타일 */
+
 .home-header {
     display: flex;
     justify-content: space-between;
@@ -6,20 +6,23 @@
     padding: 10px;
 }
 
-/* 타이틀 스타일 */
-#title h1 {
-    margin: 0; /* 기본 마진 제거 */
+#title img {
+    max-width: 30px;
 }
 
-/* 아이콘들을 감싸는 div에 적용할 스타일 */
+#title a {
+    text-decoration: none;
+    color: black;
+}
+
 #icons {
     display: flex;
-    justify-content: space-around; /* 아이콘 간격 동일하게 */
+    justify-content: space-around; 
 }
 
-/* 아이콘 이미지 스타일 */
+
 #icons img {
-    width: 30px; /* 아이콘 크기 조절 */
+    width: 30px; 
     height: 30px;
-    margin-left: 10px; /* 아이콘 간격 조절 */
+    margin-left: 10px; 
 }

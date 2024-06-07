@@ -35,7 +35,5 @@ public class OrderDelivery extends BaseEntity {
 
     private boolean isDeleted;
 
-    @OneToOne
-    @JoinColumn(name = "order_id")
-    private Order order;
+
 }

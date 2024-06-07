@@ -1,5 +1,6 @@
 package io.elice.shoppingmall.order.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.elice.shoppingmall.audit.BaseEntity;
 import io.elice.shoppingmall.user.model.User;
 import jakarta.persistence.*;
@@ -32,13 +33,17 @@ public class Order extends BaseEntity {
     @Column(length = 50)
     private String orderRequest;
 
-    @Column(nullable = false, length = 200)
+    @Column(length = 200)
     private String orderSummaryTitle;
 
     private boolean isDeleted;
 
     @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItems = new ArrayList<>();
+
+    @OneToOne
+    @JoinColumn(name = "order_delivery_id")
+    private OrderDelivery orderDelivery;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
