@@ -5,42 +5,28 @@ import io.elice.shoppingmall.category.service.CategoryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @CrossOrigin
 @RestController
-@RequestMapping("/api")
-public class CategoryController {
+@RequestMapping("/api/admin/categories")
+public class AdminCategoryController {
 
     private final CategoryService categoryService;
 
-    public CategoryController(CategoryService categoryService) {
+    public AdminCategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
     }
 
-    // 일반 사용자용 API
-    @GetMapping("/categories")
-    public List<Category> getAllCategories() {
-        return categoryService.getAllCategories();
-    }
-
-    @GetMapping("/categories/{categoryId}/books")
-    public ResponseEntity<Category> getCategoryById(@PathVariable Integer categoryId) {
-        return ResponseEntity.ok(categoryService.getCategoryById(categoryId));
-    }
-
-    // 관리자용 API
-    @PostMapping("/admin/categories")
+    @PostMapping
     public ResponseEntity<Category> createCategory(@RequestBody Category category) {
         return ResponseEntity.ok(categoryService.createCategory(category));
     }
 
-    @PutMapping("/admin/categories/{categoryId}")
+    @PutMapping("/{categoryId}")
     public ResponseEntity<Category> updateCategory(@PathVariable Integer categoryId, @RequestBody Category category) {
         return ResponseEntity.ok(categoryService.updateCategory(categoryId, category));
     }
 
-    @DeleteMapping("/admin/categories/{categoryId}")
+    @DeleteMapping("/{categoryId}")
     public ResponseEntity<Void> deleteCategory(@PathVariable Integer categoryId) {
         categoryService.deleteCategory(categoryId);
         return ResponseEntity.noContent().build();
