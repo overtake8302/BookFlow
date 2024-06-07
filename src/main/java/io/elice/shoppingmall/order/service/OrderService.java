@@ -259,7 +259,13 @@ public class OrderService {
     @Transactional
     public void deleteOrderByAdmin(Long orderId) {
 
-        Order foundOrder = findOrder(orderId);
+        Order foundOrder = findOrderByAdmin(orderId);
+
+        OrderStatus status = foundOrder.getOrderStatus();
+
+        if (status.equals(OrderStatus.SHIPPING) || status.equals(OrderStatus.DELIVERED)) {
+            throw new OrderAccessdeniedException(OrderErrorMessages.ACCESS_DENIED);
+        }
 
         foundOrder.setDeleted(true);
         foundOrder.getOrderDelivery().setDeleted(true);
