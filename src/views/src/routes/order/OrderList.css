@@ -4,8 +4,12 @@
     padding: 0 20px;
   }
   
-h1 {
+.h1 {
     margin-bottom: 5%;
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
 }
 
 table {
@@ -44,4 +48,10 @@ table {
 
 .thead {
   margin-bottom: 100px;
+}
+
+.page {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
 }
