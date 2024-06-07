@@ -223,9 +223,20 @@ public class OrderService {
        return updatedOrder;
     }
 
-    public List<Order> findOrdersByAdmin() {
+    /*public List<Order> findOrdersByAdmin() {
 
         List<Order> orders = orderRepository.findAllByIsDeletedFalse();
+
+        if (orders.isEmpty()) {
+            throw new NoOrdersException(OrderErrorMessages.NO_ORDERS_FOUND);
+        }
+
+        return orders;
+    }*/
+
+    public Page<Order> findOrdersByAdmin(Pageable pageable) {
+
+        Page<Order> orders = orderRepository.findAllByIsDeletedFalse(pageable);
 
         if (orders.isEmpty()) {
             throw new NoOrdersException(OrderErrorMessages.NO_ORDERS_FOUND);
