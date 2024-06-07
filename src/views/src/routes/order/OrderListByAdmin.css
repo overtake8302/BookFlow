@@ -4,12 +4,8 @@
     padding: 0 20px;
   }
   
-.h1 {
+h1 {
     margin-bottom: 5%;
-    margin-top: 30px;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
 }
 
 table {
@@ -17,6 +13,7 @@ table {
     margin: auto; 
     text-align: center;
     font-size: 1.5em;
+    border: 1px solid black;
   }
 
 .link {
@@ -50,8 +47,15 @@ table {
   margin-bottom: 100px;
 }
 
-.page {
+.status-summary {
   display: flex;
-  justify-content: center;
-  margin-top: 20px;
+  justify-content: space-around;
+  margin-bottom: 40px;
+  margin-top: 40px;
+  border: 1px solid black;
+}
+
+.status-summary > div {
+  flex: 1;
+  text-align: center;
 }
