@@ -2,10 +2,7 @@ package io.elice.shoppingmall.order.controller;
 
 
 import io.elice.shoppingmall.order.model.*;
-import io.elice.shoppingmall.order.model.dto.OrderCreateDto;
-import io.elice.shoppingmall.order.model.dto.OrderResponseCombinedDto;
-import io.elice.shoppingmall.order.model.dto.OrderResponseDto;
-import io.elice.shoppingmall.order.model.dto.OrdersResponseDto;
+import io.elice.shoppingmall.order.model.dto.*;
 import io.elice.shoppingmall.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -40,12 +37,12 @@ public class UserOrderController {
     }*/
 
     @GetMapping("/orders")
-    public ResponseEntity<OrdersResponseDto> getOrders(@PageableDefault(page = 0, size = 10,sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+    public ResponseEntity<?> getOrders(@PageableDefault(page = 0, size = 10,sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<Order> orders = orderService.findOrders(pageable);
-        OrdersResponseDto ordersResponseDto = orderMapper.ordersToOrdersResponseDto(orders.getContent());
+        OrdersPageDto ordersPageDto = orderMapper.pageToOrdersPageDto(orders);;
 
-        return new ResponseEntity<>(ordersResponseDto, HttpStatus.OK);
+        return new ResponseEntity<>(ordersPageDto, HttpStatus.OK);
     }
 
     @GetMapping("/order/{orderId}")
