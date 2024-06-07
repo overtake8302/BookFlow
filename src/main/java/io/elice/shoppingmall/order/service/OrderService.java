@@ -13,6 +13,8 @@ import io.elice.shoppingmall.order.repository.OrderRepository;
 import io.elice.shoppingmall.user.model.User;
 import io.elice.shoppingmall.user.repository.AuthRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -90,7 +92,7 @@ public class OrderService {
         return savedOrder;
     }
 
-    public List<Order> findOrders() {
+    /*public List<Order> findOrders() {
 
        User currentUser = getCurrentUser();
        Optional<List<Order>> orders = orderRepository.findAllByUserIdAndIsDeletedFalse(currentUser.getId());
@@ -100,6 +102,18 @@ public class OrderService {
        }
 
        return orders.get();
+    }*/
+
+    public Page<Order> findOrders(Pageable pageable) {
+
+        User currentUser = getCurrentUser();
+        Page<Order> orders = orderRepository.findAllByUserIdAndIsDeletedFalse(currentUser.getId(), pageable);
+
+        if (orders.isEmpty()) {
+            throw new NoOrdersException(OrderErrorMessages.NO_ORDERS_FOUND);
+        }
+
+        return orders;
     }
 
     public Order findOrder(Long id) {
