@@ -7,6 +7,7 @@ import LoginTest from "./routes/loginTest/LoginTest";
 import OrderCompleted from "./routes/order/OrderCompleted";
 import OrderListByAdmin from "./routes/order/OrderListByAdmin";
 import OrderDetailsByAdmin from "./routes/order/OrderDetailsByAdmin";
+import Cart from "./routes/Cart/Cart";
 
 function App() {
   return (
@@ -36,6 +37,9 @@ function App() {
       </Route>
 
 
+      <Route path="/cart">
+        <Cart />
+      </Route>
       <Route path="/">
         <Home />
       </Route>
