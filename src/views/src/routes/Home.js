@@ -15,7 +15,7 @@ function Home() {
                 <Categories />
             </div>
             <div>
-                <img className="eventImg" src={Event} />
+                <img className="eventImg" src={Event} alt="eventImg"/>
             </div>
             <div>
                 <Books />

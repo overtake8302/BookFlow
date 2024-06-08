@@ -5,7 +5,7 @@ import OrderList from "./routes/order/OrderList";
 import JoinTest from "./routes/loginTest/JoinTest";
 import LoginTest from "./routes/loginTest/LoginTest";
 import OrderCompleted from "./routes/order/OrderCompleted";
-import Cart from "./routes/Cart";
+import Cart from "./routes/Cart/Cart";
 
 function App() {
   return (
