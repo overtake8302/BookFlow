@@ -3,6 +3,7 @@ package io.elice.shoppingmall.order.model;
 import io.elice.shoppingmall.order.model.dto.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
+import org.springframework.data.domain.Page;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,4 +75,21 @@ public interface OrderMapper {
         return ordersResponseDto;
     }
 
+    default OrdersPageDto pageToOrdersPageDto(Page<Order> orders) {
+
+        OrdersPageDto ordersPageDto = new OrdersPageDto();
+
+        ordersPageDto.setTotalPages(orders.getTotalPages());
+        ordersPageDto.setSize(orders.getSize());
+        ordersPageDto.setLast(orders.isLast());
+        ordersPageDto.setNumber(orders.getNumber());
+        ordersPageDto.setTotalElements(orders.getTotalElements());
+
+        List<Order> orderList = orders.getContent();
+        OrdersResponseDto ordersResponseDto = ordersToOrdersResponseDto(orderList);
+
+        ordersPageDto.setOrdersResponseDto(ordersResponseDto);
+
+        return ordersPageDto;
+    };
 }

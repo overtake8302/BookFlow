@@ -1,23 +1,17 @@
 package io.elice.shoppingmall.order.repository;
 
 import io.elice.shoppingmall.order.model.Order;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
-    Optional<Order> findByUserIdAndIsDeletedFalse(Long id);
-
     Optional<Order> findByOrderIdAndIsDeletedFalse(long orderId);
 
+    Page<Order> findAllByIsDeletedFalse(Pageable pageable);
 
-    //테스트용
-    List<Order> findAllByIsDeletedFalse();
-
-    Optional<List<Order>> findAllByUserIdAndIsDeletedFalse(Long id);
+    Page<Order> findAllByUserIdAndIsDeletedFalse(Long id, Pageable pageable);
 }

@@ -2,12 +2,13 @@ package io.elice.shoppingmall.order.controller;
 
 
 import io.elice.shoppingmall.order.model.*;
-import io.elice.shoppingmall.order.model.dto.OrderCreateDto;
-import io.elice.shoppingmall.order.model.dto.OrderResponseCombinedDto;
-import io.elice.shoppingmall.order.model.dto.OrderResponseDto;
-import io.elice.shoppingmall.order.model.dto.OrdersResponseDto;
+import io.elice.shoppingmall.order.model.dto.*;
 import io.elice.shoppingmall.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -26,13 +27,22 @@ public class UserOrderController {
     private final OrderService orderService;
     private final OrderMapper orderMapper;
 
-    @GetMapping("/orders")
+    /*@GetMapping("/orders")
     public ResponseEntity<OrdersResponseDto> getOrders() {
 
         List<Order> orders = orderService.findOrders();
         OrdersResponseDto ordersResponseDto = orderMapper.ordersToOrdersResponseDto(orders);
 
         return new ResponseEntity<>(ordersResponseDto, HttpStatus.OK);
+    }*/
+
+    @GetMapping("/orders")
+    public ResponseEntity<OrdersPageDto> getOrders(@PageableDefault(page = 0, size = 10,sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+
+        Page<Order> orders = orderService.findOrders(pageable);
+        OrdersPageDto ordersPageDto = orderMapper.pageToOrdersPageDto(orders);;
+
+        return new ResponseEntity<>(ordersPageDto, HttpStatus.OK);
     }
 
     @GetMapping("/order/{orderId}")
