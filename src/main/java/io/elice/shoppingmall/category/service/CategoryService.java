@@ -36,7 +36,6 @@ public class CategoryService {
     public Category updateCategory(Integer id, Category category) {
         Category existingCategory = getCategoryById(id);
         existingCategory.setCategoryName(category.getCategoryName());
-        existingCategory.setParentCategoryId(category.getParentCategoryId());
         existingCategory.setIsDeleted(category.getIsDeleted());
         return categoryRepository.save(existingCategory);
     }
