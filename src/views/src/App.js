@@ -7,7 +7,8 @@ import LoginTest from "./routes/loginTest/LoginTest";
 import OrderCompleted from "./routes/order/OrderCompleted";
 import OrderListByAdmin from "./routes/order/OrderListByAdmin";
 import OrderDetailsByAdmin from "./routes/order/OrderDetailsByAdmin";
-import Cart from "./routes/Cart/Cart";
+import Cart from "./routes/cart/Cart";
+import BookDetailTest from "./routes/bookTest/BookDetailTest";
 
 function App() {
   return (
@@ -36,6 +37,9 @@ function App() {
         <LoginTest />
       </Route>
 
+      <Route path="/bookDetailTest">
+        <BookDetailTest />
+      </Route>
 
       <Route path="/cart/:userName">
         <Cart />
