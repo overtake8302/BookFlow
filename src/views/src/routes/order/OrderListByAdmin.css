@@ -1,0 +1,61 @@
+.container {
+    margin: 0 auto; 
+    max-width: 1200px;
+    padding: 0 20px;
+  }
+  
+h1 {
+    margin-bottom: 5%;
+}
+
+table {
+    width: 80%;
+    margin: auto; 
+    text-align: center;
+    font-size: 1.5em;
+    border: 1px solid black;
+  }
+
+.link {
+    text-decoration: none;
+    color: black;
+}
+
+.cancelBtn {
+  border: none;
+  font-size:larger;
+  background-color: lightcoral;
+  color: white;
+}
+
+.yesBtn {
+  border: none;
+  font-size: large;
+  margin-bottom: 10px;
+  background-color: lightcoral;
+  color: white;
+}
+
+.noBtn {
+  border: none;
+  font-size: large;
+  background-color: lightblue;
+  color: white;
+}
+
+.thead {
+  margin-bottom: 100px;
+}
+
+.status-summary {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 40px;
+  margin-top: 40px;
+  border: 1px solid black;
+}
+
+.status-summary > div {
+  flex: 1;
+  text-align: center;
+}
