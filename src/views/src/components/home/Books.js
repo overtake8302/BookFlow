@@ -7,7 +7,7 @@ function Books() {
 
     
     useEffect(() => {
-        fetch("http://localhost:8080/api/category")
+        fetch("http://localhost:8080/api/categories")
             .then((response) => {
                 if (!response.ok) {
                     throw new Error('백엔드 에러 11');
@@ -17,7 +17,7 @@ function Books() {
             .then((json) => {
                 setCategorys(json);
                 json.forEach((category) => {
-                    fetch(`http://localhost:8080/api/category/${category.category_id}`)
+                    fetch(`http://localhost:8080/api/category/${category.categoryId}/books`)
                         .then((response) => {
                             if (!response.ok) {
                                 throw new Error("백엔드 접속 에러2");
@@ -27,7 +27,7 @@ function Books() {
                         .then((books) => {
                             setBooks(prevBooks => ({
                                 ...prevBooks,
-                                [category.category_id] : books.slice(0, 5)
+                                [category.categoryId] : books.slice(0, 5)
                             }));
                         })
                         .catch((e) => {
@@ -47,17 +47,17 @@ function Books() {
 
                     categorys.map((category) => (
                         <div>
-                            <h3>{category.category_name}</h3>
-                            <Link to={`/category/${category.category_id}`}>더보기</Link>
+                            <h3>{category.categoryName}</h3>
+                            <Link to={`/category/${category.categoryOd}`}>더보기</Link>
                             <div>
                                 {
                                     books.length > 0 ? (
 
-                                        books[category.category_id].map((book) => (
+                                        books[category.categoryId].map((book) => (
                                             <div>
-                                              <div>book.book_img</div>
-                                              <div>book.book_name</div>  
-                                              <div>book.book_author</div>
+                                              <div>book.bookImg</div>
+                                              <div>book.bookName</div>  
+                                              <div>book.bookAuthor</div>
                                             </div>
                                             
                                         ))

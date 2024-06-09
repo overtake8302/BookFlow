@@ -1,0 +1,57 @@
+.container {
+    margin: 0 auto; 
+    max-width: 1200px;
+    padding: 0 20px;
+  }
+  
+.h1 {
+    margin-bottom: 5%;
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+table {
+    width: 80%;
+    margin: auto; 
+    text-align: center;
+    font-size: 1.5em;
+  }
+
+.link {
+    text-decoration: none;
+    color: black;
+}
+
+.cancelBtn {
+  border: none;
+  font-size:larger;
+  background-color: lightcoral;
+  color: white;
+}
+
+.yesBtn {
+  border: none;
+  font-size: large;
+  margin-bottom: 10px;
+  background-color: lightcoral;
+  color: white;
+}
+
+.noBtn {
+  border: none;
+  font-size: large;
+  background-color: lightblue;
+  color: white;
+}
+
+.thead {
+  margin-bottom: 100px;
+}
+
+.page {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
