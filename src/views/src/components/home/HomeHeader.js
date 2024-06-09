@@ -12,7 +12,8 @@ function HomeHeader()  {
     console.log(localStorage.getItem('token'));
     const cartClick = () => {
         const token = localStorage.getItem('token');
-        token ? history.push('/cart') : history.push('/loginTest');
+        const userName = localStorage.getItem('userName');
+        (token !== null && userName !== null) ? history.push(`/cart/${userName}`) : history.push('/loginTest');
     };
 
     return(

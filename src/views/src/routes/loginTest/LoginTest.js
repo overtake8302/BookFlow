@@ -23,6 +23,11 @@ function LoginTest() {
       console.log(response.headers.get('access'));
       localStorage.setItem('token', token);
       console.log(localStorage.getItem('token'));
+
+      // (test) 더미 계정으로 로그인시 장바구니 생성
+      localStorage.setItem('userName',username);
+      localStorage.setItem(`cart-${username}`, JSON.stringify([]));
+
       history.push('/home'); 
     })
     .catch(error => {

@@ -1,4 +1,5 @@
 import "./CartPriceInfo.css"
+import {Link} from "react-router-dom";
 
 function CartPriceInfo(){
     return (
@@ -18,7 +19,9 @@ function CartPriceInfo(){
             </div>
             <div className="each-button">
                 <button id="go-to-buy">구매하기 (2)</button>
-                <button id="more-book">더 담으러 가기</button>
+                <Link to="/">
+                    <button id="more-book">더 담으러 가기</button>
+                </Link>
             </div>
         </div>
     );

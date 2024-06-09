@@ -37,7 +37,7 @@ function App() {
       </Route>
 
 
-      <Route path="/cart">
+      <Route path="/cart/:userName">
         <Cart />
       </Route>
       <Route path="/">
