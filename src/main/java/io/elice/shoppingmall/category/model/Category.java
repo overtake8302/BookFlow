@@ -1,6 +1,5 @@
 package io.elice.shoppingmall.category.model;
 
-import io.elice.shoppingmall.book.model.Entity.Book;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -23,6 +22,17 @@ public class Category {
     private Boolean isDeleted;
 
     @ManyToMany
-    private List<Book> book;
+    @JoinTable(
+            name = "category_book_category_mapper",
+            joinColumns = @JoinColumn(name = "category_id"),
+            inverseJoinColumns = @JoinColumn(name = "book_category_mapper_id")
+    )
+    private List<BookCategoryMapper> bookCategoryMappers;
 
+    @ManyToOne
+    @JoinColumn(name = "parentCategoryId", insertable = false, updatable = false)
+    private Category parentCategory;
+
+    @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Category> subCategories;
 }
