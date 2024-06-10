@@ -1,12 +1,14 @@
 package io.elice.shoppingmall.order.exception;
 
 import javax.annotation.processing.Generated;
+import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-06-06T14:38:52+0900",
-    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.10 (Oracle Corporation)"
+    date = "2024-06-10T16:31:16+0900",
+    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.10 (Azul Systems, Inc.)"
 )
+@Component
 public class OrderExceptionMapperImpl implements OrderExceptionMapper {
 
     @Override

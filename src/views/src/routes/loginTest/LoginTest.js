@@ -23,7 +23,7 @@ function LoginTest() {
       console.log(response.headers.get('access'));
       localStorage.setItem('token', token);
       console.log(localStorage.getItem('token'));
-      history.push('/home'); 
+      history.push('/login'); 
     })
     .catch(error => {
       console.error('로그인 실패:', error);
@@ -47,7 +47,7 @@ function LoginTest() {
         />
         <button type="submit">로그인</button>
       </form>
-      <button onClick={() => history.push('/joinTest')}>회원가입</button> {/* 회원가입 버튼 */}
+      <button onClick={() => history.push('/join-test')}>회원가입</button> {/* 회원가입 버튼 */}
     </div>
   );
 }

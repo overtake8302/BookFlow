@@ -7,19 +7,22 @@ import io.elice.shoppingmall.order.exception.OrderErrorMessages;
 import io.elice.shoppingmall.order.exception.OrderNotFoundException;
 import io.elice.shoppingmall.order.model.*;
 import io.elice.shoppingmall.order.model.dto.OrderCreateDto;
-import io.elice.shoppingmall.order.model.dto.OrderStatusDto;
+import io.elice.shoppingmall.order.model.dto.OrderDeliveryDto;
+import io.elice.shoppingmall.order.model.dto.OrderDeliveryEditDto;
 import io.elice.shoppingmall.order.repository.OrderDeliveryRepository;
 import io.elice.shoppingmall.order.repository.OrderItemRepository;
 import io.elice.shoppingmall.order.repository.OrderRepository;
 import io.elice.shoppingmall.user.model.User;
 import io.elice.shoppingmall.user.repository.AuthRepository;
+import io.elice.shoppingmall.user.service.AuthService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -32,25 +35,12 @@ public class OrderService {
     private final OrderItemRepository orderItemRepository;
     private final OrderDeliveryRepository orderDeliveryRepository;
     private final OrderMapper orderMapper;
-    private final AuthRepository authRepository;
-
-    private String getCurrentUsername() {
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication.getName();
-    }
-
-    private User getCurrentUser() {
-
-        User currentUser = authRepository.findByUsername(getCurrentUsername());
-        return currentUser;
-    }
-
+    private final AuthService authService;
 
    @Transactional
     public Order creatOrder(Order requestOrder, OrderDelivery requestOrderDelivery, List<OrderItem> requestOrderItems) {
 
-        User currentUser = getCurrentUser();
+        User currentUser = authService.getCurrentUser();
         requestOrder.setUser(currentUser);
 
         Order savedOrder = orderRepository.save(requestOrder);
@@ -65,7 +55,8 @@ public class OrderService {
 
             orderItem.setOrder(savedOrder);
 //            orderItem.setOrderItemPrice(orderItem.getBook().getPrice());
-            //테스트용 임시 가격
+
+//            테스트용 임시 가격
             orderItem.setOrderItemPrice(10000);
 
             int totalPrice = orderItem.getOrderItemPrice() * orderItem.getOrderItemQuantity();
@@ -77,7 +68,7 @@ public class OrderService {
         savedOrder.setOrderTotalPrice(orderTotalPrice);
         savedOrder.setOrderItems(savedOrderItems);
 
-        /*String orderSummaryTitle = savedOrderItems.get(0).getBook().getName();
+       /* String orderSummaryTitle = savedOrderItems.get(0).getBook().getName();
 
         int itemsCount = savedOrderItems.size();
         if (itemsCount > 1) {
@@ -91,7 +82,7 @@ public class OrderService {
         return savedOrder;
     }
 
-    public List<Order> findOrders() {
+    /*public List<Order> findOrders() {
 
        User currentUser = getCurrentUser();
        Optional<List<Order>> orders = orderRepository.findAllByUserIdAndIsDeletedFalse(currentUser.getId());
@@ -101,11 +92,23 @@ public class OrderService {
        }
 
        return orders.get();
+    }*/
+
+    public Page<Order> findOrders(Pageable pageable) {
+
+        User currentUser = authService.getCurrentUser();
+        Page<Order> orders = orderRepository.findAllByUserIdAndIsDeletedFalse(currentUser.getId(), pageable);
+
+        if (orders.isEmpty()) {
+            throw new NoOrdersException(OrderErrorMessages.NO_ORDERS_FOUND);
+        }
+
+        return orders;
     }
 
     public Order findOrder(Long id) {
 
-       Long currentUserId = getCurrentUser().getId();
+       Long currentUserId = authService.getCurrentUser().getId();
        Optional<Order> foundOrder = orderRepository.findByOrderIdAndIsDeletedFalse(id);
 
        if (foundOrder.isEmpty()) {
@@ -124,7 +127,7 @@ public class OrderService {
     @Transactional
     public void deleteOrder(Long orderId) {
 
-        Long currentUserId = getCurrentUser().getId();
+        Long currentUserId = authService.getCurrentUser().getId();
 
        Order foundOrder = findOrder(orderId);
 
@@ -156,7 +159,7 @@ public class OrderService {
        List<OrderItem> oldItems = oldOrder.getOrderItems();
        List<OrderItem> updateRequestOrderItems = orderMapper.orderCreateDtoToOrderItems(dto);
 
-       Long currentUserId = getCurrentUser().getId();
+       Long currentUserId = authService.getCurrentUser().getId();
        Long oldOrderUserId = oldOrder.getUser().getId();
 
        if (!Objects.equals(currentUserId, oldOrderUserId)) {
@@ -169,17 +172,17 @@ public class OrderService {
            throw new OrderAccessdeniedException(OrderErrorMessages.ACCESS_DENIED);
        }
 
-//       for (OrderItem newItem : updateRequestOrderItems) {
-//
-//           for (OrderItem oldItem : oldItems) {
-//
-//               boolean isMatch = newItem.getBook().getId() == oldItem.getBook().getId();
-//               if (isMatch) {
-//                   oldItem.setOrderItemQuantity(newItem.getOrderItemQuantity());
-//                   break;
-//               }
-//           }
-//       }
+       /*for (OrderItem newItem : updateRequestOrderItems) {
+
+           for (OrderItem oldItem : oldItems) {
+
+               boolean isMatch = newItem.getBook().getId() == oldItem.getBook().getId();
+               if (isMatch) {
+                   oldItem.setOrderItemQuantity(newItem.getOrderItemQuantity());
+                   break;
+               }
+           }
+       }*/
 
        int newOrderTotalPrice = 0;
        for (OrderItem item : oldItems) {
@@ -210,9 +213,45 @@ public class OrderService {
        return updatedOrder;
     }
 
-    public List<Order> findOrdersByAdmin() {
+    @Transactional
+    public Order editOrder(Long orderId, OrderDeliveryEditDto dto) {
+
+        Order foundOrder = findOrder(orderId);
+
+        Long foundOrderUserId = foundOrder.getUser().getId();
+        Long currentUserId = authService.getCurrentUser().getId();
+
+        if (!Objects.equals(foundOrderUserId, currentUserId)) {
+            throw new OrderAccessdeniedException(OrderErrorMessages.ACCESS_DENIED);
+        }
+
+        OrderDelivery oldOrderDelivery = foundOrder.getOrderDelivery();
+
+        oldOrderDelivery.setOrderDeliveryReceiverName(dto.getName());
+        oldOrderDelivery.setOrderDeliveryReceiverPhoneNumber(dto.getPhoneNumber());
+        oldOrderDelivery.setOrderDeliveryAddress1(dto.getAddress1());
+        oldOrderDelivery.setOrderDeliveryAddress2(dto.getAddress2());
+        foundOrder.setOrderRequest(dto.getOrderRequest());
+
+        Order updatedOrder = orderRepository.save(foundOrder);
+
+        return updatedOrder;
+    }
+
+    /*public List<Order> findOrdersByAdmin() {
 
         List<Order> orders = orderRepository.findAllByIsDeletedFalse();
+
+        if (orders.isEmpty()) {
+            throw new NoOrdersException(OrderErrorMessages.NO_ORDERS_FOUND);
+        }
+
+        return orders;
+    }*/
+
+    public Page<Order> findOrdersByAdmin(Pageable pageable) {
+
+        Page<Order> orders = orderRepository.findAllByIsDeletedFalse(pageable);
 
         if (orders.isEmpty()) {
             throw new NoOrdersException(OrderErrorMessages.NO_ORDERS_FOUND);
@@ -235,7 +274,13 @@ public class OrderService {
     @Transactional
     public void deleteOrderByAdmin(Long orderId) {
 
-        Order foundOrder = findOrder(orderId);
+        Order foundOrder = findOrderByAdmin(orderId);
+
+        OrderStatus status = foundOrder.getOrderStatus();
+
+        if (status.equals(OrderStatus.SHIPPING) || status.equals(OrderStatus.DELIVERED)) {
+            throw new OrderAccessdeniedException(OrderErrorMessages.ACCESS_DENIED);
+        }
 
         foundOrder.setDeleted(true);
         foundOrder.getOrderDelivery().setDeleted(true);

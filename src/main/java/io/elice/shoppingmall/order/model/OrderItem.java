@@ -1,8 +1,7 @@
 package io.elice.shoppingmall.order.model;
 
 import io.elice.shoppingmall.audit.BaseEntity;
-import io.elice.shoppingmall.book.model.Book;
-import io.elice.shoppingmall.user.model.User;
+import io.elice.shoppingmall.book.model.Entity.Book;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
