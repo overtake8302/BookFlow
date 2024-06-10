@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import './OrderDetails.css';
 function OrderDetailsByadmin() {
 
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('access');
 
 
     const [orderDetails, setOrderDetails] = useState();
