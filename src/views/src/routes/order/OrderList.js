@@ -7,7 +7,11 @@ import PaginationComponent from "../../components/order/PaginationComponent";
 
 function OrderList() {
 
+<<<<<<< HEAD
     const token = localStorage.getItem('token');
+=======
+    const token = localStorage.getItem('access');
+>>>>>>> origin/dev
 
     const [currentPage, setCurrentPage] = useState(0);
     const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -121,7 +125,11 @@ function OrderList() {
         ))
     }, [currentPage, itemsPerPage]);
 
+<<<<<<< HEAD
     if (!dto.ordersResponseDto.orderList || dto.ordersResponseDto.orderList.length == 0) {
+=======
+    if (!dto.ordersResponseDto.orderList || dto.ordersResponseDto.orderList.length === 0) {
+>>>>>>> origin/dev
         return (
             <div className="container">
               <HomeHeader />
@@ -151,7 +159,7 @@ function OrderList() {
                     {dto.ordersResponseDto.orderList.map((list) => (
                         <tr>
                             <td>{formatDate(list.order.createdAt)}</td>
-                            <td><Link className = 'link' to = {`orderDetails/${list.order.orderId}`}>{list.order.orderSummaryTitle}</Link></td>
+                            <td><Link className = 'link' to = {`order-details/${list.order.orderId}`}>{list.order.orderSummaryTitle}</Link></td>
                             <td>{list.order.orderTotalPrice}</td>
                             <td>{orderStatusKorean[list.order.orderStatus]}</td>
                             <td> { list.order.orderStatus !== 'SHIPPING' && list.order.orderStatus !== 'DELIVERED' && (

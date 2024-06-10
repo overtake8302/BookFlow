@@ -8,10 +8,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Getter
+<<<<<<< HEAD
 @AllArgsConstructor
 @NoArgsConstructor
+=======
+@Setter
+>>>>>>> origin/dev
 @ResponseStatus(HttpStatus.NOT_FOUND)
 public class NoOrdersException extends RuntimeException {
 
     private OrderErrorMessages orderErrorMessages;
+
+    public NoOrdersException(OrderErrorMessages messages) {
+        super(messages.getMessage());
+        this.orderErrorMessages = messages;
+    }
 }

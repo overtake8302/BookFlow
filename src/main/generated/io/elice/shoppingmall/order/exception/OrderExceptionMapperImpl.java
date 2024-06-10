@@ -5,8 +5,13 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
+<<<<<<< HEAD
     date = "2024-06-08T13:27:19+0900",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 21.0.2 (Oracle Corporation)"
+=======
+    date = "2024-06-10T16:31:16+0900",
+    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.10 (Azul Systems, Inc.)"
+>>>>>>> origin/dev
 )
 @Component
 public class OrderExceptionMapperImpl implements OrderExceptionMapper {

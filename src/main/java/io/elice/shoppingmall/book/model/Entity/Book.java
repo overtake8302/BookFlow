@@ -1,8 +1,11 @@
 package io.elice.shoppingmall.book.model.Entity;
 
 import io.elice.shoppingmall.audit.BaseEntity;
+<<<<<<< HEAD
 import io.elice.shoppingmall.book.exception.OutOfStockException;
 import io.elice.shoppingmall.book.model.Dto.BookFormDto;
+=======
+>>>>>>> origin/dev
 import io.elice.shoppingmall.category.model.Category;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -71,7 +74,3 @@ public class Book extends BaseEntity {
     public void addStock(int stock) {
         this.stock += stock;
     }
-
-
-
-}
