@@ -23,7 +23,7 @@ const cartItems = [
   localStorage.setItem('cart', JSON.stringify(cartItems));
   
 
-const token = localStorage.getItem('token');
+const token = localStorage.getItem('access');
 
 const Order = () => {
     

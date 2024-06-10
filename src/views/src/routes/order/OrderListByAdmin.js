@@ -7,8 +7,8 @@ import PaginationComponent from "../../components/order/PaginationComponent";
 
 function OrderListByAdmin() {
 
-    const token = localStorage.getItem('token');
-    console.log(localStorage.getItem('token'))
+    const token = localStorage.getItem('access');
+    console.log(localStorage.getItem('access'))
 
     const [currentPage, setCurrentPage] = useState(0);
     const [itemsPerPage, setItemsPerPage] = useState(10);

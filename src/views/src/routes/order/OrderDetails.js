@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { useParams } from 'react-router-dom';
 import './OrderDetails.css';
 
-const token = localStorage.getItem('token');
+const token = localStorage.getItem('access');
 const orderStatusKorean = {
     PAYMENT_COMPLETED: '결제 완료',
     SHIPPING: '배송 중',
