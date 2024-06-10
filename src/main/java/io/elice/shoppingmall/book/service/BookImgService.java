@@ -5,22 +5,18 @@ import io.elice.shoppingmall.book.model.Entity.Book;
 import io.elice.shoppingmall.book.model.Entity.BookImg;
 import io.elice.shoppingmall.book.repository.BookImgRepository;
 import io.elice.shoppingmall.book.repository.BookRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class BookImgService {
-    private final BookRepository bookRepository;
-    private final BookImgService bookImgService;
-    private final BookImgRepository bookImgRepository;
 
-    //책 등록
-    public Long saveBook(BookFormDto bookFormDto, BookImg bookImg){
-        Book book = bookFormDto.createItem();
-        //bookRepository.save(book);
-        return book.getId();
-    }
+
 }
