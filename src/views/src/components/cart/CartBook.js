@@ -2,7 +2,8 @@ import "./CartBook.css"
 import {useState} from "react";
 import Photo from "../../resources/cart/forDesign.png";
 
-function CartBook(){
+function CartBook(userName){
+
     const [checkEach, setCheckEach] = useState(false);
     const CheckEach = () => {
         setCheckEach((prev) => !prev);

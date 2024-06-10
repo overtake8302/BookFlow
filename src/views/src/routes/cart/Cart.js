@@ -3,26 +3,45 @@ import CartBookList from "../../components/cart/CartBookList";
 import CartHeader from "../../components/cart/CartHeader";
 import CartPriceInfo from "../../components/cart/CartPriceInfo";
 import "./Cart.css";
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 
 function Cart(){
     const {userName} = useParams();
-
-    // 실행되면 정보 가져오기
+    const cartName = `cart-${userName}`;
+    const cart = JSON.parse(localStorage.getItem(cartName));
+    console.log(cart);
+    console.log(cart === null);
 
     return (
         <div>
-            <div>
-                <HomeHeader />
-            </div>
-            <hr style={{borderColor: 'rgb(260, 260, 260)'}} />
-            <div>
-                <CartHeader />
-                <div id="Book-Price">
-                    <CartBookList />
-                    <CartPriceInfo />
+            {cart === null?
+                // 장바구니에 상품 없을 때
+                <div>
+                    <h2>장바구니</h2>
+                    <div>
+                        {/* 적절한 이미지*/}
+                        장바구니에 담긴 책이 없습니다.
+                    </div>
+                    <Link to="/">
+                        <button>책 담으러 가기</button>
+                    </Link>
                 </div>
-            </div>
+            :
+                <div>
+                    // 장바구니에 상품 있을 때
+                    <div>
+                        <HomeHeader/>
+                    </div>
+                    <hr/>
+                    <div>
+                        <CartHeader/>
+                        <div id="Book-Price">
+                            <CartBookList userName={userName}/>
+                            <CartPriceInfo userName={userName}/>
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
     );
 }

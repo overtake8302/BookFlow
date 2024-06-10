@@ -1,7 +1,9 @@
 import "./CartPriceInfo.css"
 import {Link} from "react-router-dom";
 
-function CartPriceInfo(){
+function CartPriceInfo(userName){
+
+
     return (
         <div className="price-info">
             <h3>결제정보</h3>
