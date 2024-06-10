@@ -21,14 +21,6 @@ public class Category {
 
     private Boolean isDeleted;
 
-    @ManyToMany
-    @JoinTable(
-            name = "category_book_category_mapper",
-            joinColumns = @JoinColumn(name = "category_id"),
-            inverseJoinColumns = @JoinColumn(name = "book_category_mapper_id")
-    )
-    private List<BookCategoryMapper> bookCategoryMappers;
-
     @ManyToOne
     @JoinColumn(name = "parentCategoryId", insertable = false, updatable = false)
     private Category parentCategory;
