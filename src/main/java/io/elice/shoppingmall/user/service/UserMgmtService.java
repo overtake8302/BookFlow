@@ -30,7 +30,7 @@ public class UserMgmtService {
             return userMgmtRepository.save(user);
         }
         throw new RuntimeException("User not found");
-    }
+    } //gpt
 
     public void deleteUser(Long id) {
         userMgmtRepository.deleteById(id);
