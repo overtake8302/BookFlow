@@ -14,6 +14,7 @@ import io.elice.shoppingmall.order.repository.OrderItemRepository;
 import io.elice.shoppingmall.order.repository.OrderRepository;
 import io.elice.shoppingmall.user.model.User;
 import io.elice.shoppingmall.user.repository.AuthRepository;
+import io.elice.shoppingmall.user.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,25 +35,12 @@ public class OrderService {
     private final OrderItemRepository orderItemRepository;
     private final OrderDeliveryRepository orderDeliveryRepository;
     private final OrderMapper orderMapper;
-    private final AuthRepository authRepository;
-
-    private String getCurrentUsername() {
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication.getName();
-    }
-
-    private User getCurrentUser() {
-
-        User currentUser = authRepository.findByUsername(getCurrentUsername());
-        return currentUser;
-    }
-
+    private final AuthService authService;
 
    @Transactional
     public Order creatOrder(Order requestOrder, OrderDelivery requestOrderDelivery, List<OrderItem> requestOrderItems) {
 
-        User currentUser = getCurrentUser();
+        User currentUser = authService.getCurrentUser();
         requestOrder.setUser(currentUser);
 
         Order savedOrder = orderRepository.save(requestOrder);
@@ -108,7 +96,7 @@ public class OrderService {
 
     public Page<Order> findOrders(Pageable pageable) {
 
-        User currentUser = getCurrentUser();
+        User currentUser = authService.getCurrentUser();
         Page<Order> orders = orderRepository.findAllByUserIdAndIsDeletedFalse(currentUser.getId(), pageable);
 
         if (orders.isEmpty()) {
@@ -120,7 +108,7 @@ public class OrderService {
 
     public Order findOrder(Long id) {
 
-       Long currentUserId = getCurrentUser().getId();
+       Long currentUserId = authService.getCurrentUser().getId();
        Optional<Order> foundOrder = orderRepository.findByOrderIdAndIsDeletedFalse(id);
 
        if (foundOrder.isEmpty()) {
@@ -139,7 +127,7 @@ public class OrderService {
     @Transactional
     public void deleteOrder(Long orderId) {
 
-        Long currentUserId = getCurrentUser().getId();
+        Long currentUserId = authService.getCurrentUser().getId();
 
        Order foundOrder = findOrder(orderId);
 
@@ -171,7 +159,7 @@ public class OrderService {
        List<OrderItem> oldItems = oldOrder.getOrderItems();
        List<OrderItem> updateRequestOrderItems = orderMapper.orderCreateDtoToOrderItems(dto);
 
-       Long currentUserId = getCurrentUser().getId();
+       Long currentUserId = authService.getCurrentUser().getId();
        Long oldOrderUserId = oldOrder.getUser().getId();
 
        if (!Objects.equals(currentUserId, oldOrderUserId)) {
@@ -231,7 +219,7 @@ public class OrderService {
         Order foundOrder = findOrder(orderId);
 
         Long foundOrderUserId = foundOrder.getUser().getId();
-        Long currentUserId = getCurrentUser().getId();
+        Long currentUserId = authService.getCurrentUser().getId();
 
         if (!Objects.equals(foundOrderUserId, currentUserId)) {
             throw new OrderAccessdeniedException(OrderErrorMessages.ACCESS_DENIED);
@@ -309,6 +297,4 @@ public class OrderService {
         Order foundOrder = findOrderByAdmin(orderId);
         foundOrder.setOrderStatus(orderStatus);
     }
-
-
 }
