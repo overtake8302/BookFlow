@@ -23,7 +23,7 @@ function LoginTest() {
       console.log(response.headers.get('access'));
       localStorage.setItem('token', token);
       console.log(localStorage.getItem('token'));
-      history.push('/home'); 
+      history.push('/login'); 
     })
     .catch(error => {
       console.error('로그인 실패:', error);
