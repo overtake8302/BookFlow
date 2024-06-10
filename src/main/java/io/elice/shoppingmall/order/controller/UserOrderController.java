@@ -6,6 +6,7 @@ import io.elice.shoppingmall.order.model.OrderDelivery;
 import io.elice.shoppingmall.order.model.OrderItem;
 import io.elice.shoppingmall.order.model.OrderMapper;
 import io.elice.shoppingmall.order.model.dto.OrderCreateDto;
+import io.elice.shoppingmall.order.model.dto.OrderDeliveryEditDto;
 import io.elice.shoppingmall.order.model.dto.OrderResponseCombinedDto;
 import io.elice.shoppingmall.order.model.dto.OrdersPageDto;
 import io.elice.shoppingmall.order.service.OrderService;
@@ -87,7 +88,7 @@ public class UserOrderController {
     }
 
     @PutMapping("/order/{orderId}")
-    public ResponseEntity<?> putOrder(@PathVariable Long orderId, @RequestBody @Validated OrderDeliveryEditDto dto,BindingResult error) {
+    public ResponseEntity<?> putOrder(@PathVariable Long orderId, @RequestBody @Validated OrderDeliveryEditDto dto, BindingResult error) {
 
         if (error.hasErrors()) {
             return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
