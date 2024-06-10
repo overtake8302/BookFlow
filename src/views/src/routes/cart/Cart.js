@@ -3,8 +3,13 @@ import CartBookList from "../../components/cart/CartBookList";
 import CartHeader from "../../components/cart/CartHeader";
 import CartPriceInfo from "../../components/cart/CartPriceInfo";
 import "./Cart.css";
+import {useParams} from "react-router-dom";
 
 function Cart(){
+    const {userName} = useParams();
+
+    // 실행되면 정보 가져오기
+
     return (
         <div>
             <div>
