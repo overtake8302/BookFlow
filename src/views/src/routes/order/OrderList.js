@@ -121,7 +121,7 @@ function OrderList() {
         ))
     }, [currentPage, itemsPerPage]);
 
-    if (!dto.ordersResponseDto.orderList || dto.ordersResponseDto.orderList.length == 0) {
+    if (!dto.ordersResponseDto.orderList || dto.ordersResponseDto.orderList.length === 0) {
         return (
             <div className="container">
               <HomeHeader />
@@ -151,7 +151,7 @@ function OrderList() {
                     {dto.ordersResponseDto.orderList.map((list) => (
                         <tr>
                             <td>{formatDate(list.order.createdAt)}</td>
-                            <td><Link className = 'link' to = {`orderDetails/${list.order.orderId}`}>{list.order.orderSummaryTitle}</Link></td>
+                            <td><Link className = 'link' to = {`order-details/${list.order.orderId}`}>{list.order.orderSummaryTitle}</Link></td>
                             <td>{list.order.orderTotalPrice}</td>
                             <td>{orderStatusKorean[list.order.orderStatus]}</td>
                             <td> { list.order.orderStatus !== 'SHIPPING' && list.order.orderStatus !== 'DELIVERED' && (

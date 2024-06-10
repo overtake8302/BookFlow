@@ -87,7 +87,11 @@ public class UserOrderController {
     }
 
     @PutMapping("/order/{orderId}")
-    public ResponseEntity<OrderResponseCombinedDto> putOrder(@PathVariable Long orderId, @RequestBody OrderCreateDto dto) {
+    public ResponseEntity<?> putOrder(@PathVariable Long orderId, @RequestBody @Validated OrderDeliveryEditDto dto,BindingResult error) {
+
+        if (error.hasErrors()) {
+            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        }
 
         Order editedOrder = orderService.editOrder(orderId, dto);
         OrderResponseCombinedDto  orderResponseDto = orderMapper.orderToOrderResponseCombinedDto(editedOrder);

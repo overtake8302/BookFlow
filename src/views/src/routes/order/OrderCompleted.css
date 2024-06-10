@@ -37,5 +37,10 @@
 
 
 .h2 {
-    margin-top: 100px;
+    margin-top: 50px;
+}
+
+p {
+    font-weight: bold;
+    font-size: large;
 }
