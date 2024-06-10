@@ -30,7 +30,7 @@ function JoinTest() {
         body: JSON.stringify(formData)
       });
       if (response.ok) {
-        history.push('/loginTest'); 
+        history.push('/login-test'); 
       } else {
         console.error('회원가입 실패');
       }

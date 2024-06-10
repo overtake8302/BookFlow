@@ -7,6 +7,8 @@ import io.elice.shoppingmall.order.exception.OrderErrorMessages;
 import io.elice.shoppingmall.order.exception.OrderNotFoundException;
 import io.elice.shoppingmall.order.model.*;
 import io.elice.shoppingmall.order.model.dto.OrderCreateDto;
+import io.elice.shoppingmall.order.model.dto.OrderDeliveryDto;
+import io.elice.shoppingmall.order.model.dto.OrderDeliveryEditDto;
 import io.elice.shoppingmall.order.repository.OrderDeliveryRepository;
 import io.elice.shoppingmall.order.repository.OrderItemRepository;
 import io.elice.shoppingmall.order.repository.OrderRepository;
@@ -223,6 +225,31 @@ public class OrderService {
        return updatedOrder;
     }
 
+    @Transactional
+    public Order editOrder(Long orderId, OrderDeliveryEditDto dto) {
+
+        Order foundOrder = findOrder(orderId);
+
+        Long foundOrderUserId = foundOrder.getUser().getId();
+        Long currentUserId = getCurrentUser().getId();
+
+        if (!Objects.equals(foundOrderUserId, currentUserId)) {
+            throw new OrderAccessdeniedException(OrderErrorMessages.ACCESS_DENIED);
+        }
+
+        OrderDelivery oldOrderDelivery = foundOrder.getOrderDelivery();
+
+        oldOrderDelivery.setOrderDeliveryReceiverName(dto.getName());
+        oldOrderDelivery.setOrderDeliveryReceiverPhoneNumber(dto.getPhoneNumber());
+        oldOrderDelivery.setOrderDeliveryAddress1(dto.getAddress1());
+        oldOrderDelivery.setOrderDeliveryAddress2(dto.getAddress2());
+        foundOrder.setOrderRequest(dto.getOrderRequest());
+
+        Order updatedOrder = orderRepository.save(foundOrder);
+
+        return updatedOrder;
+    }
+
     /*public List<Order> findOrdersByAdmin() {
 
         List<Order> orders = orderRepository.findAllByIsDeletedFalse();
@@ -282,4 +309,6 @@ public class OrderService {
         Order foundOrder = findOrderByAdmin(orderId);
         foundOrder.setOrderStatus(orderStatus);
     }
+
+
 }
