@@ -5,6 +5,10 @@ import OrderList from "./routes/order/OrderList";
 import JoinTest from "./routes/loginTest/JoinTest";
 import LoginTest from "./routes/loginTest/LoginTest";
 import OrderCompleted from "./routes/order/OrderCompleted";
+import AdminMenu from './routes/user/admin/AdminMenu';
+import Join from './routes/user/auth/Join';
+import Login from './routes/user/auth/Login';
+import AdminUserList from './routes/user/admin/AdminUserList';
 import OrderListByAdmin from "./routes/order/OrderListByAdmin";
 import OrderDetailsByAdmin from "./routes/order/OrderDetailsByAdmin";
 import Order from "./routes/order/Order";
@@ -34,13 +38,28 @@ function App() {
         <Order />
       </Route>
 
-      <Route path="/join-test">
+      <Route path="/joinTest">
         <JoinTest />
       </Route>
-      <Route path="/login-test">
+      <Route path="/loginTest">
         <LoginTest />
       </Route>
 
+      <Route path="/join">
+        <Join />
+      </Route>
+
+      <Route path="/login">
+        <Login />
+      </Route>
+
+      <Route path="/admin/menu">
+        <AdminMenu />
+      </Route>
+
+      <Route path="/userlist">
+          <AdminUserList />
+      </Route>
 
       <Route path="/cart">
         <Cart />
