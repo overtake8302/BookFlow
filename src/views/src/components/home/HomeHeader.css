@@ -6,12 +6,13 @@
     padding: 10px;
 }
 
-#title h1 {
-    margin: 0; 
+#title img {
+    max-width: 30px;
 }
 
 #title a {
     text-decoration: none;
+    color: black;
 }
 
 #icons {

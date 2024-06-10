@@ -2,15 +2,11 @@ package io.elice.shoppingmall.category.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.List;
 
 @Entity
 @Table(name = "category")
-//@Getter
-//@Setter
 @Data
 public class Category {
 
@@ -25,6 +21,10 @@ public class Category {
 
     private Boolean isDeleted;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<BookCategoryMapper> book_category_mapper;
+    @ManyToOne
+    @JoinColumn(name = "parentCategoryId", insertable = false, updatable = false)
+    private Category parentCategory;
+
+    @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Category> subCategories;
 }
