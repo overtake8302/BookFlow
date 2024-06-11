@@ -22,16 +22,10 @@ public class Category {
 
     private Boolean isDeleted;
 
-<<<<<<< HEAD
-    @ManyToMany
-    private List<Book> book;
-
-=======
     @ManyToOne
     @JoinColumn(name = "parentCategoryId", insertable = false, updatable = false)
     private Category parentCategory;
 
     @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Category> subCategories;
->>>>>>> origin/dev
 }

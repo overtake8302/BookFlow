@@ -60,6 +60,7 @@ function App() {
 
       <Route path="/userlist">
           <AdminUserList />
+      </Route>
       <Route path="/bookDetailTest">
         <BookDetailTest />
       </Route>
