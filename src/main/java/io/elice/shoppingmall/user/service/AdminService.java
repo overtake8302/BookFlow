@@ -34,9 +34,9 @@ public class AdminService {
         User user = adminRepository.findById(userId)
                 .orElseThrow(() ->new UserNotExistException("사용자를 찾을 수 없습니다."));
 
-        if (User.Role.USER.getTitle().equals(adminRolePutDto.getRole())) {
+        if (User.Role.USER.getKey().equals(adminRolePutDto.getRole())) {
             user.setRole(User.Role.USER.getKey());
-        } else if (User.Role.ADMIN.getTitle().equals(adminRolePutDto.getRole())) {
+        } else if (User.Role.ADMIN.getKey().equals(adminRolePutDto.getRole())) {
             user.setRole(User.Role.ADMIN.getKey());
         } else {
             throw new RoleNotExistException("권한을 찾을 수 없습니다.");
