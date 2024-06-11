@@ -14,21 +14,21 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/user")
+@RequestMapping("/user")
 public class UserMgmtController {
     private final UserMgmtService userMgmtService;
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id}/update")
     public ResponseEntity<User> getUser(@PathVariable Long id) {
         return ResponseEntity.ok(userMgmtService.getUser(id));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{id}/update")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody @Valid UserMgmtDto userMgmtDto) {
         return ResponseEntity.ok(userMgmtService.updateUser(id, userMgmtDto));
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/{id}/delete")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id, @RequestBody @Valid UserDeleteDto userDeleteDto) {
         userMgmtService.deleteUser(id, userDeleteDto);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

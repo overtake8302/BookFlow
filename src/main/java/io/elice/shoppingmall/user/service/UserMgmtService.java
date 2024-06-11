@@ -37,13 +37,15 @@ public class UserMgmtService {
     }
 
     public void deleteUser(Long id, UserDeleteDto userDeleteDto) {
-        User user = userMgmtRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("유저를 찾을 수 없습니다."));
+        User user = userMgmtRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("유저를 찾을 수 없습니다."));
 
         if (!passwordEncoder.matches(userDeleteDto.getPassword(), user.getPassword())) {
             throw new RuntimeException("비밀번호가 일치하지 않습니다.");
         }
 
-        userMgmtRepository.deleteById(id);
+        user.setDeleted(true);
+        userMgmtRepository.save(user);
     }
 
 }
