@@ -22,12 +22,6 @@ function CartBook({userName}){
         return cart.findIndex((index) => index.book_id === book.book_id);
     }
 
-    // 체크
-    const [checkEach, setCheckEach] = useState(false);
-    const CheckEach = () => {
-        setCheckEach((prev) => !prev);
-    }
-
     // 수량
     const clickMinus = (book) => {
         const i = findIndexOfBook(book);
@@ -53,9 +47,23 @@ function CartBook({userName}){
         }
     };
 
-    // 총 가격
+    // 체크
+    const [checkEach, setCheckEach] = useState(false);
+    const CheckEach = () => {
+        setCheckEach((prev) => !prev);
+    }
 
-    // 삭제
+    // 특정 상품 삭제
+    const clickDelete = (book) => {
+        const i = findIndexOfBook(book);
+        const newCart = [...cart];
+        newCart.splice(i);
+        alert(book.book_name + "이(가) 삭제되었습니다.");
+        updateCart(newCart);
+    }
+
+    // 전체 상품 삭제
+    // 선택한 상품 삭제
 
     return (
         <div>
@@ -78,6 +86,9 @@ function CartBook({userName}){
                             <button onClick={() => clickMinus(book)}>-</button>
                             <span id="total-quantity"> {book.book_quantity} </span>
                             <button onClick={() => clickPlus(book)}>+</button>
+                        </div>
+                        <div>
+                            <button onClick={() => clickDelete(book)}> x</button>
                         </div>
                     </div>
                 </div>
