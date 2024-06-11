@@ -1,3 +1,8 @@
+img {
+    height: 100px;
+    width: 80px;
+}
+
 .each-book {
     display: flex;
     align-items: center; /* 수평 가운데 정렬 */

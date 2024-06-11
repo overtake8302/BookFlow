@@ -1,7 +1,7 @@
 import CartBook from "./CartBook";
 
 
-function CartBookList(userName){
+function CartBookList({userName}){
 
     return (
         <div>

@@ -14,7 +14,7 @@ function Cart(){
 
     return (
         <div>
-            {cart === null ?
+            {cart.length === 0 ?
                 <div>
                     {/* 장바구니 없을 때 */}
                     <h2>장바구니</h2>
@@ -36,8 +36,8 @@ function Cart(){
                     <div>
                         <CartHeader/>
                         <div id="Book-Price">
-                            <CartBookList userName={userName}/>
-                            <CartPriceInfo userName={userName}/>
+                            <CartBookList userName={userName} />
+                            <CartPriceInfo userName={userName} />
                         </div>
                     </div>
                 </div>
