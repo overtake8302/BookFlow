@@ -9,14 +9,14 @@ function Cart(){
     const {userName} = useParams();
     const cartName = `cart-${userName}`;
     const cart = JSON.parse(localStorage.getItem(cartName));
-    console.log(cart);
-    console.log(cart === null);
+    console.log("장바구니: " + JSON.stringify(cart));
+    console.log(`빈 장바구니?: ${cart === null}`);
 
     return (
         <div>
-            {cart === null?
-                // 장바구니에 상품 없을 때
+            {cart === null ?
                 <div>
+                    {/* 장바구니 없을 때 */}
                     <h2>장바구니</h2>
                     <div>
                         {/* 적절한 이미지*/}
@@ -28,7 +28,7 @@ function Cart(){
                 </div>
             :
                 <div>
-                    // 장바구니에 상품 있을 때
+                    {/* 장바구니에 상품 있을 때 */}
                     <div>
                         <HomeHeader/>
                     </div>

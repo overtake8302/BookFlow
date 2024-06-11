@@ -22,20 +22,26 @@ function BookDetailTest(){
     const clickAddCart = (book) => {
         // 사용자 카트 가져오기
         const cartName = `cart-${localStorage.getItem('userName')}`;
-        const cart = JSON.parse(localStorage.getItem(cartName));
+        let cart = JSON.parse(localStorage.getItem(cartName));
+
+        // 빈 카트이면 빈 배열로 초기화
+        if (cart === null ) {
+            cart = [];
+            console.log("빈 장바구니: " + cart);
+        }
 
         // 카트에 책 존재하면 위치 인덱스, 없으면 -1 반환
         const existingBookIndex = cart.findIndex((index) => index.book_id === book.book_id);
-        console.log(existingBookIndex);
+        console.log("위치인덱스: " + existingBookIndex);
 
         // 카트에 책 존재하면 수량 수정, 없으면 추가
         if (existingBookIndex === -1){
             cart.push({...book, book_quantity: bookQuantity});
-            console.log(localStorage.getItem(cart));
         } else {
             cart[existingBookIndex].book_quantity += bookQuantity;
         }
         localStorage.setItem(cartName, JSON.stringify(cart));
+        console.log("장바구니: " + JSON.stringify(cart));
         alert("장바구니에 상품이 추가되었습니다!");
     };
 
