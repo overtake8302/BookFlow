@@ -38,9 +38,9 @@ const AdminUserList = () => {
         console.log(json);
         setTotal({"userTotal" : json.userTotalCount, "adminTotal" : json.adminTotalCount})
       })
-  }, [])
+  }, [userList])
 
-  const userRoleChange = (user) => {
+  const userRoleChange = (e, user) => {
     if (window.confirm("권한을 변경하시겠습니까?") == false){      
       return false;
     }
@@ -53,12 +53,11 @@ const AdminUserList = () => {
       },
       body: JSON.stringify({
         id : user.id,
-        role : user.role
+        role : e.target.value
       }),
     })
     .then(response => {
       if (response.status === 204) {
-
       } else {
         alert("권한 오류")
       }
@@ -111,9 +110,9 @@ const AdminUserList = () => {
               <td>{user.name}</td>
               <td>{user.phoneNumber === null ? '전화번호 없음' : user.phoneNumber}</td>
               <td>
-                <select onChange={(e) => userRoleChange(user)} value={user.role === 'ROLE_ADMIN' ? '관리자' : '일반 회원'}>
-                  <option value={'관리자'}>관리자</option>
-                  <option value={'일반 회원'}>일반회원</option>
+                <select onChange={(e) => userRoleChange(e, user)} value={user.role}>
+                  <option value={'ROLE_ADMIN'}>관리자</option>
+                  <option value={'ROLE_USER'}>일반회원</option>
                 </select>
               </td>
               <td>
