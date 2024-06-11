@@ -23,11 +23,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-<<<<<<< HEAD
     public ResponseEntity<?> login(@RequestBody LoginDto loginDto) {
-=======
-    public ResponseEntity<?> login(@RequestBody LoginDto loginDto, BindingResult bindingResult) {
->>>>>>> origin/dev
         //Spring Security의 filter chain에서 자동으로 처리
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -35,14 +31,9 @@ public class AuthController {
     @PostMapping("/join")
     public ResponseEntity<?> join(@Valid @RequestBody JoinDto joinDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-<<<<<<< HEAD
-            log.error(bindingResult.getFieldError().getDefaultMessage());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-=======
             String errorMessage = bindingResult.getFieldError().getDefaultMessage();
             log.info(errorMessage);
             return new ResponseEntity<ErrorResponseDto>(new ErrorResponseDto(400, errorMessage),HttpStatus.BAD_REQUEST);
->>>>>>> origin/dev
         }
         return new ResponseEntity<>(authService.join(joinDto), HttpStatus.CREATED);
     }
