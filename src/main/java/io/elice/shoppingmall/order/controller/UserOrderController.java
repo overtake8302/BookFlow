@@ -42,11 +42,7 @@ public class UserOrderController {
     }*/
 
     @GetMapping("/orders")
-<<<<<<< HEAD
-    public ResponseEntity<OrdersPageDto> getOrders(@PageableDefault(page = 0, size = 10,sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
-=======
     public ResponseEntity<OrdersPageDto> getOrders(@PageableDefault(page = 0, size = 10,sort = "orderId", direction = Sort.Direction.DESC) Pageable pageable) {
->>>>>>> origin/dev
 
         Page<Order> orders = orderService.findOrders(pageable);
         OrdersPageDto ordersPageDto = orderMapper.pageToOrdersPageDto(orders);;
