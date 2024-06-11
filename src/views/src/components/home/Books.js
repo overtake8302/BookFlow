@@ -48,7 +48,7 @@ function Books() {
                     categorys.map((category) => (
                         <div>
                             <h3>{category.categoryName}</h3>
-                            <Link to={`/category/${category.categoryOd}`}>더보기</Link>
+                            <Link to={`/category/${category.categoryId}`}>더보기</Link>
                             <div>
                                 {
                                     books.length > 0 ? (

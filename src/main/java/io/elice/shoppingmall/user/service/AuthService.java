@@ -7,6 +7,8 @@ import io.elice.shoppingmall.user.model.UserMapper;
 import io.elice.shoppingmall.user.repository.AuthRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -49,6 +51,18 @@ public class AuthService {
         user.setRole(User.Role.USER.getKey());
         user.setName("바루스");
         authRepository.save(user);
+    }
+
+    public String getCurrentUsername() {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getName();
+    }
+
+    public User getCurrentUser() {
+
+        User currentUser = authRepository.findByUsername(getCurrentUsername());
+        return currentUser;
     }
 
     public boolean join(JoinDto joinDto) {

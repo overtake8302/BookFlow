@@ -36,6 +36,6 @@ out/
 ### VS Code ###
 .vscode/
 application.properties
-
-### generated 폴더 ###
-src/main/generated
+src/main/resources/application.properties
+.idea/
+!**/src/main/generated
