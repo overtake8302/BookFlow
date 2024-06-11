@@ -96,11 +96,8 @@ public class OrderService {
 
     public Page<Order> findOrders(Pageable pageable) {
 
-<<<<<<< HEAD
-        User currentUser = getCurrentUser();
-=======
         User currentUser = authService.getCurrentUser();
->>>>>>> origin/dev
+
         Page<Order> orders = orderRepository.findAllByUserIdAndIsDeletedFalse(currentUser.getId(), pageable);
 
         if (orders.isEmpty()) {
@@ -217,8 +214,6 @@ public class OrderService {
        return updatedOrder;
     }
 
-<<<<<<< HEAD
-=======
     @Transactional
     public Order editOrder(Long orderId, OrderDeliveryEditDto dto) {
 
@@ -244,7 +239,7 @@ public class OrderService {
         return updatedOrder;
     }
 
->>>>>>> origin/dev
+
     /*public List<Order> findOrdersByAdmin() {
 
         List<Order> orders = orderRepository.findAllByIsDeletedFalse();
