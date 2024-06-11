@@ -6,11 +6,7 @@ import { useParams } from 'react-router-dom';
 import './OrderDetails.css';
 function OrderDetailsByadmin() {
 
-<<<<<<< HEAD
-    const token = localStorage.getItem('token');
-=======
     const token = localStorage.getItem('access');
->>>>>>> origin/dev
 
 
     const [orderDetails, setOrderDetails] = useState();
@@ -22,13 +18,6 @@ function OrderDetailsByadmin() {
         PREPARING_PRODUCT: '상품 준비 중'
       };
 
-<<<<<<< HEAD
-    const [name, setName] = useState("");
-    const [phoneNumber, setPhonenumber] = useState("");
-    const [address1, setAddress1] = useState("");
-    const [address2, setAddress2] = useState("");
-    const [orderRequest, setOrderRequest] = useState("");
-=======
     // const [name, setName] = useState("");
     // const [phoneNumber, setPhonenumber] = useState("");
     // const [address1, setAddress1] = useState("");
@@ -50,7 +39,7 @@ function OrderDetailsByadmin() {
     //       [name]: value
     //     }));
     //   };
->>>>>>> origin/dev
+
 
     useEffect(() => {
         fetch(`http://localhost:8080/api/admin/order/${orderId}`, {
@@ -66,13 +55,6 @@ function OrderDetailsByadmin() {
         })
         .then((json) => {
             setOrderDetails(json);
-<<<<<<< HEAD
-            setName(json.orderDelivery.orderDeliveryReceiverName);
-            setPhonenumber(json.orderDelivery.orderDeliveryReceiverPhoneNumber);
-            setAddress1(json.orderDelivery.orderDeliveryAddress1);
-            setAddress2(json.orderDelivery.orderDeliveryAddress2);
-            setOrderRequest(json.order.orderRequest);
-=======
             // setName(json.orderDelivery.orderDeliveryReceiverName);
             // setPhonenumber(json.orderDelivery.orderDeliveryReceiverPhoneNumber);
             // setAddress1(json.orderDelivery.orderDeliveryAddress1);
@@ -88,55 +70,13 @@ function OrderDetailsByadmin() {
                     orderRequest : json.order.orderRequest
                 }
             ))
->>>>>>> origin/dev
+
         })
         .catch((e) => (
             console.log("OrderDetails 조회에러", e)
         ))
     }, [orderId]);
 
-<<<<<<< HEAD
-    const handleUpdate = () => {
-        const updatedDetails = {
-            ...orderDetails,
-            orderDto: {
-                ...orderDetails.order,
-                orderRequest: orderRequest
-            },
-            orderDeliveryDto: {
-                ...orderDetails.orderDelivery,
-                orderDeliveryReceiverName: name,
-                orderDeliveryReceiverPhoneNumber: phoneNumber,
-                orderDeliveryAddress1: address1,
-                orderDeliveryAddress2: address2
-            },
-            orderItemDtos: [
-                ...orderDetails.orderItems
-            ]
-        };
-    
-        fetch(`http://localhost:8080/api/admin/order/${orderId}`, {
-            method: 'PUT',
-            headers: {
-                'access': token,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(updatedDetails)
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('배송지 수정에 실패하였습니다.');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('배송지 수정 성공', data);
-        })
-        .catch(error => {
-            console.error('배송지 수정 실패', error);
-        });
-    };
-=======
     // const handleUpdate = () => {
     //     // const updatedDetails = {
     //     //     ...orderDetails,
@@ -178,17 +118,12 @@ function OrderDetailsByadmin() {
     //     });
     // };
 
->>>>>>> origin/dev
 
     if (!orderDetails) {
         return (
             <div>
                 <h1>주문 상세정보를 찾을수 없어요.</h1>
-<<<<<<< HEAD
-                <h2><Link to={"/orderList"}>주문내역을 찾으시나요?</Link></h2>
-=======
                 <h2><Link to={"/order-list-by-admin"}>주문내역을 찾으시나요?</Link></h2>
->>>>>>> origin/dev
             </div>
             
         );
@@ -227,55 +162,12 @@ function OrderDetailsByadmin() {
             <div>
                 
             </div>
-<<<<<<< HEAD
-            {orderDetails.order && ( orderDetails.order.orderStatus == 'PAYMENT_COMPLETED' || orderDetails.order.orderStatus == 'PREPARING_PRODUCT') ? (
-=======
             {orderDetails.order && ( orderDetails.order.orderStatus === 'PAYMENT_COMPLETED' || orderDetails.order.orderStatus === 'PREPARING_PRODUCT') ? (
->>>>>>> origin/dev
                 <div className="formRootDiv">
                     <div className="orderStatusDiv">
                     <h3>상태: {orderStatusKorean[orderDetails.order.orderStatus]}</h3>
                     <h3 className="totalH3">합계: {orderDetails.order.orderTotalPrice}원</h3>
                     </div>
-<<<<<<< HEAD
-                    <h3 className="editH3">배송지 정보를 수정할 수 있어요.</h3>
-                    <form className="form" onSubmit={handleUpdate}>
-                        <h4>성함은 어떻게 되시나요?</h4>
-                        <input 
-                            type="text"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            placeholder={name}
-                        />
-                        <h4>연락처를 알려주세요.</h4>
-                        <input 
-                            type="text"
-                            value={phoneNumber}
-                            onChange={(e) => setPhonenumber(e.target.value)}
-                            placeholder={phoneNumber}
-                        />
-                        <h4>받으실 주소를 알려주세요.</h4>
-                        <input 
-                            type="text"
-                            value={address1}
-                            onChange={(e) => setAddress1(e.target.value)}
-                            placeholder={address1}
-                        /><br />
-                        <input 
-                            type="text"
-                            value={address2}
-                            onChange={(e) => setAddress2(e.target.value)}
-                            placeholder={address2}
-                        />
-                        <h4>배송 메모를 적어주세요.</h4>
-                        <input 
-                            type="text"
-                            value={orderRequest}
-                            onChange={(e) => setOrderRequest(e.target.value)}
-                            placeholder={orderRequest}
-                        /><br />
-                        <button type="submit">배송 정보 수정</button>
-=======
                     <h3 className="editH3">고객님의 배송 정보에요.</h3>
                     <form className="form">
                         <h4>고객님의 성함이에요.</h4>
@@ -318,7 +210,6 @@ function OrderDetailsByadmin() {
                             readOnly
                         /><br />
                         {/* <button type="submit">배송 정보 수정</button> */}
->>>>>>> origin/dev
                     </form>
                 </div>
                 ) : orderDetails.order.orderStatus === 'SHIPPING' ? (
