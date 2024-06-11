@@ -7,11 +7,7 @@ import PaginationComponent from "../../components/order/PaginationComponent";
 
 function OrderList() {
 
-<<<<<<< HEAD
-    const token = localStorage.getItem('token');
-=======
     const token = localStorage.getItem('access');
->>>>>>> origin/dev
 
     const [currentPage, setCurrentPage] = useState(0);
     const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -125,11 +121,8 @@ function OrderList() {
         ))
     }, [currentPage, itemsPerPage]);
 
-<<<<<<< HEAD
-    if (!dto.ordersResponseDto.orderList || dto.ordersResponseDto.orderList.length == 0) {
-=======
+
     if (!dto.ordersResponseDto.orderList || dto.ordersResponseDto.orderList.length === 0) {
->>>>>>> origin/dev
         return (
             <div className="container">
               <HomeHeader />
