@@ -1,9 +1,12 @@
 import "./CartPriceInfo.css"
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 
 function CartPriceInfo({cart}){
+    const history = useHistory();
     const checkedCart = cart.filter((book) => book.checked);
+    const token = localStorage.getItem('token');
 
+    // 체크된 책 총 가격, 총 수량
     let totalBookPrice = 0;
     let checkedQuantity = 0;
     checkedCart.forEach((book) => {
@@ -13,13 +16,33 @@ function CartPriceInfo({cart}){
         checkedQuantity += bookQuantity;
     });
 
+    // 배송비, 최종 금액
     const deliveryPrice = (totalBookPrice >= 50000)? 0 : 3000;
     const totalPrice = totalBookPrice + deliveryPrice;
 
+    // 주문하기 클릭시
+    const clickOrder = async () => {
+        const orderData = {
+            orderItemDtos: checkedCart.map(book => ({
+                orderItemQuantity: book.book_quantity,
+                bookId: book.book_id
+            }))
+        };
+        try {
+            history.push({
+                pathname: '/order',
+                state: { orderData }
+            });
+        } catch (error) {
+            console.error('Error:', error);
+            alert('주문 처리 중 오류가 발생했어요.');
+        }
+    };
+
     return (
         <div>
-            {checkedCart.map((book) => (
-                <div key={book.book_id} className="price-info">
+            {checkedCart.length > 0 && (
+                <div className="price-info">
                     <h3>결제정보</h3>
                     <div className="each-price">
                         <div id="book-price">
@@ -34,13 +57,13 @@ function CartPriceInfo({cart}){
                         </div>
                     </div>
                     <div className="each-button">
-                        <button id="go-to-buy">구매하기 ({checkedQuantity})</button>
+                        <button id="go-to-buy" onClick={clickOrder}>구매하기 ({checkedQuantity})</button>
                         <Link to="/">
                             <button id="more-book">더 담으러 가기</button>
                         </Link>
                     </div>
                 </div>
-            ))}
+            )}
         </div>
     );
 }
