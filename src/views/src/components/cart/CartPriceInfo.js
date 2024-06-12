@@ -2,11 +2,11 @@ import "./CartPriceInfo.css"
 import {Link} from "react-router-dom";
 
 function CartPriceInfo({cart}){
-    const unCheckedCart = cart.filter((book) => !book.checked);
+    const checkedCart = cart.filter((book) => book.checked);
 
     let totalBookPrice = 0;
     let checkedQuantity = 0;
-    unCheckedCart.forEach((book) => {
+    checkedCart.forEach((book) => {
         const bookPrice = book.book_price;
         const bookQuantity = book.book_quantity;
         totalBookPrice += bookPrice * bookQuantity;
@@ -18,7 +18,7 @@ function CartPriceInfo({cart}){
 
     return (
         <div>
-            {unCheckedCart.map((book) => (
+            {checkedCart.map((book) => (
                 <div key={book.book_id} className="price-info">
                     <h3>결제정보</h3>
                     <div className="each-price">
