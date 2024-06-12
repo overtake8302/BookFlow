@@ -56,7 +56,8 @@ function CartBook({userName, cart, setCart}){
     // 특정상품삭제
     const deleteBook = (book) => {
         const i = findIndexOfBook(book);
-        if(i !== -1){
+        if (i !== -1 && window.confirm(book.book_name + "을(를) 삭제하시겠습니까?")) {
+            const userName = localStorage.getItem('userName');
             const newCart = [...cart];
             newCart.splice(i, 1);
             updateCart(newCart);
