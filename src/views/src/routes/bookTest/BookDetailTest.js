@@ -1,7 +1,10 @@
 import {useEffect, useState} from "react";
 import bookData from "./testBookData.json";
+import {useHistory} from "react-router-dom";
 
 function BookDetailTest(){
+    const history = useHistory();
+
     // 책데이터
     const [books, setBooks] = useState([]);
     useEffect(() => {
@@ -57,6 +60,10 @@ function BookDetailTest(){
             localStorage.setItem(cartName, JSON.stringify(cart));
             console.log("장바구니: " + JSON.stringify(cart));
             alert("장바구니에 상품이 추가되었습니다!");
+            if (window.confirm("장바구니로 이동하시겠습니까?")) {
+                const userName = localStorage.getItem('userName');
+                history.push(`/cart/${userName}`);
+            }
         }
     };
 
