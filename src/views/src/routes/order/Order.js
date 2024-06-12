@@ -1,32 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import HomeHeader from "../../components/home/HomeHeader";
 import "./Order.css";
 
 // 테스트용 가상 방바구니
-const cartItems = [
-    {
-      name: "책1",
-      price: 15000,
-      quantity: 2,
-      bookId: 1
-    },
-    {
-      name: "책2",
-      price: 20000,
-      quantity: 1,
-      bookId: 2
-    }
-  ];
+// const cartItems = [
+//     {
+//       name: "책1",
+//       price: 15000,
+//       quantity: 2,
+//       bookId: 1
+//     },
+//     {
+//       name: "책2",
+//       price: 20000,
+//       quantity: 1,
+//       bookId: 2
+//     }
+//   ];
+
+
   
   // localStorage에 'cart' 키로 아이템 데이터 저장
-  localStorage.setItem('cart', JSON.stringify(cartItems));
+  // localStorage.setItem('testCart', JSON.stringify(cartItems));
   
+  // const cartName = `cart-${localStorage.getItem('userName')}`;
+  // let cart = JSON.parse(localStorage.getItem(cartName));
+  // console.log(cart);
 
 const token = localStorage.getItem('access');
 
 const Order = () => {
-    
+
+  const location = useLocation();
+  const orderData = location.state?.orderData?.orderItemDtos;
+  const [bookDetails, setBookDetails] = useState({}); 
+
   const history = useHistory();  
   const [cartItems, setCartItems] = useState([]);
   const [orderCreateDto, setOrderCreateDto] = useState({
@@ -44,17 +54,54 @@ const Order = () => {
   });
 
   useEffect(() => {
-    // 백엔드가 아닌 프론트에 저장된 장바구니에서 책 꺼내오기
-    const loadCartItems = () => {
-      const storedItems = localStorage.getItem('cart');
-      if (storedItems) {
-        setCartItems(JSON.parse(storedItems));
+    
+    // 서버에 책 정보를 요청하는 함수
+    const fetchBookDetails = async () => {
+      try {
+        // orderData에서 책 ID들을 추출합니다.
+        const bookIds = orderData.map(item => item.bookId);
+
+        // 책 ID들을 사용하여 서버에 책 정보를 요청합니다.
+        const responses = await Promise.all(
+          bookIds.map(bookId =>
+            fetch(`http://localhost:8080/api/book/${bookId}`)
+          )
+        );
+
+        // 모든 응답을 확인하고 JSON으로 변환합니다.
+        const booksData = await Promise.all(
+          responses.map(response => response.json())
+        );
+
+        // 책 ID를 키로 하고 책 정보를 값으로 하는 객체를 생성합니다.
+        const details = {};
+        booksData.forEach((book, index) => {
+          details[bookIds[index]] = book;
+        });
+
+        setBookDetails(details); // 상태 업데이트
+      } catch (error) {
+        console.error(error);
       }
     };
 
-    loadCartItems();
-  }, []);
+    fetchBookDetails();
+  }, [orderData]);
 
+  // const cartName = `cart-${localStorage.getItem('userName')}`;
+  // let cart = JSON.parse(localStorage.getItem(cartName));
+  // console.log(cart);
+
+  // if (cart.length === 0) {
+  //   alert("장바구니에 담긴 책이 없어요.");
+  //   history.push("/cart/" + localStorage.getItem('userName'));
+  // }
+  // useEffect(() => {
+  //   if (cart.length === 0) {
+  //     history.push("/cart/" + localStorage.getItem('userName'));
+  //   }
+  // }, []);
+  
   useEffect(() => {
     const script = document.createElement('script');
     script.src = '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
@@ -81,6 +128,12 @@ const Order = () => {
     });
   };
 
+  if (!orderData) {
+
+    console.error("주문 정보가 올바르지 않아요.");
+    return <h2>주문정보가 올바르지 않아요.</h2>;
+  }
+
   // api에 주문 생성 post 요청을 fetch로 함
   const handleOrder = async (e) => {
     e.preventDefault();
@@ -92,8 +145,8 @@ const Order = () => {
       },
       body: JSON.stringify({
         ...orderCreateDto,
-        orderItemDtos: cartItems.map(item => ({
-          orderItemQuantity: item.quantity,
+        orderItemDtos: orderData.map(item => ({
+          orderItemQuantity: item.orderItemQuantity,
           bookId: item.bookId
         }))
       })
@@ -101,9 +154,13 @@ const Order = () => {
 
     if (response.ok) {
       // 주문이 성공적으로 생성되면 로컬 스토리지에서 장바구니를 비우고 사용자에게 알림
-      localStorage.removeItem('cart');
+      // localStorage.removeItem(cartName);
+      const cartName = `cart-${localStorage.getItem('userName')}`;
+      let cart = JSON.parse(localStorage.getItem(cartName));
+      localStorage.setItem(`${cartName}`, JSON.stringify([]));
+
       alert('감사합니다! 주문이 완료되었어요.');
-      history.push('/orderCompleted');
+      history.push('/order-completed');
     } else {
       alert('주문에 실패했어요.');
     }
@@ -142,6 +199,7 @@ const Order = () => {
   };
 
   return (
+    
     <div className='root'>
       <HomeHeader />
       <div className="order-container">
@@ -149,18 +207,18 @@ const Order = () => {
           <h1>결제를 시작할게요.</h1>
           {/* 장바구니 상품 정보 표시 */}
           <div>
-            {cartItems.length > 0 ? (
-              cartItems.map((item, index) => (
-                <div key={index} className="book-details">
-                  <span>도서명: {item.name}</span>
-                  <span>권당 가격: {item.price}원</span>
-                  <span>수량: {item.quantity}개</span>
-                </div>
-              ))
-            ) : (
-              <p>장바구니에 담긴 상품이 없어요.</p>
-            )}
-          </div>
+          {orderData ? (
+          orderData.map((item, index) => (
+            <div key={index} className="book-details">
+              <span>도서명: {bookDetails[item.bookId]?.name || '책 이름 조회 중...'}</span>
+              <span>권당 가격: {item.book_price}원</span>
+              <span>수량: {item.orderItemQuantity}개</span>
+            </div>
+          ))
+        ) : (
+          <p>장바구니에 담긴 상품이 없어요.</p>
+        )}
+      </div>
           
           <form onSubmit={handleOrder} className="order-form" id='orderForm'>
             {/* 받으시는 분 정보 입력 폼 */}
@@ -183,7 +241,7 @@ const Order = () => {
           {cartItems.length > 0 && (
             <div className="total-amount">
                 <div>결제하실 금액이에요. <div />
-                <div className='won'>{cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)}원</div></div>
+                <div className='won'>{orderData.reduce((acc, item) => acc + item.book_price * item.orderItemQuantity, 0)}원</div></div>
             </div>
           )}
             <div className="action-buttons">
