@@ -8,6 +8,7 @@ import io.elice.shoppingmall.user.model.dto.AdminPostDto;
 import io.elice.shoppingmall.user.model.dto.AdminRolePutDto;
 import io.elice.shoppingmall.user.model.dto.TotalCountDto;
 import io.elice.shoppingmall.user.repository.AdminRepository;
+import io.elice.shoppingmall.user.util.UserMasking;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,13 @@ public class AdminService {
 
     public List<AdminPostDto> adminUserFindAll() {
         List<User> userList = adminRepository.findAllByIsDeleted(false);
+        userList = userList.stream().map(user -> {
+            String name = UserMasking.name(user.getName());
+            String phoneNumber = UserMasking.phoneNumber(user.getPhoneNumber());
+            user.setName(name);
+            user.setPhoneNumber(phoneNumber);
+            return user;
+        }).toList();
         return userMapper.UserListToAdminPostDtoList(userList);
     }
 

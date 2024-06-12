@@ -5,8 +5,12 @@ const AdminUserList = () => {
   const[total, setTotal] = useState({"userTotal" : '', "adminTotal" : ''})
   
   useEffect(()=>{
+    getUserList();
+  }, [])
+
+  const getUserList = () => {
     fetch('http://localhost:8080/api/admin/member',{
-      method: "POST",
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
         "access" : localStorage.getItem('access')
@@ -21,27 +25,26 @@ const AdminUserList = () => {
       .catch((error)=>{
         console.log(error);
       })
-  }, [userList])
 
-  useEffect(()=>{
-    fetch('http://localhost:8080/api/admin/member/total',{
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "access" : localStorage.getItem('access')
-      },
-    })
-      .then(response => {
-        return response.json()
+      fetch('http://localhost:8080/api/admin/member/total',{
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "access" : localStorage.getItem('access')
+        },
       })
-      .then(json => {
-        console.log(json);
-        setTotal({"userTotal" : json.userTotalCount, "adminTotal" : json.adminTotalCount})
-      })
-  }, [userList])
+        .then(response => {
+          return response.json()
+        })
+        .then(json => {
+          console.log(json);
+          console.log("total 재랜더링 테스트 : " + json);
+          setTotal({"userTotal" : json.userTotalCount, "adminTotal" : json.adminTotalCount})
+        })
+  }
 
   const userRoleChange = (e, user) => {
-    if (window.confirm("권한을 변경하시겠습니까?") == false){      
+    if (window.confirm("권한을 변경하시겠습니까?") === false){      
       return false;
     }
     
@@ -58,6 +61,7 @@ const AdminUserList = () => {
     })
     .then(response => {
       if (response.status === 204) {
+        getUserList()
       } else {
         alert("권한 오류")
       }
@@ -65,7 +69,7 @@ const AdminUserList = () => {
   }
 
   const userDelete = (id) => {
-    if (window.confirm("정말 삭제하시겠습니까??") == false){
+    if (window.confirm("정말 삭제하시겠습니까??") === false){
       return false;
     }
 
@@ -78,7 +82,7 @@ const AdminUserList = () => {
     })
     .then(response => {
       if (response.status === 204) {
-
+        getUserList()
       } else {
         alert("삭제 오류")
       }
