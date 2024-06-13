@@ -14,6 +14,9 @@ import OrderDetailsByAdmin from "./routes/order/OrderDetailsByAdmin";
 import Order from "./routes/order/Order";
 import BookDetailTest from "./routes/bookTest/BookDetailTest";
 import Cart from "./routes/cart/Cart";
+import BookAdd from "./routes/book/BookAdd";
+import BookUpdateDelete from "./routes/book/BookUpdateDelete";
+import BookDetail from "./routes/book/BookDetail";
 
 
 function App() {
@@ -39,17 +42,9 @@ function App() {
         <Order />
       </Route>
 
-      <Route path="/joinTest">
-        <JoinTest />
-      </Route>
-      <Route path="/loginTest">
-        <LoginTest />
-      </Route>
-
       <Route path="/join">
         <Join />
       </Route>
-
       <Route path="/login">
         <Login />
       </Route>
@@ -57,17 +52,36 @@ function App() {
       <Route path="/admin/menu/userlist">
         <AdminUserList />
       </Route>
-
       <Route path="/admin/menu">
         <AdminMenu />
       </Route>
-      <Route path="/bookDetailTest">
-        <BookDetailTest />
+
+      <Route path="/bookDetail">
+        <BookDetail />
+      </Route>
+      <Route path="/bookAdd">
+        <BookAdd />
+      </Route>
+      <Route path="/bookUpdateDelete">
+        <BookUpdateDelete />
       </Route>
 
       <Route path="/cart/:userName">
         <Cart />
       </Route>
+
+      {/* test */}
+      <Route path="/bookDetailTest">
+        <BookDetailTest />
+      </Route>
+      <Route path="/joinTest">
+        <JoinTest />
+      </Route>
+      <Route path="/loginTest">
+        <LoginTest />
+      </Route>
+      {/* test */}
+
       <Route path="/">
         <Home />
       </Route>
