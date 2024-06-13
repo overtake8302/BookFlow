@@ -1,0 +1,34 @@
+.each-book {
+    display: flex;
+    align-items: center; /* 수평 가운데 정렬 */
+    gap: 10px; /* 요소 간의 간격을 일정하게 */
+    margin: 10px 0;
+}
+
+.about-book {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* 이미지와 텍스트 간의 간격을 일정하게 */
+    background-color: white;
+    border-width: 2px;
+    border-color: gray;
+    border-radius: 5px;
+    padding: 5px 10px 5px 10px;
+}
+
+.book-photo {
+    max-width: 50px;
+    max-height: 70px;
+    width: auto;
+    height: auto;
+    object-fit: contain; /* 원본 비율 유지 */
+}
+
+#book-title{
+    font-weight: bold;
+}
+
+#title-price {
+    font-size: 14px;
+    line-height: 1.5;
+}

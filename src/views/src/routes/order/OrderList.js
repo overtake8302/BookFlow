@@ -3,11 +3,19 @@ import { useEffect, useState } from "react";
 import ReactModal from 'react-modal';
 import { Link } from "react-router-dom";
 import './OrderList.css';
+import PaginationComponent from "../../components/order/PaginationComponent";
 
 function OrderList() {
 
-    const token = localStorage.getItem('token');
-    console.log(localStorage.getItem('token'))
+    const token = localStorage.getItem('access');
+
+    const [currentPage, setCurrentPage] = useState(0);
+    const [itemsPerPage, setItemsPerPage] = useState(10);
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page -1);
+      };
+
 
     const customStyles = {
         content: {
@@ -58,23 +66,29 @@ function OrderList() {
             if (!response.ok) {
                 throw new Error('주문 취소 실패');
             }
-            setOrderList((list) => list.filter((order) => order.orderId !== selectedOrderId), () => {
-                closeModal();
-                fetchOrderList();
-            });
-            closeModal();
-            fetchOrderList();
-        })
+            setDto(prevDto => ({
+                ...prevDto,
+                ordersResponseDto: {
+                  ...prevDto.ordersResponseDto,
+                  orderList: prevDto.ordersResponseDto.orderList.filter(orderInfo => orderInfo.order.orderId !== selectedOrderId)
+                }
+              }));
+              closeModal();
+              fetchDto();
+          })
         .catch((e) => (
             console.log('주문 취소 실패', e)
         ));
     }
 
-    const [orderList, setOrderList] = useState();
+    const [dto, setDto] = useState({
+        ordersResponseDto: { orderList: [] },
+        totalPages: 0
+      });
 
-    function fetchOrderList() {
+    function fetchDto() {
 
-        fetch("http://localhost:8080/api/user/orders", {
+        fetch(`http://localhost:8080/api/user/orders?page=${currentPage}&size=${itemsPerPage}`, {
             headers: {
                 'access': token,
               }
@@ -85,12 +99,12 @@ function OrderList() {
           }
           return response.json();
         })
-        .then((json) => setOrderList(json.orderList))
+        .then((json) => setDto(json))
         .catch((e) => console.log("orderList 조회에러1", e));
     }
 
     useEffect(() => {
-        fetch("http://localhost:8080/api/user/orders", {
+        fetch(`http://localhost:8080/api/user/orders?page=${currentPage}&size=${itemsPerPage}`, {
             headers: {
                 'access': token,
               }
@@ -101,13 +115,14 @@ function OrderList() {
             }
             return response.json();
         })
-        .then((json) => (setOrderList(json.orderList)))
+        .then((json) => (setDto(json)))
         .catch((e) => (
             console.log("orderList 조회에러2", e)
         ))
-    }, [modalIsOpen]);
+    }, [currentPage, itemsPerPage]);
 
-    if (!orderList || orderList.length == 0) {
+
+    if (!dto.ordersResponseDto.orderList || dto.ordersResponseDto.orderList.length === 0) {
         return (
             <div className="container">
               <HomeHeader />
@@ -121,7 +136,7 @@ function OrderList() {
         <div className="container">
            <HomeHeader/> 
 
-           <h1>결제하신 내역이에요.</h1>
+           <h1 className="h1">결제하신 내역이에요.</h1>
             <div>
             <table>
                 <thead className="thead">
@@ -134,10 +149,10 @@ function OrderList() {
                     </tr>
                 </thead>
                 <tbody>
-                    {orderList.map((list) => (
+                    {dto.ordersResponseDto.orderList.map((list) => (
                         <tr>
                             <td>{formatDate(list.order.createdAt)}</td>
-                            <td><Link className = 'link' to = {`orderDetails/${list.order.orderId}`}>{list.order.orderSummaryTitle}</Link></td>
+                            <td><Link className = 'link' to = {`order-details/${list.order.orderId}`}>{list.order.orderSummaryTitle}</Link></td>
                             <td>{list.order.orderTotalPrice}</td>
                             <td>{orderStatusKorean[list.order.orderStatus]}</td>
                             <td> { list.order.orderStatus !== 'SHIPPING' && list.order.orderStatus !== 'DELIVERED' && (
@@ -147,6 +162,11 @@ function OrderList() {
                     ))}
                 </tbody>
             </table>
+
+            <div className="page">
+               <PaginationComponent totalPages={dto.totalPages} onPageChange={handlePageChange} /> 
+            </div>
+            
         </div>
             
             

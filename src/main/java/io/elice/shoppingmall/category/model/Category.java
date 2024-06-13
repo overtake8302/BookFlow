@@ -1,5 +1,6 @@
 package io.elice.shoppingmall.category.model;
 
+import io.elice.shoppingmall.book.model.Entity.Book;
 import jakarta.persistence.*;
 import lombok.Data;
 
