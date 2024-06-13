@@ -23,6 +23,18 @@ function App() {
   return (
     <Router>
     <Switch>
+      {/* test */}
+      <Route path="/bookDetailTest/:bookId">
+        <BookDetailTest />
+      </Route>
+      <Route path="/joinTest">
+        <JoinTest />
+      </Route>
+      <Route path="/loginTest">
+        <LoginTest />
+      </Route>
+      {/* test */}
+
       <Route path="/order-details/:orderId">
         <OrderDetails />
       </Route>
@@ -56,7 +68,7 @@ function App() {
         <AdminMenu />
       </Route>
 
-      <Route path="/bookDetail">
+      <Route path="/bookDetail/:bookId">
         <BookDetail />
       </Route>
       <Route path="/bookAdd">
@@ -69,18 +81,6 @@ function App() {
       <Route path="/cart/:userName">
         <Cart />
       </Route>
-
-      {/* test */}
-      <Route path="/bookDetailTest">
-        <BookDetailTest />
-      </Route>
-      <Route path="/joinTest">
-        <JoinTest />
-      </Route>
-      <Route path="/loginTest">
-        <LoginTest />
-      </Route>
-      {/* test */}
 
       <Route path="/">
         <Home />
