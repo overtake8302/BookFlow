@@ -87,7 +87,7 @@ function BookInfo({book}){
 
     return (
         <div>
-            <img src={book.img_url} />
+            <img src={book.img_url} alt="bookImg" />
             <div className="basic_info">
                 <div>
                     {book.book_name}

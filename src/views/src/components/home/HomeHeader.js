@@ -22,12 +22,12 @@ function HomeHeader()  {
                <Link to="/"><h1>BookFlow</h1></Link>
             </div>
             <div id="icons">
-                <Link to="/search"><img src={SearchButton} /></Link>
-                <img src={CartButton} onClick={cartClick} />
+                <Link to="/search"><img src={SearchButton} alt="SearchButton" /></Link>
+                <img src={CartButton} onClick={cartClick} alt="cartClick" />
 
-                <Link to="/login"><img src={UserButton} /></Link>
+                <Link to="/login"><img src={UserButton} alt="UserButton" /></Link>
 
-                <Link to="/menu"><img src={MenuButton} /></Link>
+                <Link to="/menu"><img src={MenuButton} alt="MenuButton" /></Link>
             </div>
         </div>
     );
