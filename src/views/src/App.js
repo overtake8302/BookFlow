@@ -13,7 +13,7 @@ import AdminUserList from './routes/user/admin/AdminUserList';
 // import OrderDetailsByAdmin from "./routes/order/OrderDetailsByAdmin";
 // import Order from "./routes/order/Order";
 import {Order, OrderCompleted, OrderDetails, OrderDetailsByAdmin, OrderList, OrderListByAdmin} from "./routes/order";
-
+import SearchPage from './routes/book/SearchPage';
 import BookDetailTest from "./routes/bookTest/BookDetailTest";
 import Cart from "./routes/cart/Cart";
 import BookDetail from "./routes/book/BookDetail";
@@ -82,6 +82,7 @@ function App() {
         <BookAdminPage />
       </Route>
       <Route path="/book/:bookId" component={BookDetailPage} />
+      <Route path="/search" component={SearchPage} />
       <Route path="/admin/books" exact component={CategoriesByAdmin} />
         <Route path="/admin/books/category/:categoryId" component={BooksByAdmin} />
         <Route path="/admin/book/:bookId" component={BookDetailByAdmin} />
