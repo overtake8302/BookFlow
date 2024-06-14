@@ -170,15 +170,15 @@ public class BookController {
 
     //제목검색 //프론트 우선도 낮음
     @GetMapping("/books/search")
-    public ResponseEntity<List<BookMainDto>> getBooksByKeyword(@RequestParam String keyword) {
+    public ResponseEntity<BookMainDtos> getBooksByKeyword(@RequestParam String keyword, @PageableDefault(page = 0, size = 10,sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
-        List<Book> findBooks = bookService.findBooksByKeyword(keyword);
+        Page<Book> findBooks = bookService.findBooksByKeyword(keyword, pageable);
 
-        if (findBooks.isEmpty()) {
+        if (findBooks == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        List<BookMainDto> bookMainDtos = mapper.bookListToBookMainDtoList(findBooks);
+        BookMainDtos bookMainDtos = mapper.bookPageToBookMainDtos(findBooks);
 
         return  new ResponseEntity<>(bookMainDtos, HttpStatus.OK);
     }

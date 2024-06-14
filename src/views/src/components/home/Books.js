@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import './Books.css';
 
 function Books() {
     const [categories, setCategories] = useState([]);
@@ -47,10 +48,10 @@ function Books() {
               <div key={category.id}>
                 <h3>{category.categoryName}</h3>
                 <Link to={`/category/${category.id}`}>더보기</Link>
-                <div>
+                <div className="book-list">
                   {books[category.id] && books[category.id].length > 0 ? (
                     books[category.id].map((book) => (
-                      <div key={book.id}>
+                      <div key={book.id} className="book-item">
                         <Link to={`/bookDetail/${book.id}`}>
                           {book.bookImgDtoList && book.bookImgDtoList.length > 0 && book.bookImgDtoList[0].imgUrl ? (
                             <img src={book.bookImgDtoList[0].imgUrl} alt={book.bookName} />
