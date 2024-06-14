@@ -3,6 +3,7 @@ package io.elice.shoppingmall.book.controller;
 import io.elice.shoppingmall.book.model.BookMapper;
 import io.elice.shoppingmall.book.model.Dto.BookFormDto;
 import io.elice.shoppingmall.book.model.Dto.BookMainDto;
+import io.elice.shoppingmall.book.model.Dto.BookMainDtos;
 import io.elice.shoppingmall.book.model.Entity.Book;
 import io.elice.shoppingmall.book.model.Entity.BookImg;
 import io.elice.shoppingmall.book.service.BookImgService;
@@ -10,14 +11,12 @@ import io.elice.shoppingmall.book.service.BookService;
 import io.elice.shoppingmall.category.model.Category;
 import io.elice.shoppingmall.category.service.CategoryService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -91,6 +90,54 @@ public class BookController {
         return new ResponseEntity<>(savedBook, HttpStatus.CREATED);
     }
 
+
+    //책 수정
+    @PutMapping("/admin/book/{bookId}")
+    public ResponseEntity<?> putBook(@PathVariable Long bookId,@ModelAttribute BookFormDto bookFormDto, @RequestParam("images") List<MultipartFile> images) throws IOException {
+
+        Book oldBook = bookService.getbookDetail(bookId);
+        List<BookImg> bookImgs = new ArrayList<>();
+        Category category = categoryService.getCategoryById(bookFormDto.getCategoryId());
+        oldBook.setCategory(category);
+
+        //이미지 삭제
+        if (images == null || images.isEmpty()) {
+            oldBook.setBookImgList(new ArrayList<>());
+        }
+
+        // 이미지 파일들 변경
+        if (images != null && !images.isEmpty()) {
+
+            for (MultipartFile image : images) {
+                if (!image.isEmpty()) {
+                    // 고유한 파일명 생성
+                    String uniqueFileName = generateUniqueFileName(image.getOriginalFilename());
+                    // 이미지 저장 경로 설정
+                    Path path = Paths.get("./uploadImages", uniqueFileName);
+                    // 이미지 파일 저장
+                    Files.copy(image.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+                    // 서버에서 접근 가능한 이미지 URL 생성
+                    String imageUrl = serverHost + "/uploadImages/" + uniqueFileName;
+                    // 이미지 이름이나 경로를 (이미지당 하나씩) BookImg를 만들고 거기에 담음.
+                    BookImg bookImg = new BookImg();
+                    bookImg.setImgName(uniqueFileName);
+                    bookImg.setImgOriName(image.getOriginalFilename());
+                    bookImg.setImgUrl(imageUrl);
+                    BookImg savedImg = bookImgService.save(bookImg);
+                    bookImgs.add(savedImg);
+
+
+                }
+            }
+        }
+
+        oldBook.setBookImgList(bookImgs);
+        Book savedBook = bookService.saveBook(oldBook);
+
+        return new ResponseEntity<>(savedBook, HttpStatus.OK);
+    }
+
+
     //책 조회
     @GetMapping("/book/{bookId}")
     public ResponseEntity<BookMainDto> getBook(@PathVariable Long bookId) {
@@ -108,9 +155,24 @@ public class BookController {
 
     //특정카테고리 책목록 조회
     @GetMapping("/books/category/{categoryId}")
-    public ResponseEntity<List<BookMainDto>> getBooksByCategoryId(@PathVariable Integer categoryId, @PageableDefault(page = 0, size = 10,sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+    public ResponseEntity<BookMainDtos> getBooksByCategoryId(@PathVariable Integer categoryId, @PageableDefault(page = 0, size = 10,sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
-        List<Book> findBooks = bookService.findBooksByCategoryId(categoryId, pageable);
+        Page<Book> findBooks = bookService.findBooksByCategoryId(categoryId, pageable);
+
+        if (findBooks == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        BookMainDtos bookMainDtos = mapper.bookPageToBookMainDtos(findBooks);
+
+        return  new ResponseEntity<>(bookMainDtos, HttpStatus.OK);
+    }
+
+    //제목검색 //프론트 우선도 낮음
+    @GetMapping("/books/search")
+    public ResponseEntity<List<BookMainDto>> getBooksByKeyword(@RequestParam String keyword) {
+
+        List<Book> findBooks = bookService.findBooksByKeyword(keyword);
 
         if (findBooks.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -119,6 +181,20 @@ public class BookController {
         List<BookMainDto> bookMainDtos = mapper.bookListToBookMainDtoList(findBooks);
 
         return  new ResponseEntity<>(bookMainDtos, HttpStatus.OK);
+    }
+
+    @DeleteMapping("admin/book/{bookId}")
+    public ResponseEntity<?> deleteBook(@PathVariable Long bookId) {
+
+        Book findBook = bookService.getbookDetail(bookId);
+
+        if (findBook == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        bookService.deleteBook(bookId);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
