@@ -17,8 +17,8 @@ function CategoriesByAdmin() {
       <h2>*관리자 책조회* 책을 조회할 카테고리를 선택해 주세요.</h2>
       <ul>
         {categories.map(category => (
-          <li key={category.categoryId}>
-            <Link to={`/admin/books/category/${category.categoryId}`}>{category.categoryName}</Link>
+          <li key={category.id}>
+            <Link to={`/admin/books/category/${category.id}`}>{category.categoryName}</Link>
           </li>
         ))}
       </ul>
