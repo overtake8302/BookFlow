@@ -50,9 +50,9 @@ public class BookService {
         return findBooks;
     }
 
-    public List<Book> findBooksByKeyword(String keyword) {
+    public Page<Book> findBooksByKeyword(String keyword, Pageable pageable) {
 
-        List<Book> findBooks = bookRepository.findAllByName(keyword);
+        Page<Book> findBooks = bookRepository.findAllByName(keyword, pageable);
 
         if(findBooks.isEmpty()) {
             return null;

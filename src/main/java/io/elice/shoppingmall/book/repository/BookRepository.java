@@ -14,5 +14,5 @@ public interface BookRepository extends JpaRepository<Book,Long> {
 
     Page<Book> findAllByCategoryIdAndIsDeletedFalse(Integer categoryId, Pageable pageable);
 
-    List<Book> findAllByName(String keyword);
+    Page<Book> findAllByName(String keyword, Pageable pageable);
 }
