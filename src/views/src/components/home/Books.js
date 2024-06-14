@@ -52,7 +52,7 @@ function Books() {
                                 books[category.id].map((book) => (
                                     <div key={book.id}>
                                         <img src={book.bookImgDtoList[0].imgUrl} alt={book.bookName} />
-                                        <div><Link to={`/book/${book.id}`}>{book.bookName}</Link></div>
+                                        <div><Link to={`/bookDetail/${book.id}`}>{book.bookName}</Link></div>
                                         <div>{book.bookAuthor}</div>
                                     </div>
                                 ))
