@@ -71,12 +71,6 @@ function App() {
       <Route path="/bookDetail/:bookId">
         <BookDetail />
       </Route>
-      <Route path="/bookAdd">
-        <BookAdd />
-      </Route>
-      <Route path="/bookUpdateDelete">
-        <BookUpdateDelete />
-      </Route>
 
       <Route path="/cart/:userName">
         <Cart />
