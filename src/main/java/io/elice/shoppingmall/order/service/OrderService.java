@@ -1,10 +1,9 @@
 package io.elice.shoppingmall.order.service;
 
 
-import io.elice.shoppingmall.order.exception.NoOrdersException;
-import io.elice.shoppingmall.order.exception.OrderAccessdeniedException;
-import io.elice.shoppingmall.order.exception.OrderErrorMessages;
-import io.elice.shoppingmall.order.exception.OrderNotFoundException;
+import io.elice.shoppingmall.book.model.Entity.Book;
+import io.elice.shoppingmall.book.service.BookService;
+import io.elice.shoppingmall.order.exception.*;
 import io.elice.shoppingmall.order.model.*;
 import io.elice.shoppingmall.order.model.dto.OrderCreateDto;
 import io.elice.shoppingmall.order.model.dto.OrderDeliveryDto;
@@ -36,6 +35,7 @@ public class OrderService {
     private final OrderDeliveryRepository orderDeliveryRepository;
     private final OrderMapper orderMapper;
     private final AuthService authService;
+    private final BookService bookService;
 
    @Transactional
     public Order creatOrder(Order requestOrder, OrderDelivery requestOrderDelivery, List<OrderItem> requestOrderItems) {
@@ -56,6 +56,13 @@ public class OrderService {
             orderItem.setOrder(savedOrder);
             orderItem.setOrderItemPrice(orderItem.getBook().getPrice());
 
+            if (orderItem.getBook().getStock() < orderItem.getOrderItemQuantity()) {
+
+                throw new NoStockException(OrderErrorMessages.NO_STOCK);
+            }
+            Book book = orderItem.getBook();
+            book.setStock(book.getStock() - orderItem.getOrderItemQuantity());
+            bookService.saveBook(book);
 //            테스트용 임시 가격
 //            orderItem.setOrderItemPrice(10000);
 

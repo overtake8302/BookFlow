@@ -32,4 +32,11 @@ public class OrderExceptionAdvice {
 
         return new OrderApiError(e.getOrderErrorMessages().getMessage());
     }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public OrderApiError exceptionHandle(NoStockException e) {
+
+        return new OrderApiError(e.getOrderErrorMessages().getMessage());
+    }
 }
