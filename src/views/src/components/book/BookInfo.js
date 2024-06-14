@@ -5,9 +5,6 @@ function BookInfo({book}){
     const history = useHistory();
     const token = localStorage.getItem('token');
 
-    const [userName, setUserName] = useState("guest");
-    const [cartName, setCartName] = useState(`cart-${userName}`);
-
     // 책수량
     const [bookQuantity, setBookQuantity] = useState(1);
     const clickMinus = () => {
@@ -45,13 +42,10 @@ function BookInfo({book}){
     };
 
     const clickAddCart = () => {
-            // 카트가져오기
-            if (token !==  null){
-                setUserName(localStorage.getItem('userName'));
-                setCartName(userName);
-            }
-
-            let cart = JSON.parse(localStorage.getItem(`${cartName}`));
+            let userName = localStorage.getItem('userName') || 'guest';
+            const cartName = `cart-${userName}`;
+            console.log(userName);
+            let cart = JSON.parse(localStorage.getItem(cartName)) || [];
 
             // 빈카트이면빈배열로 초기화
             if (cart === null) {

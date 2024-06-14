@@ -18,7 +18,9 @@ function HomeHeader()  {
         if (token !== null){
             userName = localStorage.getItem('userName');
         }else{
-            localStorage.setItem(`cart-guest`, JSON.stringify([]));
+            if(!localStorage.getItem('cart-guest')){
+                localStorage.setItem(`cart-guest`, JSON.stringify([]));
+            }
         }
         history.push(`/cart/${userName}`)
     };

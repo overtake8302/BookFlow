@@ -17,7 +17,10 @@ const Logout = () => {
       if (response.status === 200) {
         localStorage.removeItem('token')
         setToken(null)
+        // for cart
+        localStorage.removeItem('userName')
         alert('로그아웃 성공')
+        history.push('/')
       } else if (response.status === 400) {
         alert('로그아웃 실패')
       }
