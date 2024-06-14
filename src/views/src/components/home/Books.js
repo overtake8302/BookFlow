@@ -40,33 +40,39 @@ function Books() {
       }, []);
       
 
-    return (
+      return (
         <div>
-            {categories.length > 0 ? (
-                categories.map((category) => (
-                    <div key={category.id}>
-                        <h3>{category.categoryName}</h3>
-                        <Link to={`/category/${category.id}`}>더보기</Link>
-                        <div>
-                            {books[category.id] && books[category.id].length > 0 ? (
-                                books[category.id].map((book) => (
-                                    <div key={book.id}>
-                                        <img src={book.bookImgDtoList[0].imgUrl} alt={book.bookName} />
-                                        <div><Link to={`/book/${book.id}`}>{book.bookName}</Link></div>
-                                        <div>{book.bookAuthor}</div>
-                                    </div>
-                                ))
-                            ) : (
-                                <h2>책이 없습니다.</h2>
-                            )}
-                        </div>
-                    </div>
-                ))
-            ) : (
-                <h2>카테고리가 없습니다.</h2>
-            )}
+          {categories.length > 0 ? (
+            categories.map((category) => (
+              <div key={category.id}>
+                <h3>{category.categoryName}</h3>
+                <Link to={`/category/${category.id}`}>더보기</Link>
+                <div>
+                  {books[category.id] && books[category.id].length > 0 ? (
+                    books[category.id].map((book) => (
+                      <div key={book.id}>
+                        <Link to={`/bookDetail/${book.id}`}>
+                          {book.bookImgDtoList && book.bookImgDtoList.length > 0 && book.bookImgDtoList[0].imgUrl ? (
+                            <img src={book.bookImgDtoList[0].imgUrl} alt={book.bookName} />
+                          ) : (
+                            <div>이미지가 없습니다</div>
+                          )}
+                        </Link>
+                        <div><Link to={`/bookDetail/${book.id}`}>{book.bookName}</Link></div>
+                        <div>{book.bookAuthor}</div>
+                      </div>
+                    ))
+                  ) : (
+                    <h2>책이 없습니다.</h2>
+                  )}
+                </div>
+              </div>
+            ))
+          ) : (
+            <h2>카테고리가 없습니다.</h2>
+          )}
         </div>
-    );
-}
-export default Books;
+      );
+    }
+    export default Books;
 
