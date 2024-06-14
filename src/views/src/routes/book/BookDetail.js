@@ -49,9 +49,9 @@ function BookDetail(){
                         book_price: thisBook.bookPrice,
                         book_stock: thisBook.stock,
                         book_detail: thisBook.bookDetail,
-                        category_id: thisBook.categoryId,
-                        category_name: thisBook.categoryName,
-                        img_url: thisBook.bookImgUrl,
+                        category_id: thisBook.category.id,
+                        category_name: thisBook.category.categoryName,
+                        img_url: thisBook.bookImgDtoList[0].imgUrl,
                     });
                 } else {
                     throw new Error("해당 책 정보를 찾을 수 없습니다.");
