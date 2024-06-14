@@ -16,9 +16,6 @@ import {Order, OrderCompleted, OrderDetails, OrderDetailsByAdmin, OrderList, Ord
 
 import BookDetailTest from "./routes/bookTest/BookDetailTest";
 import Cart from "./routes/cart/Cart";
-<<<<<<< HEAD
-import BookAdd from "./routes/book/BookAdd";
-import BookUpdateDelete from "./routes/book/BookUpdateDelete";
 import BookDetail from "./routes/book/BookDetail";
 import BookDetailPage from "./routes/book/BookDetailPage";
 import BookAdminPage from "./routes/book/BookAdminPage";
@@ -79,12 +76,6 @@ function App() {
 
       <Route path="/bookDetail/:bookId">
         <BookDetail />
-      </Route>
-      <Route path="/bookAdd">
-        <BookAdd />
-      </Route>
-      <Route path="/bookUpdateDelete">
-        <BookUpdateDelete />
       </Route>
 
       <Route path="/admin/book/edit/:bookId">
