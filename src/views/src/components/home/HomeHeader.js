@@ -10,12 +10,17 @@ import { useState } from 'react';
 
 
 function HomeHeader()  {
-    // 장바구니: 로그인 안 했을 경우, 로그인 페이지로 이동
     const history = useHistory();
+    // 장바구니: 로그인 안 했을 경우, 로그인 페이지로 이동
     const cartClick = () => {
+        let userName = 'guest';
         const token = localStorage.getItem('token');
-        const userName = localStorage.getItem('userName');
-        (token !== null && userName !== null) ? history.push(`/cart/${userName}`) : history.push('/login');
+        if (token !== null){
+            userName = localStorage.getItem('userName');
+        }else{
+            localStorage.setItem(`cart-guest`, JSON.stringify([]));
+        }
+        history.push(`/cart/${userName}`)
     };
 
     return(
