@@ -93,7 +93,7 @@ public class BookController {
 
     //책 수정
     @PutMapping("/admin/book/{bookId}")
-    public ResponseEntity<?> putBook(@PathVariable Long bookId,@ModelAttribute BookFormDto bookFormDto, @RequestParam("images") List<MultipartFile> images) throws IOException {
+    public ResponseEntity<?> putBook(@PathVariable Long bookId,@ModelAttribute BookFormDto bookFormDto, @RequestParam(value = "images", required = false) List<MultipartFile> images) throws IOException {
 
         Book oldBook = bookService.getbookDetail(bookId);
         List<BookImg> bookImgs = new ArrayList<>();
