@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import './OrderDetails.css';
 function OrderDetailsByadmin() {
 
-    const token = localStorage.getItem('access');
+    const token = localStorage.getItem('token');
 
 
     const [orderDetails, setOrderDetails] = useState();
@@ -141,7 +141,7 @@ function OrderDetailsByadmin() {
                                 <div className="order-item">
                                     {item.book ? (
                                             <div>
-                                            <img src={item.book.img}></img>
+                                            <img src={item.book?.bookImgList[0]?.imgUrl || '책 표지 조회 중...'}/>
                                             <span>{item.book.name}</span>
                                             <span>{item.orderItemPrice}원</span>
                                             <span>{item.orderItemQuantity}권</span>

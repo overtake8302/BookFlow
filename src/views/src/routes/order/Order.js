@@ -29,7 +29,7 @@ import "./Order.css";
   // let cart = JSON.parse(localStorage.getItem(cartName));
   // console.log(cart);
 
-const token = localStorage.getItem('access');
+const token = localStorage.getItem('token');
 
 const Order = () => {
 
@@ -210,8 +210,9 @@ const Order = () => {
           {orderData ? (
           orderData.map((item, index) => (
             <div key={index} className="book-details">
-              <span>도서명: {bookDetails[item.bookId]?.name || '책 이름 조회 중...'}</span>
-              <span>권당 가격: {item.book_price}원</span>
+              <img src={bookDetails[item.bookId]?.bookImgDtoList[0]?.imgUrl || '책 표지 조회 중...'}/>
+              <span>도서명: {bookDetails[item.bookId]?.bookName || '책 이름 조회 중...'}</span>
+              <span>권당 가격: {bookDetails[item.bookId]?.bookPrice || '책 가격 조회 중...'}원</span>
               <span>수량: {item.orderItemQuantity}개</span>
             </div>
           ))
