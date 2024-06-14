@@ -30,12 +30,25 @@ const BookDetailPage = ({ match }) => {
       <h1>{book.bookName}</h1>
       <h2>카테고리 : {book.category.categoryName}</h2>
       <p>{book.bookDetail}</p>
+      {book.bookImgDtoList[0].imgUrl ? (
       <img src={book.bookImgDtoList[0].imgUrl} alt="책 표지" />
+    ) : (
+      <div>표지가 없습니다</div>
+    )}
       <div>
-        {book.bookImgDtoList.slice(1).map((img, index) => (
-          <img key={index} src={img.imgUrl} alt={`상세 이미지 ${index + 1}`} />
-        ))}
-      </div>
+      {book.bookImgDtoList.length > 1 ? (
+        book.bookImgDtoList.slice(1).map((img, index) => (
+          img.imgUrl ? (
+            <img key={index} src={img.imgUrl} alt={`상세 이미지 ${index + 1}`} />
+          ) : (
+            <div key={index}>상세 이미지가 없습니다</div>
+          )
+        ))
+      ) : (
+        <div>상세 이미지가 없습니다</div>
+      )}
+    </div>
+
       <p>가격: {book.bookPrice}원</p>
     </div>
   );

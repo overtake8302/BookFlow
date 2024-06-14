@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { useParams } from 'react-router-dom';
 import './OrderDetails.css';
 
-const token = localStorage.getItem('access');
+const token = localStorage.getItem('token');
 const orderStatusKorean = {
     PAYMENT_COMPLETED: '결제 완료',
     SHIPPING: '배송 중',
@@ -143,7 +143,7 @@ function OrderDetails() {
                                 <div className="order-item">
                                     {item.book ? (
                                             <div>
-                                            <img src={item.book.img}></img>
+                                            <img src={item.book.bookImgList[0]?.imgUrl}></img>
                                             <span>{item.book.name}</span>
                                             <span>{item.orderItemPrice}원</span>
                                             <span>{item.orderItemQuantity}권</span>
