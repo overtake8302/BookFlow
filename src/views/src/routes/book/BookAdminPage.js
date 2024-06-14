@@ -88,9 +88,11 @@ const BookAdminPage = () => {
           throw new Error('책 정보를 저장하는데 문제가 발생했습니다.');
         }
         const data = await response.json();
+        alert("책 정보를 저장했어요.")
         console.log('책 정보가 저장되었습니다:', data);
-        history.push('/admin/books'); // 저장 후 책 목록 페이지로 이동
+        // history.push('/admin/books'); 
       } catch (error) {
+        alert("책 정보 저장에 실패했어요.");
         console.error('책 정보 저장에 실패했습니다:', error);
       }
     }
