@@ -5,6 +5,9 @@ function BookInfo({book}){
     const history = useHistory();
     const token = localStorage.getItem('token');
 
+    const [userName, setUserName] = useState("guest");
+    const [cartName, setCartName] = useState(`cart-${userName}`);
+
     // 책수량
     const [bookQuantity, setBookQuantity] = useState(1);
     const clickMinus = () => {
@@ -42,12 +45,14 @@ function BookInfo({book}){
     };
 
     const clickAddCart = () => {
-        if (token === null){
-            alert("로그인 후 이용 가능합니다.");
-        } else {
-            // 사용자카트가져오기
-            const cartName = `cart-${localStorage.getItem('userName')}`;
-            let cart = JSON.parse(localStorage.getItem(cartName));
+            // 카트가져오기
+            if (token !==  null){
+                setUserName(localStorage.getItem('userName'));
+                setCartName(userName);
+            }
+
+            let cart = JSON.parse(localStorage.getItem(`${cartName}`));
+
             // 빈카트이면빈배열로 초기화
             if (cart === null) {
                 cart = [];
@@ -80,13 +85,10 @@ function BookInfo({book}){
                 console.log("장바구니: " + JSON.stringify(cart));
                 alert("장바구니에 상품이 추가되었습니다!");
                 if (window.confirm("장바구니로 이동하시겠습니까?")) {
-                    const userName = localStorage.getItem('userName');
                     history.push(`/cart/${userName}`);
                 }
             }
-        }
     };
-
 
     return (
         <div>

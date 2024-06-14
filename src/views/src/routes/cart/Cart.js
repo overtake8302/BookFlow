@@ -9,7 +9,7 @@ import {useEffect, useState} from "react";
 function Cart(){
     const {userName} = useParams();
     const cartName = `cart-${userName}`;
-    const storageCart = localStorage.getItem(cartName);
+    const storageCart = localStorage.getItem(`${cartName}`);
     const initialCart = storageCart ? JSON.parse(storageCart) : [];
     const [cart,setCart] = useState(initialCart);
 
