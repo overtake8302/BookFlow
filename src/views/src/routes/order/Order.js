@@ -162,7 +162,7 @@ const Order = () => {
       alert('감사합니다! 주문이 완료되었어요.');
       history.push('/order-completed');
     } else {
-      alert('주문에 실패했어요.');
+      alert('주문에 실패했어요.\n상품의 재고가 부족하거나, 일시적인 에러일수 있어요.');
     }
   };
 

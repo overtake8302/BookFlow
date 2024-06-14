@@ -38,7 +38,11 @@ function BooksByAdmin({ match }) {
           <li key={book.id}>
             <Link to={`/admin/book/${book.id}`}>{book.bookName}</Link>
             {book.bookImgDtoList && book.bookImgDtoList.length > 0 ? (
-              <img src={book.bookImgDtoList[0].imgUrl} alt={book.bookName} />
+              <div>
+                <img src={book.bookImgDtoList[0].imgUrl} alt={book.bookName} />
+                <span>재고 : {book.stock}권</span>
+              </div>
+              
             ) : (
               <div>이미지가 없습니다</div>
             )}
