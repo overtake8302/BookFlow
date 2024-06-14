@@ -37,7 +37,11 @@ function BooksByAdmin({ match }) {
         {books.map(book => (
           <li key={book.id}>
             <Link to={`/admin/book/${book.id}`}>{book.bookName}</Link>
-            <img src={book.bookImgDtoList[0].imgUrl} alt={book.bookName}/>
+            {book.bookImgDtoList && book.bookImgDtoList.length > 0 ? (
+              <img src={book.bookImgDtoList[0].imgUrl} alt={book.bookName} />
+            ) : (
+              <div>이미지가 없습니다</div>
+            )}
           </li>
         ))}
       </ul>

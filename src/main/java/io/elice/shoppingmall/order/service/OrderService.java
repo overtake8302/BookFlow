@@ -54,10 +54,10 @@ public class OrderService {
         for (OrderItem orderItem : requestOrderItems) {
 
             orderItem.setOrder(savedOrder);
-//            orderItem.setOrderItemPrice(orderItem.getBook().getPrice());
+            orderItem.setOrderItemPrice(orderItem.getBook().getPrice());
 
 //            테스트용 임시 가격
-            orderItem.setOrderItemPrice(10000);
+//            orderItem.setOrderItemPrice(10000);
 
             int totalPrice = orderItem.getOrderItemPrice() * orderItem.getOrderItemQuantity();
             orderItem.setOrderItemTotalPrice(totalPrice);
@@ -68,14 +68,14 @@ public class OrderService {
         savedOrder.setOrderTotalPrice(orderTotalPrice);
         savedOrder.setOrderItems(savedOrderItems);
 
-       /* String orderSummaryTitle = savedOrderItems.get(0).getBook().getName();
+        String orderSummaryTitle = savedOrderItems.get(0).getBook().getName();
 
         int itemsCount = savedOrderItems.size();
         if (itemsCount > 1) {
             orderSummaryTitle += "외 " + (itemsCount - 1) + " 건";
-        }*/
+        }
 
-       savedOrder.setOrderSummaryTitle("테스트");
+       savedOrder.setOrderSummaryTitle(orderSummaryTitle);
 
        savedOrder = orderRepository.save(savedOrder);
 
@@ -173,17 +173,17 @@ public class OrderService {
            throw new OrderAccessdeniedException(OrderErrorMessages.ACCESS_DENIED);
        }
 
-       /*for (OrderItem newItem : updateRequestOrderItems) {
+       for (OrderItem newItem : updateRequestOrderItems) {
 
            for (OrderItem oldItem : oldItems) {
 
-               boolean isMatch = newItem.getBook().getId() == oldItem.getBook().getId();
+               boolean isMatch = Objects.equals(newItem.getBook().getId(), oldItem.getBook().getId());
                if (isMatch) {
                    oldItem.setOrderItemQuantity(newItem.getOrderItemQuantity());
                    break;
                }
            }
-       }*/
+       }
 
        int newOrderTotalPrice = 0;
        for (OrderItem item : oldItems) {
