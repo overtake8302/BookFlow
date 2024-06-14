@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class BookService {
 
@@ -41,7 +42,7 @@ public class BookService {
 
     public Page<Book> findBooksByCategoryId(Integer categoryId, Pageable pageable) {
 
-        Page<Book> findBooks = bookRepository.findAllByCategoryIdAndIsDeletedFalse(categoryId, pageable);
+        Page<Book> findBooks = bookRepository.findAllByCategoryCategoryIdAndIsDeletedFalse(categoryId, pageable);
 
         if(findBooks.isEmpty()) {
             return null;
