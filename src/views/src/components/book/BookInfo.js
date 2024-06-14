@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 
 function BookInfo({book}){
     const history = useHistory();
+    const token = localStorage.getItem('token');
 
     // 책수량
     const [bookQuantity, setBookQuantity] = useState(1);
@@ -14,37 +15,39 @@ function BookInfo({book}){
     };
 
     const clickBuyNow = () => {
-        const orderData = {
-            orderItemDtos: [
-                {
-                    orderItemQuantity: bookQuantity,
-                    bookId: book.book_id
-                },
-            ],
-        };
-        try {
-            const ifBuy = window.confirm("바로 구매하시겠습니까?");
-            if(ifBuy) {
-                history.push({
-                    pathname: '/order',
-                    state: {orderData}
-                });
+        if(token === null){
+            alert("로그인 후 이용 가능합니다.");
+         }else {
+            const orderData = {
+                orderItemDtos: [
+                    {
+                        orderItemQuantity: bookQuantity,
+                        bookId: book.book_id
+                    },
+                ],
+            };
+            try {
+                const ifBuy = window.confirm("바로 구매하시겠습니까?");
+                if (ifBuy) {
+                    history.push({
+                        pathname: '/order',
+                        state: {orderData}
+                    });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('주문 처리 중 오류가 발생했어요.');
             }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('주문 처리 중 오류가 발생했어요.');
         }
     };
 
     const clickAddCart = () => {
-        const token = localStorage.getItem('token');
         if (token === null){
             alert("로그인 후 이용 가능합니다.");
         } else {
             // 사용자카트가져오기
             const cartName = `cart-${localStorage.getItem('userName')}`;
             let cart = JSON.parse(localStorage.getItem(cartName));
-
             // 빈카트이면빈배열로 초기화
             if (cart === null) {
                 cart = [];

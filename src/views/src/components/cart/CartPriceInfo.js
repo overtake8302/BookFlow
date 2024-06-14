@@ -22,20 +22,24 @@ function CartPriceInfo({cart}){
 
     // 주문하기 클릭시
     const clickOrder = async () => {
-        const orderData = {
-            orderItemDtos: checkedCart.map(book => ({
-                orderItemQuantity: book.book_quantity,
-                bookId: book.book_id
-            }))
-        };
-        try {
-            history.push({
-                pathname: '/order',
-                state: { orderData }
-            });
-        } catch (error) {
-            console.error('Error:', error);
-            alert('주문 처리 중 오류가 발생했어요.');
+        if(token === null){
+            alert("로그인 후 이용 가능합니다.");
+        }else {
+            const orderData = {
+                orderItemDtos: checkedCart.map(book => ({
+                    orderItemQuantity: book.book_quantity,
+                    bookId: book.book_id
+                }))
+            };
+            try {
+                history.push({
+                    pathname: '/order',
+                    state: {orderData}
+                });
+            } catch (error) {
+                console.error('Error:', error);
+                alert('주문 처리 중 오류가 발생했어요.');
+            }
         }
     };
 
