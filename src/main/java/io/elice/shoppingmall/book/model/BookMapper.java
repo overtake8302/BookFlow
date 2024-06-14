@@ -39,6 +39,7 @@ public interface BookMapper {
         bookMainDto.setId(book.getId());
         bookMainDto.setDate(book.getDate());
         bookMainDto.setCategory((book.getCategory()));
+        bookMainDto.setStock(book.getStock());
         return bookMainDto;
     }
 
