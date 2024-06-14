@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -37,23 +38,26 @@ public class Book extends BaseEntity {
     @Column(name = "book_detail", nullable = false)
     private String detail;
 
-    @Column(name = "book_img", nullable = false)
-    private String img;
+    /*@Column(name = "book_img", nullable = false)
+    private String img;*/
+
+    @OneToMany
+    private List<BookImg> bookImgList = new ArrayList<>();
 
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted;
 
     @ManyToOne
-    @JoinColumn(name = "catecory_id")
+    @JoinColumn(name = "category_id")
     private Category category;
 
 
     //상품 업데이트
     public void updateBook(BookFormDto bookFormDto) {
-        this.name = bookFormDto.getBookName();
+        this.name = bookFormDto.getName();
         this.price = bookFormDto.getPrice();
         this.stock = bookFormDto.getStock();
-        this.detail = bookFormDto.getBookDetail();
+        this.detail = bookFormDto.getDetail();
     }
 
     //상품 재고 관리
