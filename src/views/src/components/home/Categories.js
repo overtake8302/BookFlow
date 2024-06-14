@@ -33,8 +33,6 @@ function Categories({ activeCategory, setActiveCategory }) {
     setHoveredCategory(null);
   };
 
-  const parentCategories = categories.filter(category => category.parentCategory === null);
-
   return (
     <div className="category-container">
       <div className="category-button-container">
@@ -42,8 +40,8 @@ function Categories({ activeCategory, setActiveCategory }) {
       </div>
       {isCategoriesVisible && (
         <div className="navbar">
-          {parentCategories.length > 0 ? (
-            parentCategories.map((category) => (
+          {categories.length > 0 ? (
+            categories.map((category) => (
               <div
                 key={category.categoryId}
                 className={`navbar-item ${activeCategory === category.categoryName ? 'active' : ''}`}
