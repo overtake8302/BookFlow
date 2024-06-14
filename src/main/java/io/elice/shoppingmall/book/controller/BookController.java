@@ -51,7 +51,7 @@ public class BookController {
     private String serverHost = "http://localhost:8080";
 
     @PostMapping("/admin/book")
-    public ResponseEntity<?> postBook(@ModelAttribute BookFormDto bookFormDto, @RequestParam("images") List<MultipartFile> images) throws IOException {
+    public ResponseEntity<?> postBook(@ModelAttribute BookFormDto bookFormDto, @RequestParam(value = "images", required = false) List<MultipartFile> images) throws IOException {
 
         Book newBook = mapper.BookFormDtoToBook(bookFormDto);
         List<BookImg> bookImgs = new ArrayList<>();
