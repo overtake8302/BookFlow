@@ -174,7 +174,7 @@ public class BookController {
 
         Page<Book> findBooks = bookService.findBooksByKeyword(keyword, pageable);
 
-        if (findBooks.isEmpty()) {
+        if (findBooks == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 

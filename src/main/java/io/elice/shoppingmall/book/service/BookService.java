@@ -52,7 +52,7 @@ public class BookService {
 
     public Page<Book> findBooksByKeyword(String keyword, Pageable pageable) {
 
-        Page<Book> findBooks = bookRepository.findAllByName(keyword, pageable);
+        Page<Book> findBooks = bookRepository.findAllByNameContaining(keyword, pageable);
 
         if(findBooks.isEmpty()) {
             return null;
