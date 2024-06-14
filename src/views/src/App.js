@@ -14,29 +14,18 @@ import OrderDetailsByAdmin from "./routes/order/OrderDetailsByAdmin";
 import Order from "./routes/order/Order";
 import BookDetailTest from "./routes/bookTest/BookDetailTest";
 import Cart from "./routes/cart/Cart";
-import BookDetailPage from "./routes/book/BookDetailPage";
-import BookAdminPage from "./routes/book/BookAdminPage";
-import CategoriesByAdmin from "./routes/book/CategoriesByAdmin";
-import BooksByAdmin from "./routes/book/BooksByAdmin";
-import BookDetailByAdmin from "./routes/book/BookDetailByAdmin";
+<<<<<<< HEAD
+=======
+import BookAdd from "./routes/book/BookAdd";
+import BookUpdateDelete from "./routes/book/BookUpdateDelete";
+import BookDetail from "./routes/book/BookDetail";
+>>>>>>> f9084aa0178a38f2c214d2eee932b13325143a8f
 
 
 function App() {
   return (
     <Router>
     <Switch>
-      {/* test */}
-      <Route path="/bookDetailTest/:bookId">
-        <BookDetailTest />
-      </Route>
-      <Route path="/joinTest">
-        <JoinTest />
-      </Route>
-      <Route path="/loginTest">
-        <LoginTest />
-      </Route>
-      {/* test */}
-
       <Route path="/order-details/:orderId">
         <OrderDetails />
       </Route>
@@ -56,9 +45,17 @@ function App() {
         <Order />
       </Route>
 
+      <Route path="/joinTest">
+        <JoinTest />
+      </Route>
+      <Route path="/loginTest">
+        <LoginTest />
+      </Route>
+
       <Route path="/join">
         <Join />
       </Route>
+
       <Route path="/login">
         <Login />
       </Route>
@@ -66,30 +63,17 @@ function App() {
       <Route path="/admin/menu/userlist">
         <AdminUserList />
       </Route>
+
       <Route path="/admin/menu">
         <AdminMenu />
       </Route>
-
-      <Route path="/bookDetail/:bookId">
-        <BookDetail />
+      <Route path="/bookDetailTest">
+        <BookDetailTest />
       </Route>
 
       <Route path="/cart/:userName">
         <Cart />
       </Route>
-
-      <Route path="/admin/book/edit/:bookId">
-        <BookAdminPage />
-      </Route>
-      <Route path="/book/:bookId" component={BookDetailPage} />
-      <Route path="/admin/books" exact component={CategoriesByAdmin} />
-        <Route path="/admin/books/category/:categoryId" component={BooksByAdmin} />
-        <Route path="/admin/book/:bookId" component={BookDetailByAdmin} />
-      
-      <Route path="/book-admin">
-        <BookAdminPage />
-      </Route>
-
       <Route path="/">
         <Home />
       </Route>

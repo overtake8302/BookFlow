@@ -13,7 +13,7 @@ function HomeHeader()  {
     const cartClick = () => {
         const token = localStorage.getItem('token');
         const userName = localStorage.getItem('userName');
-        (token !== null && userName !== null) ? history.push(`/cart/${userName}`) : history.push('/login');
+        (token !== null && userName !== null) ? history.push(`/cart/${userName}`) : history.push('/loginTest');
     };
 
     return(
@@ -22,12 +22,16 @@ function HomeHeader()  {
                <Link to="/"><h1>BookFlow</h1></Link>
             </div>
             <div id="icons">
-                <Link to="/search"><img src={SearchButton} alt="SearchButton" /></Link>
-                <img src={CartButton} onClick={cartClick} alt="cartClick" />
+                <Link to="/search"><img src={SearchButton} /></Link>
+                <img src={CartButton} onClick={cartClick} />
 
+<<<<<<< HEAD
+                <Link to="/login-test"><img src={UserButton} /></Link>
+=======
                 <Link to="/login"><img src={UserButton} alt="UserButton" /></Link>
+>>>>>>> f9084aa0178a38f2c214d2eee932b13325143a8f
 
-                <Link to="/menu"><img src={MenuButton} alt="MenuButton" /></Link>
+                <Link to="/menu"><img src={MenuButton} /></Link>
             </div>
         </div>
     );
