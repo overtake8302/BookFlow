@@ -1,4 +1,5 @@
 import "./CartHeader.css";
+import {ChakraProvider, Stack, Checkbox, Text, Button, Divider} from '@chakra-ui/react';
 
 function CartHeader({userName, cart, setCart}){
     const  cartName = `cart-${userName}`;
@@ -33,30 +34,34 @@ function CartHeader({userName, cart, setCart}){
     };
 
     return (
-        <div>
-            <h2>장바구니</h2>
-            <div className="check-delete">
-                {/* 전체 선택 체크박스 */}
-                <input
-                    id="checkAll"
-                    type="checkbox"
-                    onChange={selectAllBooks}
-                />
-                <label htmlFor="checkAll"> 전체선택</label>
-                <button
-                    className="delete"
-                    onClick={deleteCheckedBooks}
-                >
-                    선택삭제
-                </button>
-                <button
-                    className="delete"
-                    onClick={deleteAllBooks}
-                >
-                    전체삭제
-                </button>
+        <ChakraProvider>
+            <div className="cartHeader">
+                <Text as='b' fontSize='4xl'>장바구니</Text>
+                <div className="check-delete">
+                    <Stack spacing={2} direction='row' alignItems='center'>
+                        <Checkbox
+                            colorScheme='blue'
+                            isChecked={cart.every((book) => book.checked)}
+                            onChange={selectAllBooks}
+                            size='md'
+                            fontSize='md'
+                            fontWeight='normal'
+                        >
+                            전체선택
+                        </Checkbox>
+                        <Stack className="delete" direction='row' spacing={2} align='center' ml='auto'>
+                            <Button colorScheme='black' fontWeight='normal' variant='link' size='md' onClick={deleteCheckedBooks}>
+                                선택삭제
+                            </Button>
+                            <Divider height='10px' borderColor='gray.600' orientation='vertical' />
+                            <Button colorScheme='black' fontWeight='normal' variant='link' size='md' onClick={deleteAllBooks}>
+                                전체삭제
+                            </Button>
+                        </Stack>
+                    </Stack>
+                </div>
             </div>
-        </div>
+        </ChakraProvider>
     );
 }
 
