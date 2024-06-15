@@ -207,12 +207,12 @@ const Order = () => {
                 readOnly
                 className="input-field"
               />
-              <Button type="button" onClick={openPostcode} className="address-search-btn">
-                주소 검색
-              </Button>
             </FormControl>
+            <Button type="button" onClick={openPostcode} className="address-search-btn">
+                주소 검색
+              </Button><br />
             <FormControl isRequired>
-              <FormLabel>도로명주소</FormLabel>
+              <FormLabel className='roadnameaddress'>도로명주소</FormLabel>
               <Input
                 type="text"
                 name="orderDeliveryAddress1"
