@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 import { Box, List, ListItem, ListIcon, Heading } from '@chakra-ui/react';
 import { MdCheckCircle } from 'react-icons/md';
+import withAdminCheck from '../../components/adminCheck/withAdminCheck';
 
 function CategoriesByAdmin() {
   const [categories, setCategories] = useState([]);
@@ -30,4 +31,4 @@ function CategoriesByAdmin() {
   );
 }
 
-export default CategoriesByAdmin;
+export default withAdminCheck(CategoriesByAdmin);

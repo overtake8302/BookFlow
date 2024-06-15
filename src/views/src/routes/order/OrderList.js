@@ -1,8 +1,8 @@
+import { Box, Button, Flex, Heading, Table, Tbody, Td, Text, Th, Thead, Tr, useDisclosure } from '@chakra-ui/react';
 import HomeHeader from "../../components/home/HomeHeader";
 import { useEffect, useState } from "react";
-import ReactModal from 'react-modal';
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton } from '@chakra-ui/react';
 import { Link } from "react-router-dom";
-import './OrderList.css';
 import PaginationComponent from "../../components/order/PaginationComponent";
 
 function OrderList() {
@@ -10,7 +10,7 @@ function OrderList() {
     const token = localStorage.getItem('token');
     const [currentPage, setCurrentPage] = useState(0);
     const [itemsPerPage, setItemsPerPage] = useState(10);
-
+    const { isOpen, onOpen, onClose } = useDisclosure();
     const handlePageChange = (page) => {
         setCurrentPage(page -1);
       };
@@ -27,7 +27,6 @@ function OrderList() {
         }
     };
     
-    ReactModal.setAppElement('#root');
 
     const orderStatusKorean = {
         PAYMENT_COMPLETED: '결제 완료',
@@ -131,56 +130,74 @@ function OrderList() {
         )
     }
 
-    return (
-        <div className="container">
-           <HomeHeader/> 
+    function openModal(orderId) {
+        setSelectedOrderId(orderId);
+        onOpen();
+      }
+    
+      function closeModal() {
+        onClose();
+      }
 
-           <h1 className="h1">결제하신 내역이에요.</h1>
-            <div>
-            <table>
-                <thead className="thead">
-                    <tr>
-                        <th>주문일</th>
-                        <th>주문정보</th>
-                        <th>결제 금액</th>
-                        <th>상태</th>
-                        <th>주문취소</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {dto.ordersResponseDto.orderList.map((list) => (
-                        <tr>
-                            <td>{formatDate(list.order.createdAt)}</td>
-                            <td><Link className = 'link' to = {`order-details/${list.order.orderId}`}>{list.order.orderSummaryTitle}</Link></td>
-                            <td>{list.order.orderTotalPrice}</td>
-                            <td>{orderStatusKorean[list.order.orderStatus]}</td>
-                            <td> { list.order.orderStatus !== 'SHIPPING' && list.order.orderStatus !== 'DELIVERED' && (
-                                <button className="cancelBtn" onClick={() => openModal(list.order.orderId)}>주문취소</button>
-                            )}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-
-            <div className="page">
-               <PaginationComponent totalPages={dto.totalPages} onPageChange={handlePageChange} /> 
-            </div>
-            
-        </div>
-            
-            
-            <ReactModal
-            isOpen={modalIsOpen}
-            onRequestClose={closeModal}
-            style={customStyles}
-            contentLabel="주문 취소 확인"
-            >
-            <h2>주문을 취소하실건가요?</h2>
-            <button className="yesBtn" onClick={cancelOrder}>네, 취소할게요.</button><br />
-            <button className="noBtn" onClick={closeModal}>아니요, 다시생각해 볼게요.</button>
-            </ReactModal>
-        </div>
-        
-    );
-}
-export default OrderList;
+      return (
+        <Box className="container">
+          <HomeHeader />
+          <Heading as="h1" size="xl" mb="8">결제하신 내역이에요.</Heading>
+          <Table variant="simple">
+            <Thead>
+              <Tr>
+                <Th>주문일</Th>
+                <Th>주문정보</Th>
+                <Th>결제 금액</Th>
+                <Th>상태</Th>
+                <Th>주문취소</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {dto.ordersResponseDto.orderList.map((list) => (
+                <Tr key={list.order.orderId}>
+                  <Td>{formatDate(list.order.createdAt)}</Td>
+                    <Td>
+                    <Link to={`order-details/${list.order.orderId}`}>
+                        {list.order.orderSummaryTitle}
+                    </Link>
+                    </Td>
+                  <Td>{list.order.orderTotalPrice}</Td>
+                  <Td>{orderStatusKorean[list.order.orderStatus]}</Td>
+                  <Td>
+                    {list.order.orderStatus !== 'SHIPPING' && list.order.orderStatus !== 'DELIVERED' && (
+                      <Button colorScheme="red" onClick={() => openModal(list.order.orderId)}>
+                        주문취소
+                      </Button>
+                    )}
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+          <Flex justifyContent="center" mt="8">
+            <PaginationComponent totalPages={dto.totalPages} onPageChange={handlePageChange} />
+          </Flex>
+          <Modal isOpen={isOpen} onClose={closeModal}>
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>주문을 취소하실건가요?</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                <Text>주문을 취소하시면 되돌릴 수 없습니다. 계속하시겠습니까?</Text>
+              </ModalBody>
+              <ModalFooter>
+                <Button colorScheme="blue" mr={3} onClick={closeModal}>
+                  아니요, 다시생각해 볼게요.
+                </Button>
+                <Button colorScheme="red" onClick={cancelOrder}>
+                  네, 취소할게요.
+                </Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
+        </Box>
+      );
+    }
+    
+    export default OrderList;

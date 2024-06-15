@@ -12,6 +12,7 @@ import {
   Heading,
   useToast
 } from '@chakra-ui/react';
+import withAdminCheck from '../../components/adminCheck/withAdminCheck';
 
 const BookAdminPage = () => {
     const { bookId } = useParams(); 
@@ -178,4 +179,4 @@ const BookAdminPage = () => {
     );
   };
   
-  export default BookAdminPage;
+  export default withAdminCheck(BookAdminPage);

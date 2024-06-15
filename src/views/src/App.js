@@ -42,24 +42,38 @@ function App() {
       </Route>
       {/* test */}
 
-      <Route exact path="/order-details/:orderId">
-        <OrderDetails />
-      </Route>
-      <Route exact path="/order-details-by-admin/:orderId">
-        <OrderDetailsByAdmin />
-      </Route>
-      <Route exact path="/order-list">
-        <OrderList />
-      </Route>
-      <Route exact path="/order-completed">
-        <OrderCompleted />
-      </Route>
-      <Route exact path="/order-list-by-admin">
-        <OrderListByAdmin />
-      </Route>
-      <Route exact path="/order">
-        <Order />
-      </Route>
+      <Route exact path="/order-details/:orderId" render={(props) => (
+        <ChakraProvider>
+          <OrderDetails {...props} />
+        </ChakraProvider>
+      )} />
+      <Route exact path="/order-details-by-admin/:orderId" render={(props) => (
+        <ChakraProvider>
+          <OrderDetailsByAdmin {...props} />
+        </ChakraProvider>
+      )} />
+      <Route exact path="/order-list" render={(props) => (
+        <ChakraProvider>
+          <OrderList {...props} />
+        </ChakraProvider>
+      )} />
+      <Route exact path="/order-completed" render={(props) => (
+        <ChakraProvider resetCSS={false}>
+          <OrderCompleted {...props} />
+        </ChakraProvider>
+      )} />
+      <Route exact path="/order-list-by-admin" render={(props) => (
+        <ChakraProvider>
+          <OrderListByAdmin {...props} />
+        </ChakraProvider>
+      )} />
+      <Route exact path="/order" render={(props) => (
+        <ChakraProvider>
+          <Order {...props} />
+        </ChakraProvider>
+      )} />
+
+
 
       <Route path="/join">
         <Join />
