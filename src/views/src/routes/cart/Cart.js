@@ -9,7 +9,7 @@ import {useEffect, useState} from "react";
 function Cart(){
     const {userName} = useParams();
     const cartName = `cart-${userName}`;
-    const storageCart = localStorage.getItem(cartName);
+    const storageCart = localStorage.getItem(`${cartName}`);
     const initialCart = storageCart ? JSON.parse(storageCart) : [];
     const [cart,setCart] = useState(initialCart);
 
@@ -21,14 +21,13 @@ function Cart(){
             });
         }
     };
-
     useEffect(addChecked, []);
     useEffect(() => {
         localStorage.setItem(cartName, JSON.stringify(cart));
     }, [cart]);
 
     console.log("장바구니: " + JSON.stringify(cart));
-    console.log(`빈 장바구니?: ${cart === null}`);
+    console.log(`빈 장바구니?: ${cart.length === 0}`);
 
     return (
         <div>

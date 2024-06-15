@@ -108,6 +108,7 @@ const BookAdminPage = () => {
           throw new Error('책 정보를 저장하는데 문제가 발생했습니다.');
         }
         const data = await response.json();
+        alert("책 정보를 저장했어요.")
         console.log('책 정보가 저장되었습니다:', data);
       } catch (error) {
         toast({

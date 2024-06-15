@@ -25,6 +25,10 @@ const Login = () => {
         if (response.status === 200) {
           const token = response.headers.get('access')
           localStorage.setItem('token', token)
+          // cart
+          localStorage.setItem('userName', username)
+          let cart = JSON.parse(localStorage.getItem(`cart-${username}`)) || [];
+          localStorage.setItem(`cart-${username}`, JSON.stringify(cart))
           alert('로그인 성공')
           history.push('/')
           return
