@@ -15,18 +15,9 @@ const orderStatusKorean = {
 
 function OrderDetails() {
 
-
-
     const [orderDetails, setOrderDetails] = useState();
     const {orderId} = useParams();
     
-
-    // const [name, setName] = useState("");
-    // const [phoneNumber, setPhonenumber] = useState("");
-    // const [address1, setAddress1] = useState("");
-    // const [address2, setAddress2] = useState("");
-    // const [orderRequest, setOrderRequest] = useState("");
-
     const [formData, setFormData] = useState({
         name: '',
         phoneNumber: '',
@@ -57,11 +48,6 @@ function OrderDetails() {
         })
         .then((json) => {
             setOrderDetails(json);
-            // setName(json.orderDelivery.orderDeliveryReceiverName);
-            // setPhonenumber(json.orderDelivery.orderDeliveryReceiverPhoneNumber);
-            // setAddress1(json.orderDelivery.orderDeliveryAddress1);
-            // setAddress2(json.orderDelivery.orderDeliveryAddress2);
-            // setOrderRequest(json.order.orderRequest);
             setFormData((prev) => (
                 {
                     ...prev,
@@ -79,24 +65,7 @@ function OrderDetails() {
     }, [orderId]);
 
     const handleUpdate = () => {
-        // const updatedDetails = {
-        //     ...orderDetails,
-        //     orderDto: {
-        //         ...orderDetails.order,
-        //         orderRequest: orderRequest
-        //     },
-        //     orderDeliveryDto: {
-        //         ...orderDetails.orderDelivery,
-        //         orderDeliveryReceiverName: name,
-        //         orderDeliveryReceiverPhoneNumber: phoneNumber,
-        //         orderDeliveryAddress1: address1,
-        //         orderDeliveryAddress2: address2
-        //     },
-        //     orderItemDtos: [
-        //         ...orderDetails.orderItems
-        //     ]
-        // };
-    
+        
         fetch(`http://localhost:8080/api/user/order/${orderId}`, {
             method: 'PUT',
             headers: {
