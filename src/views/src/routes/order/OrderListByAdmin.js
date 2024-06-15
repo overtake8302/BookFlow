@@ -4,6 +4,7 @@ import ReactModal from 'react-modal';
 import { Link } from "react-router-dom";
 import './OrderListByAdmin.css';
 import PaginationComponent from "../../components/order/PaginationComponent";
+import withAdminCheck from '../../components/adminCheck/withAdminCheck';
 
 function OrderListByAdmin() {
 
@@ -232,4 +233,4 @@ function OrderListByAdmin() {
         
     );
 }
-export default OrderListByAdmin;
+export default withAdminCheck(OrderListByAdmin);

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Box, List, ListItem, Image, Text, Button, Flex, Heading } from '@chakra-ui/react';
+import withAdminCheck from '../../components/adminCheck/withAdminCheck';
 
 function BooksByAdmin({ match }) {
   const [books, setBooks] = useState([]);
@@ -75,4 +76,4 @@ function BooksByAdmin({ match }) {
   );
 }
 
-export default BooksByAdmin;
+export default withAdminCheck(BooksByAdmin);

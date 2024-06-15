@@ -4,6 +4,8 @@ import ReactModal from 'react-modal';
 import { Link } from "react-router-dom";
 import { useParams } from 'react-router-dom';
 import './OrderDetails.css';
+import withAdminCheck from '../../components/adminCheck/withAdminCheck';
+
 function OrderDetailsByadmin() {
 
     const token = localStorage.getItem('token');
@@ -227,4 +229,4 @@ function OrderDetailsByadmin() {
     );
 
 }
-export default OrderDetailsByadmin;
+export default withAdminCheck(OrderDetailsByadmin);

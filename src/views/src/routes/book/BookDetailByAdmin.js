@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Box, Image, Heading, Button } from '@chakra-ui/react';
+import withAdminCheck from '../../components/adminCheck/withAdminCheck';
 
 function BookDetailByAdmin({ match }) {
   const [book, setBook] = useState(null);
@@ -56,4 +57,4 @@ function BookDetailByAdmin({ match }) {
   );
 }
 
-export default BookDetailByAdmin;
+export default withAdminCheck(BookDetailByAdmin);
