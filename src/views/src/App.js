@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import * as React from 'react'
 import Home from "./routes/Home";
 // import OrderDetails from "./routes/order/OrderDetails";
 // import OrderList from "./routes/order/OrderList";
@@ -22,7 +23,7 @@ import BookAdminPage from "./routes/book/BookAdminPage";
 import CategoriesByAdmin from "./routes/book/CategoriesByAdmin";
 import BooksByAdmin from "./routes/book/BooksByAdmin";
 import BookDetailByAdmin from "./routes/book/BookDetailByAdmin";
-
+import { ChakraProvider } from '@chakra-ui/react';
 
 
 function App() {
@@ -41,22 +42,22 @@ function App() {
       </Route>
       {/* test */}
 
-      <Route path="/order-details/:orderId">
+      <Route exact path="/order-details/:orderId">
         <OrderDetails />
       </Route>
-      <Route path="/order-details-by-admin/:orderId">
+      <Route exact path="/order-details-by-admin/:orderId">
         <OrderDetailsByAdmin />
       </Route>
-      <Route path="/order-list">
+      <Route exact path="/order-list">
         <OrderList />
       </Route>
-      <Route path="/order-completed">
+      <Route exact path="/order-completed">
         <OrderCompleted />
       </Route>
-      <Route path="/order-list-by-admin">
+      <Route exact path="/order-list-by-admin">
         <OrderListByAdmin />
       </Route>
-      <Route path="/order">
+      <Route exact path="/order">
         <Order />
       </Route>
 
@@ -78,18 +79,44 @@ function App() {
         <BookDetail />
       </Route>
 
-      <Route path="/admin/book/edit/:bookId">
-        <BookAdminPage />
-      </Route>
-      <Route path="/book/:bookId" component={BookDetailPage} />
-      <Route path="/search" component={SearchPage} />
-      <Route path="/admin/books" exact component={CategoriesByAdmin} />
-        <Route path="/admin/books/category/:categoryId" component={BooksByAdmin} />
-        <Route path="/admin/book/:bookId" component={BookDetailByAdmin} />
-      
-      <Route path="/book-admin">
-        <BookAdminPage />
-      </Route>
+      <Route exact path="/admin/book/edit/:bookId" render={(props) => (
+  <ChakraProvider>
+    <BookAdminPage {...props} />
+  </ChakraProvider>
+)} />
+
+<Route exact path="/book/:bookId" render={(props) => (
+  <BookDetailPage {...props} />
+)} />
+
+<Route exact path="/search" render={(props) => (
+  <SearchPage {...props} />
+)} />
+
+<Route exact path="/admin/books" render={(props) => (
+  <ChakraProvider>
+    <CategoriesByAdmin {...props} />
+  </ChakraProvider>
+)} />
+
+<Route exact path="/admin/books/category/:categoryId" render={(props) => (
+  <ChakraProvider>
+    <BooksByAdmin {...props} />
+  </ChakraProvider>
+)} />
+
+<Route exact path="/admin/book/:bookId" render={(props) => (
+  <ChakraProvider>
+    <BookDetailByAdmin {...props} />
+  </ChakraProvider>
+)} />
+
+<Route exact path="/book-admin" render={(props) => (
+  <ChakraProvider>
+    <BookAdminPage {...props} />
+  </ChakraProvider>
+)} />
+
 
       <Route path="/cart/:userName">
         <Cart />

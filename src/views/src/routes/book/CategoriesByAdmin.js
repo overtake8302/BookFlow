@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
+import { Box, List, ListItem, ListIcon, Heading } from '@chakra-ui/react';
+import { MdCheckCircle } from 'react-icons/md';
 
-// 카테고리 컴포넌트
 function CategoriesByAdmin() {
   const [categories, setCategories] = useState([]);
 
@@ -13,16 +14,20 @@ function CategoriesByAdmin() {
   }, []);
 
   return (
-    <div className="category-container">
-      <h2>*관리자 책조회* 책을 조회할 카테고리를 선택해 주세요.</h2>
-      <ul>
+    <Box className="category-container" p={5} width="100%">
+      <Heading as="h2" size="lg" mb={4}>
+        *관리자 책조회*<br/>책을 조회할 카테고리를 선택해 주세요.
+      </Heading>
+      <List spacing={3}>
         {categories.map(category => (
-          <li key={category.id}>
+          <ListItem key={category.id} fontSize="lg">
+            <ListIcon as={MdCheckCircle} color="green.500" />
             <Link to={`/admin/books/category/${category.id}`}>{category.categoryName}</Link>
-          </li>
+          </ListItem>
         ))}
-      </ul>
-    </div>
+      </List>
+    </Box>
   );
 }
+
 export default CategoriesByAdmin;

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import { Box, Image, Heading, Button } from '@chakra-ui/react';
 
 function BookDetailByAdmin({ match }) {
   const [book, setBook] = useState(null);
@@ -37,17 +38,21 @@ function BookDetailByAdmin({ match }) {
   };
 
   if (!book) {
-    return <div>로딩 중...</div>;
+    return <Box textAlign="center" py={10}>로딩 중...</Box>;
   }
 
   return (
-    <div>
-      <h1>{book.bookName}</h1>
-      <img src={book?.bookImgDtoList?.[0]?.imgUrl} alt="책 표지" />
-      {/* ... 다른 책 상세 정보 ... */}
-      <button onClick={handleEdit}>수정</button>
-      <button onClick={handleDelete}>삭제</button>
-    </div>
+    <Box p={5}>
+      <Heading mb={4}>{book.bookName}</Heading>
+      <Image src={book?.bookImgDtoList?.[0]?.imgUrl} alt="책 표지" mb={4} />
+      <p>{book.bookDetail}</p>
+      <Button colorScheme="blue" onClick={handleEdit} mr={3}>
+        수정
+      </Button>
+      <Button colorScheme="red" onClick={handleDelete}>
+        삭제
+      </Button>
+    </Box>
   );
 }
 

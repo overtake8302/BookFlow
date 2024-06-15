@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Box, List, ListItem, Image, Text, Button, Flex, Heading } from '@chakra-ui/react';
 
 function BooksByAdmin({ match }) {
   const [books, setBooks] = useState([]);
@@ -31,36 +32,46 @@ function BooksByAdmin({ match }) {
   }
 
   return (
-    <div>
-      <h2>책 목록</h2>
-      <ul>
+    <Box p={5}>
+      <Heading as="h2" size="xl" mb={6}>[관리자]<br/><br/>책 목록</Heading>
+      <List spacing={3}>
         {books.map(book => (
-          <li key={book.id}>
-            <Link to={`/admin/book/${book.id}`}>{book.bookName}</Link>
-            {book.bookImgDtoList && book.bookImgDtoList.length > 0 ? (
-              <div>
-                <img src={book.bookImgDtoList[0].imgUrl} alt={book.bookName} />
-                <span>재고 : {book.stock}권</span>
-              </div>
+          <ListItem key={book.id} p={3} boxShadow="md" borderRadius="md">
+            <Link to={`/admin/book/${book.id}`}>
+            <Flex align="center" justify="space-between">
+              <Box flexShrink={0}>
+                <Image
+                  borderRadius="md"
+                  src={book.bookImgDtoList && book.bookImgDtoList.length > 0 ? book.bookImgDtoList[0].imgUrl : 'fallback-image-url'}
+                  alt={book.bookName}
+                  boxSize="100px"
+                  objectFit="cover"
+                />
+              </Box>
+              <Box flex="1" ml={4}>
+                  <Text fontSize="lg" fontWeight="bold">{book.bookName}</Text>
+                <Text>재고 : {book.stock}권</Text>
+              </Box>
               
-            ) : (
-              <div>이미지가 없습니다</div>
-            )}
-          </li>
+            </Flex>
+            </Link>
+          </ListItem>
         ))}
-      </ul>
-      <nav>
-        <ul className='pagination'>
-          {pageNumbers.map(number => (
-            <li key={number} className='page-item'>
-              <a onClick={() => setCurrentPage(number)} className='page-link'>
-                {number}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
-    </div>
+      </List>
+      <Flex mt={4} justify="center">
+        {pageNumbers.map(number => (
+          <Button
+            key={number}
+            onClick={() => setCurrentPage(number - 1)}
+            mx={1}
+            colorScheme="teal"
+            variant="outline"
+          >
+            {number}
+          </Button>
+        ))}
+      </Flex>
+    </Box>
   );
 }
 
