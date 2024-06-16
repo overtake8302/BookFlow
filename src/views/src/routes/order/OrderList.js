@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading, Table, Tbody, Td, Text, Th, Thead, Tr, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, Table, Tbody, Td, Text, Th, Thead, Tr, useDisclosure, useToast } from '@chakra-ui/react';
 import HomeHeader from "../../components/home/HomeHeader";
 import { useEffect, useState } from "react";
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton } from '@chakra-ui/react';
@@ -11,6 +11,7 @@ function OrderList() {
     const [currentPage, setCurrentPage] = useState(0);
     const [itemsPerPage, setItemsPerPage] = useState(10);
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const toast = useToast();
     const handlePageChange = (page) => {
         setCurrentPage(page -1);
       };
@@ -54,7 +55,7 @@ function OrderList() {
     }
 
     function cancelOrder() {
-        fetch(`http://localhost:8080/api/user/order/${selectedOrderId}`, {
+        fetch(`${process.env.REACT_APP_API_URL}/api/user/order/${selectedOrderId}`, {
             method: 'delete',
             headers: {
                 'access': token,
@@ -64,6 +65,13 @@ function OrderList() {
             if (!response.ok) {
                 throw new Error('주문 취소 실패');
             }
+            toast({
+              title: '취소 완료',
+              description: '주문을 취소했어요.',
+              status: 'success',
+              duration: 9000,
+              isClosable: true,
+            });
             setDto(prevDto => ({
                 ...prevDto,
                 ordersResponseDto: {
@@ -74,9 +82,15 @@ function OrderList() {
               closeModal();
               fetchDto();
           })
-        .catch((e) => (
-            console.log('주문 취소 실패', e)
-        ));
+          .catch((error) => {
+            toast({
+              title: '취소 실패',
+              description: '주문을 취소하지 못했어요.: ' + error.message,
+              status: 'error',
+              duration: 9000,
+              isClosable: true,
+            });
+          })
     }
 
     const [dto, setDto] = useState({
@@ -86,7 +100,7 @@ function OrderList() {
 
     function fetchDto() {
 
-        fetch(`http://localhost:8080/api/user/orders?page=${currentPage}&size=${itemsPerPage}`, {
+        fetch(`${process.env.REACT_APP_API_URL}/api/user/orders?page=${currentPage}&size=${itemsPerPage}`, {
             headers: {
                 'access': token,
               }
@@ -102,7 +116,7 @@ function OrderList() {
     }
 
     useEffect(() => {
-        fetch(`http://localhost:8080/api/user/orders?page=${currentPage}&size=${itemsPerPage}`, {
+        fetch(`${process.env.REACT_APP_API_URL}/api/user/orders?page=${currentPage}&size=${itemsPerPage}`, {
             headers: {
                 'access': token,
               }

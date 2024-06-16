@@ -7,7 +7,7 @@ function Books() {
     const [books, setBooks] = useState({});
 
     useEffect(() => {
-        fetch("http://localhost:8080/api/categories")
+        fetch(`${process.env.REACT_APP_API_URL}/api/categories`)
           .then((response) => {
             if (!response.ok) {
               throw new Error('백엔드 에러 11');
@@ -17,7 +17,7 @@ function Books() {
           .then((json) => {
             setCategories(json);
             json.forEach((category) => {
-              fetch(`http://localhost:8080/api/books/category/${category.id}`)
+              fetch(`${process.env.REACT_APP_API_URL}/api/books/category/${category.id}`)
                 .then((response) => {
                   if (!response.ok) {
                     throw new Error("백엔드 접속 에러2");
