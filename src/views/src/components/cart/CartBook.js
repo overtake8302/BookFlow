@@ -1,5 +1,6 @@
 import "./CartBook.css"
 import {Link} from "react-router-dom";
+import {ChakraProvider, Divider, Stack, Checkbox, CloseButton, Box, Image, Text, Button} from '@chakra-ui/react';
 
 function CartBook({userName, cart, setCart}){
     const  cartName = `cart-${userName}`;
@@ -67,40 +68,80 @@ function CartBook({userName, cart, setCart}){
     };
 
     return (
+        <ChakraProvider>
         <div>
             {cart.map((book) => (
                 <div key={book.book_id} className="each-book">
-                    <input
-                        id="checkEach"
-                        type="checkbox"
-                        checked={book.checked}
-                        onChange={(event) => checkEachBook(event, book)}
-                    />
-                    <div className="about-book">
+                    <Stack spacing={5} direction='row'>
+                        <Checkbox
+                            colorScheme='blue'
+                            isChecked={book.checked}
+                            onChange={(event) => checkEachBook(event, book)}
+                            className={!book.checked ? 'ubCheckedCheckBox' : 'checkbox'}
+                        >
+                        </Checkbox>
+                    </Stack>
+                    <div className={book.checked ? 'checkedAboutBook' : 'aboutBook'}>
                         <Link to={`/bookDetail/${book.book_id}`}>
-                            <img id="book-photo" src={book.img_url} alt="bookPhoto" />
+                            <Box
+                                maxW='100px'
+                                maxH='80px'
+                                borderWidth='1px'
+                                overflow='hidden'
+                                boxShadow='lg'
+                                mr={3}
+                                ml={1}
+                            >
+                                <Image
+                                    id="book-photo"
+                                    w='100px'
+                                    h='80px'
+                                    objectFit='contain'
+                                    src={book.img_url}
+                                    alt={book.book_name}
+                                />
+                            </Box>
                         </Link>
                         <div id="title-price">
                             <Link to={`/bookDetail/${book.book_id}`}>
-                                <div id="book-title">{book.book_name}</div>
+                                <Text as='b' id="book-title" fontSize='1xl'>
+                                    {book.book_name}
+                                </Text>
                             </Link>
-                            <div id="book-price">{book.book_price}원</div>
+                            <Text id="book-price" fontSize='sm' fontWeight='normal'>{book.book_price}원</Text>
                         </div>
-                        <div className="separator"></div>
+                        <Stack direction='row' h='100px' p={0} mt={4}>
+                            <Divider height='80px' orientation='vertical' />
+                        </Stack>
                         <div id="quantity-edit">
-                            <div id="total-price"> {book.book_price * book.book_quantity}원</div>
-                            <button onClick={() => clickMinus(book)}>-</button>
-                            <span id="total-quantity"> {book.book_quantity} </span>
-                            <button onClick={() => clickPlus(book)}>+</button>
+                            <Stack spacing={0} direction='column'>
+                                <Stack spacing={0} direction='row'>
+                                    <Text id="total-price" fontSize='sm' fontWeight='bold' ml={3}>{book.book_price * book.book_quantity}</Text>
+                                    <Text fontSize='sm' fontWeight='normal' ml={1}>원</Text>
+                                </Stack>
+                                <Stack spacing={0} direction='row'>
+                                    <Button colorScheme='black' variant='link' onClick={() => clickMinus(book)}>-</Button>
+                                    <Text id="total-quantity" fontSize='sm' fontWeight='normal'>{book.book_quantity}</Text>
+                                    <Button colorScheme='black' variant='link' onClick={() => clickPlus(book)}>+</Button>
+                                </Stack>
+                            </Stack>
                         </div>
                         <div>
-                            <button onClick={() => deleteBook(book)}> x</button>
+                            <Stack direction='row' spacing={6}>
+                                <CloseButton
+                                    size='sm'
+                                    onClick={() => deleteBook(book)}
+                                    ml={5}
+                                    mr={5}
+                                    mb={55}
+                                />
+                            </Stack>
                         </div>
                     </div>
                 </div>
-                ))
-            }
-        </div>
+                ))}
+            </div>
+        </ChakraProvider>
     );
 }
 

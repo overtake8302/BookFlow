@@ -5,6 +5,7 @@ import CartPriceInfo from "../../components/cart/CartPriceInfo";
 import "./Cart.css";
 import {Link, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
+import { ChakraProvider, Divider } from '@chakra-ui/react';
 
 function Cart(){
     const {userName} = useParams();
@@ -30,36 +31,39 @@ function Cart(){
     console.log(`빈 장바구니?: ${cart.length === 0}`);
 
     return (
-        <div>
-            {cart.length === 0 ?
+        <ChakraProvider>
+            <div>
                 <div>
-                    {/* 장바구니없을때 */}
-                    <h2>장바구니</h2>
-                    <div>
-                        {/* 적절한이미지*/}
-                        장바구니에 담긴 책이 없습니다.
-                    </div>
-                    <Link to="/">
-                        <button>책 담으러 가기</button>
-                    </Link>
+                    <HomeHeader/>
                 </div>
-            :
-                <div>
-                    {/* 장바구니에상품있을 때 */}
-                    <div>
-                        <HomeHeader/>
+                <Divider orientation='horizontal' color='rgb(239, 239, 239)'/>
+                {cart.length === 0 ?
+                    <div className="main">
+                        {/* 장바구니없을때 */}
+                        <h2>장바구니</h2>
+                        <Divider orientation='horizontal' color='rgb(239, 239, 239)'/>
+                        <div>
+                            {/* 적절한이미지*/}
+                            장바구니에 담긴 책이 없습니다.
+                        </div>
+                        <Link to="/">
+                            <button>책 담으러 가기</button>
+                        </Link>
                     </div>
-                    <hr/>
+                    :
                     <div>
-                        <CartHeader userName={userName} cart={cart} setCart={setCart} />
+                    {/* 장바구니에상품있을 때 */}
+                    <div className="main">
+                        <CartHeader userName={userName} cart={cart} setCart={setCart}/>
                         <div id="Book-Price">
-                            <CartBookList userName={userName} cart={cart} setCart={setCart} />
-                            <CartPriceInfo cart={cart} />
+                            <CartBookList userName={userName} cart={cart} setCart={setCart}/>
+                            <CartPriceInfo cart={cart}/>
                         </div>
                     </div>
                 </div>
-            }
-        </div>
+                }
+            </div>
+        </ChakraProvider>
     );
 }
 
