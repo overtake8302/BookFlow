@@ -1,12 +1,14 @@
-hr {
-    color: rgb(239, 239, 239);
-}
-
 .price-info{
+    margin-top: 10px;
     background-color: white;
-    border-color: black;
-    border-width: 2px;
+    border-color: lightgray;
+    border-width: 1px;
     border-radius: 5px;
-    padding: 0px 10px 20px 10px;
+    padding: 16px 15px 15px 15px;
+    width: 230px;
+    height: 300px;
 }
 
+#but-info{
+    font-size: 22px;
+}
