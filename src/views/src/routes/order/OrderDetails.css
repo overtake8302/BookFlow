@@ -1,0 +1,72 @@
+.root {
+    margin: 0 auto; 
+    max-width: 1200px;
+    padding: 0 20px;
+}
+
+.order-item-container {
+    margin: auto;
+    background-color: lightgray;
+    border: 1px solid black;
+    margin-bottom: 10px;
+}
+
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 200px;
+    border-bottom: 1px solid black;
+}
+
+.order-item > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.order-item img {
+    width: auto;
+    height: auto;
+    max-width: 10%;
+    margin-right: 10px;
+}
+
+.order-item span {
+    flex: 1;
+    text-align: center;
+    margin: 0 10px; 
+}
+
+.orderStatusDiv {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: auto;
+    margin-bottom: 50px;
+}
+
+.totalH3 {
+    margin-right: 10%;
+}
+
+.editH3 {
+    margin-bottom: 50px;
+}
+
+.form input {
+    width: 100%; 
+    max-width: 30%;
+    margin: auto;
+    padding: 20px;
+    margin-bottom: 10px;
+}
+
+.form button {
+    margin-top: 20px;
+}
+

@@ -1,41 +1,40 @@
 package io.elice.shoppingmall.user.controller;
 
-import io.elice.shoppingmall.user.model.dto.UserMgmtDto;
-import io.elice.shoppingmall.user.model.dto.UserDeleteDto;
-import io.elice.shoppingmall.user.model.User;
-import io.elice.shoppingmall.user.service.AuthService;
+import io.elice.shoppingmall.user.model.UserMgmtDto;
 import io.elice.shoppingmall.user.service.UserMgmtService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.PutMapping;
 
-@RestController
-@RequiredArgsConstructor
-@RequestMapping("/user")
-@PreAuthorize("isAuthenticated()")
+@Controller
+@RequestMapping("/account")
 public class UserMgmtController {
 
-    private final UserMgmtService userMgmtService;
+    @Autowired
+    private UserMgmtService userMgmtService;
 
-    @GetMapping("/{id}") // 마이페이지 조회
-    public ResponseEntity<User> getCurrentUser(@PathVariable Long id) {
-        User currentUser = userMgmtService.getCurrentUser(id);
-        return ResponseEntity.ok(currentUser);
+    @GetMapping("/security")
+    public String showAccountSecurity(Model model, @RequestParam("id") Long id) {
+        model.addAttribute("user", userMgmtService.getUserById(id).orElse(null));
+        return "account-security";
     }
 
-    @PutMapping("/{id}/update") // 사용자 정보 수정
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody @Valid UserMgmtDto userMgmtDto) {
-        User updatedUser = userMgmtService.updateUser(id, userMgmtDto);
-        return ResponseEntity.ok(updatedUser);
+    @PostMapping("/security")
+    public String updateAccount(@ModelAttribute UserMgmtDto userMgmtDto) {
+        userMgmtService.updateUser(userMgmtDto);
+        return "redirect:/account/security?id=" + userMgmtDto.getId();
     }
 
-    @DeleteMapping("/{id}/delete") // 회원 탈퇴
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id, @RequestBody @Valid UserDeleteDto userDeleteDto) {
-        userMgmtService.deleteUser(id, userDeleteDto);
-        return ResponseEntity.noContent().build();
+    @GetMapping("/signout")
+    public String showSignoutPage(@RequestParam("id") Long id, Model model) {
+        model.addAttribute("id", id);
+        return "account-signout";
+    }
+
+    @PostMapping("/signout")
+    public String deleteAccount(@RequestParam("id") Long id) {
+        userMgmtService.deleteUser(id);
+        return "redirect:/";
     }
 }
