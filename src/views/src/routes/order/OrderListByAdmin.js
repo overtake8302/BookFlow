@@ -20,7 +20,8 @@ import {
     Thead,
     Tr,
     useDisclosure,
-    Badge
+    Badge,
+    useToast
   } from '@chakra-ui/react';
   import HomeHeader from "../../components/home/HomeHeader";
   import { useEffect, useState } from "react";
@@ -36,6 +37,8 @@ import {
     const [itemsPerPage, setItemsPerPage] = useState(10);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [selectedOrderId, setSelectedOrderId] = useState(null);
+    const toast = useToast();
+
     const [dto, setDto] = useState({
       ordersResponseDto: { orderList: [] },
       totalPages: 0
@@ -49,7 +52,7 @@ import {
     };
   
     useEffect(() => {
-      fetch(`http://localhost:8080/api/admin/orders?page=${currentPage}&size=${itemsPerPage}`, {
+      fetch(`${process.env.REACT_APP_API_URL}/api/admin/orders?page=${currentPage}&size=${itemsPerPage}`, {
         headers: {
           'access': token,
         }
@@ -70,7 +73,7 @@ import {
   
     const updateOrderStatus = (orderId, newStatus) => {
       const orderStatusDto = { orderStatus: newStatus };
-      fetch(`http://localhost:8080/api/admin/order/${orderId}`, {
+      fetch(`${process.env.REACT_APP_API_URL}/api/admin/order/${orderId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -91,7 +94,7 @@ import {
     };
   
     const fetchDto = () => {
-      fetch(`http://localhost:8080/api/admin/orders?page=${currentPage}&size=${itemsPerPage}`, {
+      fetch(`${process.env.REACT_APP_API_URL}/api/admin/orders?page=${currentPage}&size=${itemsPerPage}`, {
         headers: {
           'access': token,
         }
@@ -112,7 +115,7 @@ import {
     };
   
     const cancelOrder = () => {
-      fetch(`http://localhost:8080/api/admin/order/${selectedOrderId}`, {
+      fetch(`${process.env.REACT_APP_API_URL}/api/admin/order/${selectedOrderId}`, {
         method: 'DELETE',
         headers: {
           'access': token,
@@ -122,6 +125,13 @@ import {
         if (!response.ok) {
           throw new Error('주문 취소 실패');
         }
+        toast({
+          title: '취소 완료',
+          description: '주문을 취소했어요.',
+          status: 'success',
+          duration: 9000,
+          isClosable: true,
+        });
         setDto(prevDto => ({
           ...prevDto,
           ordersResponseDto: {
@@ -132,7 +142,15 @@ import {
         onClose();
         fetchDto();
       })
-      .catch((e) => console.log('주문 취소 실패', e));
+      .catch((error) => {
+        toast({
+          title: '취소 실패',
+          description: '주문을 취소하지 못했어요.: ' + error.message,
+          status: 'error',
+          duration: 9000,
+          isClosable: true,
+        });
+      })
     };
   
     const formatDate = (date) => {

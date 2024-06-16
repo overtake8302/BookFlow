@@ -48,6 +48,7 @@ public class BookController {
         return uniqueFileName;
     }
 
+    //배포시 vm ip, 개발시 localhost:8080사용하기
     private String serverHost = "http://localhost:8080";
 
     @PostMapping("/admin/book")

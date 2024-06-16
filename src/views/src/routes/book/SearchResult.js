@@ -21,7 +21,7 @@ const SearchResult = (props) => {
   
 
   const fetchBooks = (page, searchKeyword) => {
-    fetch(`http://localhost:8080/api/books/search?keyword=${encodeURIComponent(searchKeyword)}&page=${page}&size=10`)
+    fetch(`${process.env.REACT_APP_API_URL}/api/books/search?keyword=${encodeURIComponent(searchKeyword)}&page=${page}&size=10`)
       .then(response => response.json())
       .then(data => {
         setBooks(data.bookMainDtoList || []);

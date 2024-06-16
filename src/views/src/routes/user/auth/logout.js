@@ -10,7 +10,7 @@ const Logout = () => {
       return;
     }
 
-    fetch('http://localhost:8080/logout', {
+    fetch(`${process.env.REACT_APP_API_URL}/logout`, {
       method: 'POST',
       credentials : 'include',
     }).then(response => {
