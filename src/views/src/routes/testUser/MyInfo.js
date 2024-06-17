@@ -6,47 +6,82 @@ import {
   Input,
   Button,
   Heading,
-  useToast
+  useToast,
+  FormErrorMessage
 } from '@chakra-ui/react';
 
 function MyInfo() {
+  const token = localStorage.getItem('token');
+  const toast = useToast();
 
-    const token = localStorage.getItem('token');
+  const [profile, setProfile] = useState({
+    password: '',
+    confirmPassword: '',
+    name: '',
+    phoneNumber: '',
+    address: ''
+  });
 
-    const toast = useToast();
-
-    const [profile, setProfile] = useState({
-        username: '',
-        name: '',
-        phoneNumber: '',
-        address: ''
-    });
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    // 경수님 백엔드 수정후 거기에 맞게 수정 (내정보 get)
-    fetch('API_ENDPOINT', {
+
+    fetch(`${process.env.REACT_APP_API_URL}/api/user/member`, {
       method: 'GET',
       headers: {
-        'access': token, 
+        'access': token,
       }
     })
     .then(response => response.json())
-    .then(data => setProfile(data))
+    .then(data => setProfile({ ...profile, ...data }))
     .catch(error => console.error('Error:', error));
   }, []);
 
-  function handleChange(e) {
+  const validateForm = () => {
+    let valid = true;
+    let errors = {};
+
+
+    if (!profile.password) {
+      errors.password = "비밀번호를 입력해 주세요.";
+      valid = false;
+    } else if (profile.password !== profile.confirmPassword) {
+      errors.confirmPassword = "비밀번호가 일치하지 않아요.";
+      valid = false;
+    }
+
+    if (!profile.name) {
+      errors.name = "이름을 입력해 주세요.";
+      valid = false;
+    }
+
+    if (!profile.phoneNumber) {
+      errors.phoneNumber = "전화번호를 입력해 주세요.";
+      valid = false;
+    } else if (!/^\d+$/.test(profile.phoneNumber)) {
+      errors.phoneNumber = "전화번호는 숫자만 입력 할 수 있어요.";
+      valid = false;
+    }
+
+    setErrors(errors);
+    return valid;
+  };
+
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setProfile(prevProfile => ({
       ...prevProfile,
       [name]: value
     }));
-  }
+  };
 
-  function handleSubmit(e) {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    // 경수님 수정하시면 여기도 맟춰서 수정하기 회원 정보 수정 put
-    fetch('API_ENDPOINT', {
+    if (!validateForm()) {
+      return;
+    }
+
+    fetch(`${process.env.REACT_APP_API_URL}/api/user/member`, {
       method: 'PUT',
       headers: {
         'access': token,
@@ -55,56 +90,63 @@ function MyInfo() {
       body: JSON.stringify(profile)
     })
     .then((response) => {
-
-        if (!response.ok) {
-            throw new Error("회원 정보 수정 실패");
-        }
-        response.json()
+      if (!response.ok) {
+        throw new Error("회원 정보 수정 실패");
+      }
+      return response;
     })
-    .then((data) => {
-        toast({
-            title: '내정보를 수정했어요.',
-            description: "내정보를 수정했어요.",
-            status: 'success',
-            duration: 9000,
-            isClosable: true,
-          });
+    .then(() => {
+      toast({
+        title: '내정보를 수정했어요.',
+        description: "내정보를 수정했어요.",
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+      });
     })
     .catch((error) => {
-
-        toast({
-            title: '내정보 수정을 실패했어요.',
-            description: '내정보 수정을 실패했어요.',
-            status: 'error',
-            duration: 9000,
-            isClosable: true,
-          });
+      toast({
+        title: '내정보 수정을 실패했어요.',
+        description: error.message,
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+      });
     });
-  }
+  };
 
   return (
     <Box p={4}>
-        <Heading mb='20px' as="h2" fontSize="2em" fontWeight="bold">내정보 수정</Heading>
-        <form onSubmit={handleSubmit}>
-            <FormControl id="username">
-            <FormLabel>닉네임</FormLabel>
-            <Input type="text" name="username" value={profile.username} onChange={handleChange} />
-            </FormControl>
-            <FormControl id="name">
-            <FormLabel>이름</FormLabel>
-            <Input type="text" name="name" value={profile.name} onChange={handleChange} />
-            </FormControl>
-            <FormControl id="phoneNumber">
-            <FormLabel>휴대전화 번호</FormLabel>
-            <Input type="tel" name="phoneNumber" value={profile.phoneNumber} onChange={handleChange} />
-            </FormControl>
-            <FormControl id="address">
-            <FormLabel>주소</FormLabel>
-            <Input type="text" name="address" value={profile.address} onChange={handleChange} />
-            </FormControl>
-            <Button mt={4} colorScheme="teal" type="submit">내정보 수정 하기</Button>
-        </form>
-        </Box>
+      <Heading mb='20px' as="h2" fontSize="2em" fontWeight="bold">내정보 수정</Heading>
+      <form onSubmit={handleSubmit}>
+        <FormControl id="password" isInvalid={errors.password} isRequired>
+          <FormLabel>비밀번호</FormLabel>
+          <Input type="password" name="password" value={profile.password} onChange={handleChange} />
+          <FormErrorMessage>{errors.password}</FormErrorMessage>
+        </FormControl>
+        <FormControl id="confirmPassword" isInvalid={errors.confirmPassword} isRequired>
+          <FormLabel>비밀번호 확인</FormLabel>
+          <Input type="password" name="confirmPassword" value={profile.confirmPassword} onChange={handleChange} />
+          <FormErrorMessage>{errors.confirmPassword}</FormErrorMessage>
+        </FormControl>
+        <FormControl id="name" isInvalid={errors.name} isRequired>
+          <FormLabel>이름</FormLabel>
+          <Input type="text" name="name" value={profile.name} onChange={handleChange} />
+          <FormErrorMessage>{errors.name}</FormErrorMessage>
+        </FormControl>
+        <FormControl id="phoneNumber" isInvalid={errors.phoneNumber} isRequired>
+          <FormLabel>전화번호</FormLabel>
+          <Input type="tel" name="phoneNumber" value={profile.phoneNumber} onChange={handleChange} />
+          <FormErrorMessage>{errors.phoneNumber}</FormErrorMessage>
+        </FormControl>
+        <FormControl id="address" isInvalid={errors.address} >
+          <FormLabel>주소</FormLabel>
+          <Input type="text" name="address" value={profile.address} onChange={handleChange} />
+          <FormErrorMessage>{errors.address}</FormErrorMessage>
+        </FormControl>
+        <Button mt={4} colorScheme="teal" type="submit">내정보 수정 하기</Button>
+      </form>
+    </Box>
   );
 }
 
