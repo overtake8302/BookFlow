@@ -24,6 +24,8 @@ import CategoriesByAdmin from "./routes/book/CategoriesByAdmin";
 import BooksByAdmin from "./routes/book/BooksByAdmin";
 import BookDetailByAdmin from "./routes/book/BookDetailByAdmin";
 import { ChakraProvider } from '@chakra-ui/react';
+import MyPage from "./routes/testUser/MyPage";
+import MyInfo from "./routes/testUser/MyInfo";
 
 
 function App() {
@@ -62,7 +64,7 @@ function App() {
           <OrderCompleted {...props} />
         </ChakraProvider>
       )} />
-      <Route exact path="/order-list-by-admin" render={(props) => (
+      <Route exact path="/admin/orders" render={(props) => (
         <ChakraProvider>
           <OrderListByAdmin {...props} />
         </ChakraProvider>
@@ -73,22 +75,28 @@ function App() {
         </ChakraProvider>
       )} />
 
+      <Route exact path="/join" render={(props) => (
+        <ChakraProvider>
+          <Join {...props} />
+        </ChakraProvider>
+      )} />
+    
+      <Route exact path="/login" render={(props) => (
+        <ChakraProvider>
+          <Login />
+        </ChakraProvider>
+      )} />
 
+      <Route exact path="/admin/menu/userlist" render={(props) => (
+        <ChakraProvider>
+          <AdminUserList />
+        </ChakraProvider>  
+      )} />
 
-      <Route path="/join">
-        <Join />
-      </Route>
-      <Route path="/login">
-        <Login />
-      </Route>
-
-      <Route path="/admin/menu/userlist">
-        <AdminUserList />
-      </Route>
-      <Route path="/admin/menu">
-        <AdminMenu />
-      </Route>
-
+      <Route exact path="/admin/menu" render={(props) => (
+        <AdminMenu {...props} />
+      )} />
+        
       <Route path="/bookDetail/:bookId">
         <BookDetail />
       </Route>
@@ -125,7 +133,7 @@ function App() {
   </ChakraProvider>
 )} />
 
-<Route exact path="/book-admin" render={(props) => (
+<Route exact path="/product/add" render={(props) => (
   <ChakraProvider>
     <BookAdminPage {...props} />
   </ChakraProvider>

@@ -56,7 +56,7 @@ function OrderDetailsByadmin() {
       <Box textAlign="center" my="6">
         <Heading as="h1">주문 상세정보를 찾을수 없어요.</Heading>
         <Text fontSize="xl" mt="4">
-          <Link to={"/order-list-by-admin"} color="teal.500">주문내역을 찾으시나요?</Link>
+          <Link to={"/admin/orders"} color="teal.500">주문내역을 찾으시나요?</Link>
         </Text>
       </Box>
     );
