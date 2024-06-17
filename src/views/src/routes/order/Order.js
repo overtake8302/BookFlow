@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import HomeHeader from "../../components/home/HomeHeader";
-import "./Order.css";
+// import "./Order.css";
 import {
-  Box, Flex, Text, Button, Input, Image, VStack, FormControl, FormLabel, useToast
+  Box, Flex, Text, Button, Input, Image, VStack, FormControl, FormLabel, useToast, HStack
 } from '@chakra-ui/react';
 const token = localStorage.getItem('token');
 
@@ -172,25 +172,24 @@ const Order = () => {
 
   return (
     <Flex direction="column" align="center" m="4">
-      <HomeHeader />
+      <HomeHeader/>
       <VStack spacing="4" align="stretch">
         <Box p="6" shadow="md" borderWidth="1px">
           <Text fontSize="2xl" mb="4">결제를 시작할게요.</Text>
           {/* 장바구니 상품 정보 표시 */}
-          <VStack>
-            {orderData.map((item, index) => (
-              <Flex key={index} p="4" borderWidth="1px" borderRadius="lg" align="center">
+          {orderData.map((item, index) => (
+            <Box key={index} p="4" borderWidth="1px" borderRadius="lg">
+              <HStack spacing="4">
                 <Image boxSize="100px" src={bookDetails[item.bookId]?.bookImgDtoList[0]?.imgUrl || '책 표지 조회 중...'} alt="Book cover" />
-                <Box ml="6">
+                <VStack align="left">
                   <Text fontWeight="bold">도서명: {bookDetails[item.bookId]?.bookName || '책 이름 조회 중...'}</Text>
                   <Text>권당 가격: {bookDetails[item.bookId]?.bookPrice || '책 가격 조회 중...'}원</Text>
                   <Text>수량: {item.orderItemQuantity}개</Text>
-                </Box>
-              </Flex>
-            ))}
-          </VStack>
-          {/* 주문 폼 */}
-          <form onSubmit={handleOrder}>
+                </VStack>
+              </HStack>
+            </Box>
+          ))}
+        <form onSubmit={handleOrder}>
             {/* 받으시는 분 정보 입력 폼 */}
             <FormControl id="name" isRequired>
               <FormLabel>받으시는 분</FormLabel>
@@ -235,19 +234,23 @@ const Order = () => {
             </FormControl>
 
             {/* 배송 메모 입력 폼 */}
-            <input type="text" name="orderRequest" onChange={handleInputChange} placeholder="배송 요청사항을 적어주세요." className="input-field" />
+            <FormControl>
+              <FormLabel>배송 요청사항</FormLabel>
+              <Input type="text" name="orderRequest" onChange={handleInputChange} placeholder="배송 요청사항을 적어주세요." className="input-field"  />
+            </FormControl>
+            
           </form>
         </Box>
-        {/* 결제 요약 및 버튼 */}
-        <Flex justify="space-between" mt="8" p="4" shadow="md" borderWidth="1px">
+      {/* 결제 요약 및 버튼 */}
+      <Flex justify="space-between" mt="8" p="4" shadow="md" borderWidth="1px">
         <Text fontSize="xl"> 결제하실 금액이에요. {
         orderData.reduce((acc, item) => acc + (bookDetails[item.bookId]?.bookPrice || 0) * item.orderItemQuantity, 0)}원
         </Text>
-          <Button colorScheme="blue" onClick={handleOrder}>결제할게요!</Button>
-          <Button colorScheme="red" onClick={handleCancel}>다음에 할게요.</Button>
-        </Flex>
-      </VStack>
-    </Flex>
+        <Button colorScheme="blue" onClick={handleOrder}>결제할게요!</Button>
+        <Button colorScheme="red" onClick={handleCancel}>다음에 할게요.</Button>
+      </Flex>
+    </VStack>
+  </Flex>
   );
 };
 
