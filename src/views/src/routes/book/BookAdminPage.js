@@ -10,7 +10,8 @@ import {
   Button,
   VStack,
   Heading,
-  useToast
+  useToast,
+  HStack
 } from '@chakra-ui/react';
 import withAdminCheck from '../../components/adminCheck/withAdminCheck';
 
@@ -193,9 +194,14 @@ const BookAdminPage = () => {
               <Input type="file" multiple onChange={handleFileChange} />
             </FormControl>
   
-            <Button colorScheme="blue" mt={4} type="submit">
-              {bookForm.id ? '책 수정' : '책 추가'}
-            </Button>
+            <HStack spacing={4} mt={4}>
+              <Button colorScheme="blue" type="submit">
+                {bookForm.id ? '책 수정' : '책 추가'}
+              </Button>
+              <Link to='/admin/books'>
+                <Button colorScheme='gray'>확인</Button>
+              </Link>
+            </HStack>
           </form>
         </VStack>
       </Box>
