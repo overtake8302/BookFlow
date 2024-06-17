@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Box, List, ListItem, Image, Text, Button, Flex, Heading } from '@chakra-ui/react';
 import withAdminCheck from '../../components/adminCheck/withAdminCheck';
+import defaultBookCover from '../../resources/book/default book cover.png';
 
 function BooksByAdmin({ match }) {
   const [books, setBooks] = useState([]);
@@ -36,28 +37,48 @@ function BooksByAdmin({ match }) {
     <Box p={5}>
       <Heading as="h2" size="xl" mb={6}>[관리자]<br/><br/>책 목록</Heading>
       <List spacing={3}>
-        {books.map(book => (
-          <ListItem key={book.id} p={3} boxShadow="md" borderRadius="md">
-            <Link to={`/admin/book/${book.id}`}>
-            <Flex align="center" justify="space-between">
-              <Box flexShrink={0}>
-                <Image
-                  borderRadius="md"
-                  src={book.bookImgDtoList && book.bookImgDtoList.length > 0 ? book.bookImgDtoList[0].imgUrl : 'fallback-image-url'}
-                  alt={book.bookName}
-                  boxSize="100px"
-                  objectFit="cover"
-                />
-              </Box>
-              <Box flex="1" ml={4}>
-                  <Text fontSize="lg" fontWeight="bold">{book.bookName}</Text>
-                <Text>재고 : {book.stock}권</Text>
-              </Box>
-              
-            </Flex>
-            </Link>
-          </ListItem>
-        ))}
+          {books.map(book => (
+      <ListItem key={book.id} p={3} boxShadow="md" borderRadius="md" bg="gray.100">
+        <Link to={`/admin/book/${book.id}`}>
+          <Flex align="center" justify="space-between" wrap="wrap" p={3} borderRadius="md">
+            <Box flexShrink={0}>
+              <Image
+                borderRadius="md"
+                src={book.bookImgDtoList && book.bookImgDtoList.length > 0 ? book.bookImgDtoList[0].imgUrl : defaultBookCover}
+                alt={book.bookName}
+                boxSize="100px"
+                objectFit="cover"
+              />
+            </Box>
+            <Box flex="1" ml={4} my={2}>
+              <Flex align="center" justify="space-between">
+                <Box bg="teal.100" p={2} borderRadius="md">
+                  <Text fontSize="lg" fontWeight="bold" color="teal.800">{book.bookName}</Text>
+                </Box>
+                <Box bg="orange.100" p={2} borderRadius="md">
+                  <Text color="gray.600">카테고리: {book.category.categoryName}</Text>
+                </Box>
+                <Box bg="yellow.100" p={2} borderRadius="md">
+                  <Text color="gray.600">출판사: {book.publisher}</Text>
+                </Box>
+                <Box bg="green.100" p={2} borderRadius="md">
+                  <Text color="gray.600">출판일: {book.date}</Text>
+                </Box>
+                <Box bg="blue.100" p={2} borderRadius="md">
+                  <Text color="gray.600">저자: {book.author}</Text>
+                </Box>
+                <Box bg="pink.100" p={2} borderRadius="md">
+                  <Text color="gray.600">가격: ₩{book.bookPrice}</Text>
+                </Box>
+                <Box bg="purple.100" p={2} borderRadius="md">
+                  <Text color="gray.600">재고: {book.stock}권</Text>
+                </Box>
+              </Flex>
+            </Box>
+          </Flex>
+        </Link>
+      </ListItem>
+    ))}
       </List>
       <Flex mt={4} justify="center">
         {pageNumbers.map(number => (
