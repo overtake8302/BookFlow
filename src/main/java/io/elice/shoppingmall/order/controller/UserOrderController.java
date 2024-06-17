@@ -10,6 +10,7 @@ import io.elice.shoppingmall.order.model.dto.OrderDeliveryEditDto;
 import io.elice.shoppingmall.order.model.dto.OrderResponseCombinedDto;
 import io.elice.shoppingmall.order.model.dto.OrdersPageDto;
 import io.elice.shoppingmall.order.service.OrderService;
+import io.elice.shoppingmall.user.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +32,7 @@ public class UserOrderController {
 
     private final OrderService orderService;
     private final OrderMapper orderMapper;
+    private final AuthService authService;
 
     /*@GetMapping("/orders")
     public ResponseEntity<OrdersResponseDto> getOrders() {
@@ -97,5 +99,14 @@ public class UserOrderController {
         Order editedOrder = orderService.editOrder(orderId, dto);
         OrderResponseCombinedDto  orderResponseDto = orderMapper.orderToOrderResponseCombinedDto(editedOrder);
         return new ResponseEntity<>(orderResponseDto, HttpStatus.OK);
+    }
+
+    @GetMapping("/check")
+    public ResponseEntity<HttpStatus> userCheck() {
+        if (authService.getCurrentUser().getRole().equals("ROLE_USER")) {
+            return  new ResponseEntity<>(HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 }
