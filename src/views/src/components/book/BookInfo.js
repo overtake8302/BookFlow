@@ -110,14 +110,19 @@ function BookInfo({book}){
                             />
                         </Box>
                     </Stack>
-                    <Stack spacing={150} direction='column' mt={1}>
+                    <Stack spacing={105} direction='column' mt={1}>
                         <Stack spacing={5} direction='column'>
                             <Stack spacing={1} direction='column'>
                                 <Text fontSize='xl'>{book.book_name}</Text>
                                 <Stack spacing={1} direction='row'>
                                     <Text fontSize='xs' textColor='darkgray'>분야 : </Text>
-                                    <Text fontSize='xs' textColor='darkgray'>{book.category_name}</Text>
+                                    <Text fontSize='xs' textColor='darkgray'>{book.book_category}</Text>
                                 </Stack>
+                                <Stack spacing={1} direction='row'>
+                                    <Text fontSize='xs' textColor='darkgray'>출판사 : </Text>
+                                    <Text fontSize='xs' textColor='darkgray'>{book.book_publisher}</Text>
+                                </Stack>
+                                <Text fontSize='md' color='dodgerblue'>{book.book_author}</Text>
                             </Stack>
                             <Text fontSize='md' color='dodgerblue' alignSelf='flex-end'>{book.book_price}원</Text>
                         </Stack>

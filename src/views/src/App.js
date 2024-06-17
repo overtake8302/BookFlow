@@ -15,7 +15,6 @@ import AdminUserList from './routes/user/admin/AdminUserList';
 // import Order from "./routes/order/Order";
 import {Order, OrderCompleted, OrderDetails, OrderDetailsByAdmin, OrderList, OrderListByAdmin} from "./routes/order";
 import SearchPage from './routes/book/SearchPage';
-import BookDetailTest from "./routes/bookTest/BookDetailTest";
 import Cart from "./routes/cart/Cart";
 import BookDetail from "./routes/book/BookDetail";
 import BookDetailPage from "./routes/book/BookDetailPage";
@@ -33,9 +32,6 @@ function App() {
     <Router>
     <Switch>
       {/* test */}
-      <Route path="/bookDetailTest/:bookId">
-        <BookDetailTest />
-      </Route>
       <Route path="/joinTest">
         <JoinTest />
       </Route>
@@ -75,32 +71,28 @@ function App() {
         </ChakraProvider>
       )} />
 
-      <Route exact path="/my" render={(props) => (
+      <Route exact path="/join" render={(props) => (
         <ChakraProvider>
-          <MyPage {...props} />
+          <Join {...props} />
         </ChakraProvider>
       )} />
-      <Route exact path="/my-info" render={(props) => (
+    
+      <Route exact path="/login" render={(props) => (
         <ChakraProvider>
-          <MyInfo {...props} />
+          <Login />
         </ChakraProvider>
       )} />
 
+      <Route exact path="/admin/menu/userlist" render={(props) => (
+        <ChakraProvider>
+          <AdminUserList />
+        </ChakraProvider>  
+      )} />
 
-      <Route path="/join">
-        <Join />
-      </Route>
-      <Route path="/login">
-        <Login />
-      </Route>
-
-      <Route path="/admin/menu/userlist">
-        <AdminUserList />
-      </Route>
-      <Route path="/admin/menu">
-        <AdminMenu />
-      </Route>
-
+      <Route exact path="/admin/menu" render={(props) => (
+        <AdminMenu {...props} />
+      )} />
+        
       <Route path="/bookDetail/:bookId">
         <BookDetail />
       </Route>

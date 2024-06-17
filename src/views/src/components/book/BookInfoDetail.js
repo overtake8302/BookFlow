@@ -27,7 +27,7 @@ function BookInfoDetail({book}){
                     <Stack spacing={1} direction='column'>
                         <Text fontSize='md'> 관련 분류 </Text>
                         <Divider width={66} color="darkgray"/>
-                        <Text fontSize='sm' mt={1}> {book.category_name} > {book.category_name} </Text>
+                        <Text fontSize='sm' mt={1}> {book.book_category} </Text>
                         {/* 카테고리 페이지 이동 추가
                         <Link to={`경로`}>
                             <Text fontSize='sm' mt={1}>
