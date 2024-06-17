@@ -13,6 +13,7 @@ import {
   useToast,
   HStack
 } from '@chakra-ui/react';
+import { ArrowBackIcon } from '@chakra-ui/icons';
 import withAdminCheck from '../../components/adminCheck/withAdminCheck';
 
 const BookAdminPage = () => {
@@ -35,6 +36,8 @@ const BookAdminPage = () => {
     const [categories, setCategories] = useState([]);
 
     const toast = useToast();
+
+    const [newCategoryName, setNewCategoryName] = useState('');
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -131,23 +134,83 @@ const BookAdminPage = () => {
       }
     }
       
+    useEffect(() => {
+      if (newCategoryName) {
+        createCategory();
+      }
+    }, [newCategoryName]);
+
+    const createCategory = async () => {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/admin/categories`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'access': token,
+          },
+          body: JSON.stringify({
+            categoryName: newCategoryName,
+            isDeleted: false
+          })
+        });
+  
+        if (!response.ok) {
+          throw new Error('카테고리를 생성하는데 문제가 발생했습니다.');
+        }
+  
+        const data = await response.json();
+        toast({
+          title: '카테고리를 만들었어요..',
+          description: `카테고리 '${data.categoryName}'(을)를 만들었어요.`,
+          status: 'success',
+          duration: 9000,
+          isClosable: true,
+        });
+  
+  
+      } catch (error) {
+        toast({
+          title: '카테고리를 만들지 못했어요.',
+          description: '카테고리를 만들지 못했어요.',
+          status: 'error',
+          duration: 9000,
+          isClosable: true,
+        });
+      }
+    };
+  
+    const handleNewCategory = () => {
+      const categoryName = prompt('새 카테고리 이름을 적어주세요:');
+      if (categoryName) {
+        setNewCategoryName(categoryName); 
+      }
+    };
 
     return (
       <Box p={5}>
-        <Link to='/admin/books'><Button colorScheme='gray'>책 목록</Button></Link>
-        <VStack spacing={4} align="stretch">
-          <Heading as="h2" size="lg">{bookForm.id ? '책 수정' : '책 추가'}</Heading>
-          <form onSubmit={handleSubmit}>
+      <Link to='/admin/books'>
+        <Button colorScheme='gray' leftIcon={<ArrowBackIcon />}> 책 목록</Button>
+      </Link>
+      <VStack spacing={4} align="stretch">
+        <Heading as="h2" size="lg" style={{ textAlign: 'left' }}>
+          {bookForm.id ? '책 수정' : '책 추가'}
+        </Heading>
+        <form onSubmit={handleSubmit}>
+          <HStack spacing={4} align="center">
             <FormControl id="category" isRequired>
               <FormLabel>카테고리</FormLabel>
-              <Select name="categoryId" value={bookForm.categoryId} onChange={handleInputChange} placeholder="카테고리를 골라주세요.">
-                {categories.map(category => (
-                  <option key={category.id} value={category.id}>
-                    {category.categoryName}
-                  </option>
-                ))}
-              </Select>
+              <HStack>
+                <Select name="categoryId" value={bookForm.categoryId} onChange={handleInputChange} placeholder="카테고리를 골라주세요.">
+                  {categories.map(category => (
+                    <option key={category.id} value={category.id}>
+                      {category.categoryName}
+                    </option>
+                  ))}
+                </Select>
+                <Button colorScheme='green' onClick={handleNewCategory}>카테고리 추가</Button>
+              </HStack>
             </FormControl>
+          </HStack>
   
             <FormControl id="name" isRequired>
               <FormLabel>책 제목</FormLabel>
