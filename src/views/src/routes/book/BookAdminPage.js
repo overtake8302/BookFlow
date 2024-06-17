@@ -1,5 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useHistory, Link } from 'react-router-dom';
+import {
+  Box,
+  FormControl,
+  FormLabel,
+  Input,
+  Textarea,
+  Select,
+  Button,
+  VStack,
+  Heading,
+  useToast
+} from '@chakra-ui/react';
+import withAdminCheck from '../../components/adminCheck/withAdminCheck';
 
 const BookAdminPage = () => {
     const { bookId } = useParams(); 
@@ -13,13 +26,18 @@ const BookAdminPage = () => {
         stock: '',
         date: '',
         categoryId: '',
-        bookImgFiles: []
+        bookImgFiles: [],
+        author: '',
+        publisher: '',
+        tableOfContents: []
     });
     const [categories, setCategories] = useState([]);
 
+    const toast = useToast();
+
   useEffect(() => {
     const fetchCategories = async () => {
-      const response = await fetch('http://localhost:8080/api/categories');
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/categories`);
       const data = await response.json();
       setCategories(data);
     };
@@ -31,7 +49,7 @@ const BookAdminPage = () => {
     if (bookId) {
       const fetchBookDetails = async () => {
         try {
-          const response = await fetch(`http://localhost:8080/api/book/${bookId}`);
+          const response = await fetch(`${process.env.REACT_APP_API_URL}/api/book/${bookId}`);
           const data = await response.json();
           setBookForm(prevBookForm => ({
             ...prevBookForm,
@@ -41,8 +59,10 @@ const BookAdminPage = () => {
             price: data.price,
             stock: data.stock,
             date: data.date,
-            categoryId: data.categoryId
-            // 이미지 파일은 새로 업로드할 것이므로 초기화하지 않음
+            categoryId: data.categoryId,
+            author: data.author,
+            publisher: data.publisher,
+            tableOfContents: data.tableOfContents || []
           }));
         } catch (error) {
           console.error('책 정보를 가져오는 중 에러가 발생했습니다:', error);
@@ -55,7 +75,11 @@ const BookAdminPage = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setBookForm({ ...bookForm, [name]: value });
+    if (name === 'tableOfContents') {
+      setBookForm({ ...bookForm, tableOfContents: value.split('\n') });
+    } else {
+      setBookForm({ ...bookForm, [name]: value });
+    }
   };
 
   const handleFileChange = (e) => {
@@ -75,7 +99,7 @@ const BookAdminPage = () => {
     });
 
     try {
-        const url = bookForm.id ? `http://localhost:8080/api/admin/book/${bookForm.id}` : 'http://localhost:8080/api/admin/book';
+        const url = bookForm.id ? `${process.env.REACT_APP_API_URL}/api/admin/book/${bookForm.id}` : `${process.env.REACT_APP_API_URL}/api/admin/book`;
         const response = await fetch(url, {
           method: bookForm.id ? 'PUT' : 'POST',
           headers: {
@@ -83,42 +107,99 @@ const BookAdminPage = () => {
           },
           body: formData
         });
-      
         if (!response.ok) {
           throw new Error('책 정보를 저장하는데 문제가 발생했습니다.');
         }
         const data = await response.json();
+        toast({
+          title: '책정보를 저장했어요.',
+          description: "책정보를 저장했어요.",
+          status: 'success',
+          duration: 9000,
+          isClosable: true,
+        });
         console.log('책 정보가 저장되었습니다:', data);
-        history.push('/admin/books'); // 저장 후 책 목록 페이지로 이동
       } catch (error) {
-        console.error('책 정보 저장에 실패했습니다:', error);
+        toast({
+          title: '책 저장에 실패 했어요.',
+          description: error.toString(),
+          status: 'error',
+          duration: 9000,
+          isClosable: true,
+        });
       }
     }
       
 
-  return (
-    <div>
-      <h2>{bookForm.id ? '책 수정' : '책 추가'}</h2>
-      <form onSubmit={handleSubmit}>
-        <select name="categoryId" value={bookForm.categoryId} onChange={handleInputChange}>
-          <option value="">카테고리 선택</option>
-          {categories.map(category => (
-            <option key={category.id} value={category.id}>
-              {category.categoryName}
-            </option>
-          ))}
-        </select>
+    return (
+      <Box p={5}>
+        <Link to='/admin/books'><Button colorScheme='gray'>책 목록</Button></Link>
+        <VStack spacing={4} align="stretch">
+          <Heading as="h2" size="lg">{bookForm.id ? '책 수정' : '책 추가'}</Heading>
+          <form onSubmit={handleSubmit}>
+            <FormControl id="category" isRequired>
+              <FormLabel>카테고리</FormLabel>
+              <Select name="categoryId" value={bookForm.categoryId} onChange={handleInputChange} placeholder="카테고리를 골라주세요.">
+                {categories.map(category => (
+                  <option key={category.id} value={category.id}>
+                    {category.categoryName}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+  
+            <FormControl id="name" isRequired>
+              <FormLabel>책 제목</FormLabel>
+              <Input type="text" name="name" value={bookForm.name} onChange={handleInputChange} placeholder="책 이름을 적어주세요." />
+            </FormControl>
+  
+            <FormControl id="author">
+              <FormLabel>저자</FormLabel>
+              <Input type="text" name="author" value={bookForm.author} onChange={handleInputChange} placeholder="저자 이름을 적어주세요." />
+            </FormControl>
 
-        <input type="text" name="name" value={bookForm.name} onChange={handleInputChange} placeholder="책 이름" />
-        <textarea name="detail" value={bookForm.detail} onChange={handleInputChange} placeholder="책 설명" />
-        <input type="number" name="price" value={bookForm.price} onChange={handleInputChange} placeholder="가격" />
-        <input type="number" name="stock" value={bookForm.stock} onChange={handleInputChange} placeholder="재고" />
-        <input type="text" name="date" value={bookForm.date} onChange={handleInputChange} placeholder="출판 날짜" />
-        <input type="file" multiple onChange={handleFileChange} />
-        <button type="submit">{bookForm.id ? '수정 완료' : '책 추가'}</button>
-      </form>
-    </div>
-  );
-};
+            <FormControl id="publisher">
+              <FormLabel>출판사</FormLabel>
+              <Input type="text" name="publisher" value={bookForm.publisher} onChange={handleInputChange} placeholder="출판사 이름을 적어주세요." />
+            </FormControl>
 
-export default BookAdminPage;
+            <FormControl id="tableOfContents">
+              <FormLabel>목차</FormLabel>
+              <Textarea name="tableOfContents" value={bookForm.tableOfContents.join('\n')} onChange={handleInputChange} placeholder="목차를 입력해주세요. 각 항목은 줄바꿈으로 구분해주세요." />
+            </FormControl>
+
+            <FormControl id="detail" isRequired>
+              <FormLabel>책 설명</FormLabel>
+              <Textarea name="detail" value={bookForm.detail} onChange={handleInputChange} placeholder="책 설명을 적어주세요." />
+            </FormControl>
+  
+            <FormControl id="price" isRequired>
+              <FormLabel>가격</FormLabel>
+              <Input type="number" name="price" value={bookForm.price} onChange={handleInputChange} placeholder="책 가격을 적어주세요." />
+            </FormControl>
+  
+            <FormControl id="stock" isRequired>
+              <FormLabel>재고</FormLabel>
+              <Input type="number" name="stock" value={bookForm.stock} onChange={handleInputChange} placeholder="재고수량을 적어주세요." />
+            </FormControl>
+  
+            <FormControl id="date">
+              <FormLabel>출판일</FormLabel>
+              <Input type="text" name="date" value={bookForm.date} onChange={handleInputChange} placeholder="출판일을 적어주세요." />
+            </FormControl>
+  
+            <FormControl id="file">
+              <FormLabel>표지나 사진을 올려주세요.</FormLabel>
+              <Input type="file" multiple onChange={handleFileChange} />
+            </FormControl>
+  
+            <Button colorScheme="blue" mt={4} type="submit">
+              {bookForm.id ? '책 수정' : '책 추가'}
+            </Button>
+          </form>
+        </VStack>
+      </Box>
+    );
+  };
+  
+  export default withAdminCheck(BookAdminPage);

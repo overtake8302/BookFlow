@@ -10,14 +10,17 @@ const Logout = () => {
       return;
     }
 
-    fetch('http://localhost:8080/logout', {
+    fetch(`${process.env.REACT_APP_API_URL}/logout`, {
       method: 'POST',
       credentials : 'include',
     }).then(response => {
       if (response.status === 200) {
         localStorage.removeItem('token')
         setToken(null)
+        // for cart
+        localStorage.removeItem('userName')
         alert('로그아웃 성공')
+        history.push('/')
       } else if (response.status === 400) {
         alert('로그아웃 실패')
       }

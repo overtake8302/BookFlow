@@ -1,9 +1,8 @@
 package io.elice.shoppingmall.user.model.dto;
 
-
-import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
+import jakarta.validation.constraints.NotBlank;
 
 @Getter
 @Setter

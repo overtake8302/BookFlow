@@ -33,6 +33,9 @@ public class BookFormDto {
 
     private String date;
 
+    private String author;
+    private String publisher;
+    private List<String> tableOfContents = new ArrayList<>();
     //private BookSellStatus bookSellStatus;
 
     // 상품 수정 시 사용되는 멤버변수들

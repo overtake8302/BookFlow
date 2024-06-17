@@ -48,6 +48,7 @@ public class BookController {
         return uniqueFileName;
     }
 
+    //배포시 vm ip, 개발시 localhost:8080사용하기
     private String serverHost = "http://localhost:8080";
 
     @PostMapping("/admin/book")
@@ -99,6 +100,14 @@ public class BookController {
         List<BookImg> bookImgs = new ArrayList<>();
         Category category = categoryService.getCategoryById(bookFormDto.getCategoryId());
         oldBook.setCategory(category);
+        oldBook.setStock(bookFormDto.getStock());
+        oldBook.setDate(bookFormDto.getDate());
+        oldBook.setAuthor(bookFormDto.getAuthor());
+        oldBook.setName(bookFormDto.getName());
+        oldBook.setDetail(bookFormDto.getDetail());
+        oldBook.setPrice(bookFormDto.getPrice());
+        oldBook.setPublisher(bookFormDto.getPublisher());
+        oldBook.setTableOfContents(bookFormDto.getTableOfContents());
 
         //이미지 삭제
         if (images == null || images.isEmpty()) {
@@ -170,15 +179,15 @@ public class BookController {
 
     //제목검색 //프론트 우선도 낮음
     @GetMapping("/books/search")
-    public ResponseEntity<List<BookMainDto>> getBooksByKeyword(@RequestParam String keyword) {
+    public ResponseEntity<BookMainDtos> getBooksByKeyword(@RequestParam String keyword, @PageableDefault(page = 0, size = 10,sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
-        List<Book> findBooks = bookService.findBooksByKeyword(keyword);
+        Page<Book> findBooks = bookService.findBooksByKeyword(keyword, pageable);
 
-        if (findBooks.isEmpty()) {
+        if (findBooks == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        List<BookMainDto> bookMainDtos = mapper.bookListToBookMainDtoList(findBooks);
+        BookMainDtos bookMainDtos = mapper.bookPageToBookMainDtos(findBooks);
 
         return  new ResponseEntity<>(bookMainDtos, HttpStatus.OK);
     }

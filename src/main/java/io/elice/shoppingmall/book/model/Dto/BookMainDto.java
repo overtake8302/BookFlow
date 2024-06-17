@@ -19,9 +19,13 @@ public class BookMainDto {
     private String bookDetail;
     private String bookImgUrl;
     private int bookPrice;
+    private int stock;
     private String date;
     private List<BookImgDto> bookImgDtoList = new ArrayList<>();
     private Category category;
+    private String author;
+    private String publisher;
+    private List<String> tableOfContents;
 
 
 }

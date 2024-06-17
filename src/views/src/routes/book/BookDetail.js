@@ -23,6 +23,7 @@ function BookDetail(){
                     category_id: thisBook.categoryId,
                     category_name: thisBook.categoryName,
                     img_url: thisBook.bookImgUrl,
+                    book_content: thisBook.tableOfContents,
                 }
             ]);
         } else {
@@ -33,7 +34,7 @@ function BookDetail(){
     {/*
     !부모카테고리추가!
     useEffect(() => {
-        fetch(`http://localhost:8080/api/book/${bookId}`)
+        fetch(`${process.env.REACT_APP_API_URL}/api/book/${bookId}`)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error("책 상세 정보 조회 에러");
@@ -49,9 +50,10 @@ function BookDetail(){
                         book_price: thisBook.bookPrice,
                         book_stock: thisBook.stock,
                         book_detail: thisBook.bookDetail,
-                        category_id: thisBook.categoryId,
-                        category_name: thisBook.categoryName,
-                        img_url: thisBook.bookImgUrl,
+                        category_id: thisBook.category.id,
+                        category_name: thisBook.category.categoryName,
+                        img_url: thisBook.bookImgDtoList[0].imgUrl,
+                        book_content: thisBook.tableOfContents,
                     });
                 } else {
                     throw new Error("해당 책 정보를 찾을 수 없습니다.");

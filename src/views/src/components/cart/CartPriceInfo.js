@@ -1,5 +1,6 @@
 import "./CartPriceInfo.css"
 import {Link, useHistory} from "react-router-dom";
+import {ChakraProvider, Divider, Stack, Text, Button} from '@chakra-ui/react';
 
 function CartPriceInfo({cart}){
     const history = useHistory();
@@ -22,49 +23,71 @@ function CartPriceInfo({cart}){
 
     // 주문하기 클릭시
     const clickOrder = async () => {
-        const orderData = {
-            orderItemDtos: checkedCart.map(book => ({
-                orderItemQuantity: book.book_quantity,
-                bookId: book.book_id
-            }))
-        };
-        try {
-            history.push({
-                pathname: '/order',
-                state: { orderData }
-            });
-        } catch (error) {
-            console.error('Error:', error);
-            alert('주문 처리 중 오류가 발생했어요.');
+        if(token === null){
+            alert("로그인 후 이용 가능합니다.");
+        }else {
+            const orderData = {
+                orderItemDtos: checkedCart.map(book => ({
+                    orderItemQuantity: book.book_quantity,
+                    bookId: book.book_id
+                }))
+            };
+            try {
+                history.push({
+                    pathname: '/order',
+                    state: {orderData}
+                });
+            } catch (error) {
+                console.error('Error:', error);
+                alert('주문 처리 중 오류가 발생했어요.');
+            }
         }
     };
 
     return (
-        <div>
-            {checkedCart.length > 0 && (
-                <div className="price-info">
-                    <h3>결제정보</h3>
-                    <div className="each-price">
-                        <div id="book-price">
-                            상품금액: {totalBookPrice}원
-                        </div>
-                        <div id="delivery-price">
-                            배송비: + {deliveryPrice}원
-                        </div>
-                        <hr/>
-                        <div id="total-price">
-                            총 결제금액: {totalPrice}원
-                        </div>
+        <ChakraProvider>
+            <div>
+                {checkedCart.length > 0 && (
+                    <div className="price-info">
+                        <Stack spacing={0} direction='column'>
+                            {/* 크기 키우기 - 현재 적용 안됨 */}
+                            <Text as='b' id="but-info">결제정보</Text>
+                            <div className="each-price">
+                                <Stack spacing={0} direction='column' mt={15}>
+                                    <Stack id="book-price" spacing={2} direction='row' justifyContent="space-between">
+                                        <Text fontSize='md' fontWeight='normal'>상품금액: </Text>
+                                        <Text fontSize='md' fontWeight='normal' textAlign="right">{totalBookPrice}원</Text>
+                                    </Stack>
+                                    <Stack id="delivery-price" spacing={2} direction='row' justifyContent="space-between">
+                                        <Text fontSize='md' fontWeight='normal'>상품금액: </Text>
+                                        <Text fontSize='md' fontWeight='normal' textAlign="right">+ {deliveryPrice}원</Text>
+                                    </Stack>
+                                </Stack>
+                                <Stack direction='row' p={1} mt={2}>
+                                    <Divider width='210px' borderColor='lightgray' />
+                                </Stack>
+                                <Stack id="total-price" spacing={0} direction='row' mt={2} justifyContent="space-between">
+                                    <Text fontSize='md' fontWeight='normal'>총 결제금액: </Text>
+                                    <Text fontSize='md' fontWeight='normal' textAlign="right">{totalPrice}원</Text>
+                                </Stack>
+                            </div>
+                            <div className="each-button">
+                                <Stack spacing={2} direction='column' mt={6} justifyContent="space-between">
+                                    <Button id="go-to-buy" colorScheme='blue' variant='solid' onClick={clickOrder} width={195}>
+                                        구매하기 ({checkedQuantity})
+                                    </Button>
+                                    <Link to="/">
+                                        <Button id="more-book" colorScheme='blue' variant='outline' width={195}>
+                                            더 담으러 가기
+                                        </Button>
+                                    </Link>
+                                </Stack>
+                            </div>
+                        </Stack>
                     </div>
-                    <div className="each-button">
-                        <button id="go-to-buy" onClick={clickOrder}>구매하기 ({checkedQuantity})</button>
-                        <Link to="/">
-                            <button id="more-book">더 담으러 가기</button>
-                        </Link>
-                    </div>
-                </div>
-            )}
-        </div>
+                )}
+            </div>
+        </ChakraProvider>
     );
 }
 

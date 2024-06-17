@@ -10,7 +10,7 @@ function Categories({ activeCategory, setActiveCategory }) {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/categories');
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/categories`);
         const json = await response.json();
         setCategories(json);
       } catch (e) {

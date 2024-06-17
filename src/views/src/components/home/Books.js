@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import './Books.css';
+import defaultBookCover from "../../resources/book/default book cover.png";
 
 function Books() {
     const [categories, setCategories] = useState([]);
     const [books, setBooks] = useState({});
 
     useEffect(() => {
-        fetch("http://localhost:8080/api/categories")
+        fetch(`${process.env.REACT_APP_API_URL}/api/categories`)
           .then((response) => {
             if (!response.ok) {
               throw new Error('백엔드 에러 11');
@@ -16,7 +18,7 @@ function Books() {
           .then((json) => {
             setCategories(json);
             json.forEach((category) => {
-              fetch(`http://localhost:8080/api/books/category/${category.id}`)
+              fetch(`${process.env.REACT_APP_API_URL}/api/books/category/${category.id}`)
                 .then((response) => {
                   if (!response.ok) {
                     throw new Error("백엔드 접속 에러2");
@@ -47,15 +49,16 @@ function Books() {
               <div key={category.id}>
                 <h3>{category.categoryName}</h3>
                 <Link to={`/category/${category.id}`}>더보기</Link>
-                <div>
+                <div className="book-list">
                   {books[category.id] && books[category.id].length > 0 ? (
                     books[category.id].map((book) => (
-                      <div key={book.id}>
+                      <div key={book.id} className="book-item">
                         <Link to={`/bookDetail/${book.id}`}>
                           {book.bookImgDtoList && book.bookImgDtoList.length > 0 && book.bookImgDtoList[0].imgUrl ? (
                             <img src={book.bookImgDtoList[0].imgUrl} alt={book.bookName} />
                           ) : (
-                            <div>이미지가 없습니다</div>
+                            // <div>이미지가 없습니다</div>
+                            <img src={defaultBookCover} alt={defaultBookCover} />
                           )}
                         </Link>
                         <div><Link to={`/bookDetail/${book.id}`}>{book.bookName}</Link></div>
