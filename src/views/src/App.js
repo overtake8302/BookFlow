@@ -24,6 +24,7 @@ import CategoriesByAdmin from "./routes/book/CategoriesByAdmin";
 import BooksByAdmin from "./routes/book/BooksByAdmin";
 import BookDetailByAdmin from "./routes/book/BookDetailByAdmin";
 import { ChakraProvider } from '@chakra-ui/react';
+import MyPage from "./routes/testUser/MyPage";
 
 
 function App() {
@@ -73,6 +74,11 @@ function App() {
         </ChakraProvider>
       )} />
 
+      <Route exact path="/my" render={(props) => (
+        <ChakraProvider>
+          <MyPage {...props} />
+        </ChakraProvider>
+      )} />
 
 
       <Route path="/join">
