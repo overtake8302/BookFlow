@@ -27,7 +27,7 @@ function CategoriesByAdmin() {
           </ListItem>
         ))}
       </List>
-      <Link to='/book-admin'><Button>책 추가</Button></Link>
+      <Link to='/product/add'><Button>책 추가</Button></Link>
     </Box>
   );
 }
