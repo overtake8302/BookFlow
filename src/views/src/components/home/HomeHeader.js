@@ -25,25 +25,26 @@ function HomeHeader()  {
         history.push(`/cart/${userName}`)
     };
 
-    const [isAdmin, setIsAdmin] = useState(false);
+    const [isRole, setIsRole] = useState();
     useEffect(() => {
-        const checkAdminAccess = async () => {
+        const checkRoleAccess = async () => {
           try {
             const token = localStorage.getItem('token');
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/admin/check`, {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/check`, {
               headers: {
                 'access': token,
               }
             });
-            if (response.ok) {
-              setIsAdmin(true); // 응답이 OK이면 관리자로 설정
-            }
+            const json = await response.json();
+            const role = json.role;
+            console.log("권한 : " + role);
+            setIsRole(role);
           } catch (error) {
             console.error('Admin check failed:', error);
           }
         };
     
-        checkAdminAccess();
+        checkRoleAccess();
       }, []);
 
     return(
@@ -54,11 +55,9 @@ function HomeHeader()  {
             <div id="icons">
                 <Link to="/search"><img src={SearchButton} /></Link>
                 <img src={CartButton} onClick={cartClick} />
-                <Link to="/my"><img src={UserButton} /></Link>
+                {isRole !== "ROLE_ANONYMOUS" ? <Link to="/my"><img src={UserButton} /></Link> : null}
                 <Logout />
-                {isAdmin && (
-                     <Link to="/admin/menu"><img src={MenuButton} /></Link> 
-                )}
+                {isRole === "ROLE_ADMIN" ? <Link to="/admin/menu"><img src={MenuButton} /></Link> : null}
             </div>
         </div>
     );

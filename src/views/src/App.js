@@ -73,22 +73,28 @@ function App() {
         </ChakraProvider>
       )} />
 
+      <Route exact path="/join" render={(props) => (
+        <ChakraProvider>
+          <Join {...props} />
+        </ChakraProvider>
+      )} />
+    
+      <Route exact path="/login" render={(props) => (
+        <ChakraProvider>
+          <Login />
+        </ChakraProvider>
+      )} />
 
+      <Route exact path="/admin/menu/userlist" render={(props) => (
+        <ChakraProvider>
+          <AdminUserList />
+        </ChakraProvider>  
+      )} />
 
-      <Route path="/join">
-        <Join />
-      </Route>
-      <Route path="/login">
-        <Login />
-      </Route>
-
-      <Route path="/admin/menu/userlist">
-        <AdminUserList />
-      </Route>
-      <Route path="/admin/menu">
-        <AdminMenu />
-      </Route>
-
+      <Route exact path="/admin/menu" render={(props) => (
+        <AdminMenu {...props} />
+      )} />
+        
       <Route path="/bookDetail/:bookId">
         <BookDetail />
       </Route>
