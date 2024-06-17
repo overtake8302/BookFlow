@@ -26,7 +26,10 @@ const BookAdminPage = () => {
         stock: '',
         date: '',
         categoryId: '',
-        bookImgFiles: []
+        bookImgFiles: [],
+        author: '',
+        publisher: '',
+        tableOfContents: []
     });
     const [categories, setCategories] = useState([]);
 
@@ -56,7 +59,10 @@ const BookAdminPage = () => {
             price: data.price,
             stock: data.stock,
             date: data.date,
-            categoryId: data.categoryId
+            categoryId: data.categoryId,
+            author: data.author,
+            publisher: data.publisher,
+            tableOfContents: data.tableOfContents || []
           }));
         } catch (error) {
           console.error('책 정보를 가져오는 중 에러가 발생했습니다:', error);
@@ -69,7 +75,11 @@ const BookAdminPage = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setBookForm({ ...bookForm, [name]: value });
+    if (name === 'tableOfContents') {
+      setBookForm({ ...bookForm, tableOfContents: value.split('\n') });
+    } else {
+      setBookForm({ ...bookForm, [name]: value });
+    }
   };
 
   const handleFileChange = (e) => {
@@ -144,6 +154,21 @@ const BookAdminPage = () => {
               <Input type="text" name="name" value={bookForm.name} onChange={handleInputChange} placeholder="책 이름을 적어주세요." />
             </FormControl>
   
+            <FormControl id="author">
+              <FormLabel>저자</FormLabel>
+              <Input type="text" name="author" value={bookForm.author} onChange={handleInputChange} placeholder="저자 이름을 적어주세요." />
+            </FormControl>
+
+            <FormControl id="publisher">
+              <FormLabel>출판사</FormLabel>
+              <Input type="text" name="publisher" value={bookForm.publisher} onChange={handleInputChange} placeholder="출판사 이름을 적어주세요." />
+            </FormControl>
+
+            <FormControl id="tableOfContents">
+              <FormLabel>목차</FormLabel>
+              <Textarea name="tableOfContents" value={bookForm.tableOfContents.join('\n')} onChange={handleInputChange} placeholder="목차를 입력해주세요. 각 항목은 줄바꿈으로 구분됩니다." />
+            </FormControl>
+
             <FormControl id="detail">
               <FormLabel>책 설명</FormLabel>
               <Textarea name="detail" value={bookForm.detail} onChange={handleInputChange} placeholder="책 설명을 적어주세요." />
