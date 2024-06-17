@@ -103,7 +103,7 @@ public class UserOrderController {
 
     @GetMapping("/check")
     public ResponseEntity<HttpStatus> userCheck() {
-        if (authService.getCurrentUser().getRole().equals("ROLE_USER")) {
+        if (authService.getCurrentUser().getRole().equals("ROLE_USER") || authService.getCurrentUser().getRole().equals("ROLE_ADMIN")) {
             return  new ResponseEntity<>(HttpStatus.OK);
         }
 
