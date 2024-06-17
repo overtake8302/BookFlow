@@ -133,7 +133,7 @@ function CartBook({userName, cart, setCart}){
                                     onClick={() => deleteBook(book)}
                                     ml={5}
                                     mr={5}
-                                    mb={55}
+                                    //mb={55}
                                 />
                             </Stack>
                         </div>

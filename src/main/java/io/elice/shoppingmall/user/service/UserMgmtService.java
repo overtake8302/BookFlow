@@ -1,6 +1,7 @@
 package io.elice.shoppingmall.user.service;
 
-import io.elice.shoppingmall.user.model.UserMgmtDto;
+import io.elice.shoppingmall.user.model.dto.UserMgmtDto;
+import io.elice.shoppingmall.user.model.dto.UserDeleteDto;
 import io.elice.shoppingmall.user.model.User;
 import io.elice.shoppingmall.user.repository.UserMgmtRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -14,7 +15,10 @@ import org.springframework.stereotype.Service;
 
 
 @Service
+@RequiredArgsConstructor
 public class UserMgmtService {
+    private final UserMgmtRepository userMgmtRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     public User getCurrentUser(Long id) {
         return userMgmtRepository.findById(id)

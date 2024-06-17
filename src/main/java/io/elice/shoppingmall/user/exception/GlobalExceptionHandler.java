@@ -30,4 +30,10 @@ public class GlobalExceptionHandler {
         log.error("message: {}", ex.getErrorCode().getDetailMessage());
         return new ResponseEntity(new ErrorResponseDto(ex.getErrorCode().getStatus(), ex.getErrorCode().getDetailMessage()), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(PasswordNotMatchException.class)
+    public ResponseEntity<ErrorResponseDto> passwordNotMatchException(HttpServletResponse response, PasswordNotMatchException ex) {
+        log.error("message: {}", ex.getErrorCode().getDetailMessage());
+        return new ResponseEntity(new ErrorResponseDto(ex.getErrorCode().getStatus(), ex.getErrorCode().getDetailMessage()),HttpStatus.BAD_REQUEST);
+    }
 }

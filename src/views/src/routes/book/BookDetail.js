@@ -23,6 +23,7 @@ function BookDetail(){
                     category_id: thisBook.categoryId,
                     category_name: thisBook.categoryName,
                     img_url: thisBook.bookImgUrl,
+                    book_content: thisBook.tableOfContents,
                 }
             ]);
         } else {
@@ -52,6 +53,7 @@ function BookDetail(){
                         category_id: thisBook.category.id,
                         category_name: thisBook.category.categoryName,
                         img_url: thisBook.bookImgDtoList[0].imgUrl,
+                        book_content: thisBook.tableOfContents,
                     });
                 } else {
                     throw new Error("해당 책 정보를 찾을 수 없습니다.");
