@@ -36,6 +36,7 @@ function BooksByAdmin({ match }) {
   return (
     <Box p={5}>
       <Heading as="h2" size="xl" mb={6}>[관리자]<br/><br/>책 목록</Heading>
+      <Link to='/book-admin'><Button mb={5} colorScheme='gray'>책 추가</Button></Link>
       <List spacing={3}>
           {books.map(book => (
       <ListItem key={book.id} p={3} boxShadow="md" borderRadius="md" bg="gray.100">

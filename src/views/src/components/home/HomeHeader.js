@@ -6,7 +6,7 @@ import CartButton from "../../resources/home/header/Cart.png";
 import UserButton from "../../resources/home/header/user.png";
 import './HomeHeader.css';
 import Logout from '../../routes/user/auth/logout';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 
 function HomeHeader()  {
@@ -25,6 +25,27 @@ function HomeHeader()  {
         history.push(`/cart/${userName}`)
     };
 
+    const [isAdmin, setIsAdmin] = useState(false);
+    useEffect(() => {
+        const checkAdminAccess = async () => {
+          try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/admin/check`, {
+              headers: {
+                'access': token,
+              }
+            });
+            if (response.ok) {
+              setIsAdmin(true); // 응답이 OK이면 관리자로 설정
+            }
+          } catch (error) {
+            console.error('Admin check failed:', error);
+          }
+        };
+    
+        checkAdminAccess();
+      }, []);
+
     return(
         <div className="home-header">
             <div id="title">
@@ -35,7 +56,9 @@ function HomeHeader()  {
                 <img src={CartButton} onClick={cartClick} />
                 <Link to="/login"><img src={UserButton} /></Link>
                 <Logout />
-                <Link to="/menu"><img src={MenuButton} /></Link>
+                {isAdmin && (
+                     <Link to="/admin/menu"><img src={MenuButton} /></Link> 
+                )}
             </div>
         </div>
     );

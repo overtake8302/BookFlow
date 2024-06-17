@@ -107,6 +107,10 @@ const BookAdminPage = () => {
           },
           body: formData
         });
+        if (!response.ok) {
+          throw new Error('책 정보를 저장하는데 문제가 발생했습니다.');
+        }
+        const data = await response.json();
         toast({
           title: '책정보를 저장했어요.',
           description: "책정보를 저장했어요.",
@@ -114,12 +118,6 @@ const BookAdminPage = () => {
           duration: 9000,
           isClosable: true,
         });
-      
-        if (!response.ok) {
-          throw new Error('책 정보를 저장하는데 문제가 발생했습니다.');
-        }
-        const data = await response.json();
-        alert("책 정보를 저장했어요.")
         console.log('책 정보가 저장되었습니다:', data);
       } catch (error) {
         toast({
@@ -135,10 +133,11 @@ const BookAdminPage = () => {
 
     return (
       <Box p={5}>
+        <Link to='/admin/books'><Button colorScheme='gray'>책 목록</Button></Link>
         <VStack spacing={4} align="stretch">
           <Heading as="h2" size="lg">{bookForm.id ? '책 수정' : '책 추가'}</Heading>
           <form onSubmit={handleSubmit}>
-            <FormControl id="category">
+            <FormControl id="category" isRequired>
               <FormLabel>카테고리</FormLabel>
               <Select name="categoryId" value={bookForm.categoryId} onChange={handleInputChange} placeholder="카테고리를 골라주세요.">
                 {categories.map(category => (
@@ -149,7 +148,7 @@ const BookAdminPage = () => {
               </Select>
             </FormControl>
   
-            <FormControl id="name">
+            <FormControl id="name" isRequired>
               <FormLabel>책 제목</FormLabel>
               <Input type="text" name="name" value={bookForm.name} onChange={handleInputChange} placeholder="책 이름을 적어주세요." />
             </FormControl>
@@ -166,20 +165,20 @@ const BookAdminPage = () => {
 
             <FormControl id="tableOfContents">
               <FormLabel>목차</FormLabel>
-              <Textarea name="tableOfContents" value={bookForm.tableOfContents.join('\n')} onChange={handleInputChange} placeholder="목차를 입력해주세요. 각 항목은 줄바꿈으로 구분됩니다." />
+              <Textarea name="tableOfContents" value={bookForm.tableOfContents.join('\n')} onChange={handleInputChange} placeholder="목차를 입력해주세요. 각 항목은 줄바꿈으로 구분해주세요." />
             </FormControl>
 
-            <FormControl id="detail">
+            <FormControl id="detail" isRequired>
               <FormLabel>책 설명</FormLabel>
               <Textarea name="detail" value={bookForm.detail} onChange={handleInputChange} placeholder="책 설명을 적어주세요." />
             </FormControl>
   
-            <FormControl id="price">
+            <FormControl id="price" isRequired>
               <FormLabel>가격</FormLabel>
               <Input type="number" name="price" value={bookForm.price} onChange={handleInputChange} placeholder="책 가격을 적어주세요." />
             </FormControl>
   
-            <FormControl id="stock">
+            <FormControl id="stock" isRequired>
               <FormLabel>재고</FormLabel>
               <Input type="number" name="stock" value={bookForm.stock} onChange={handleInputChange} placeholder="재고수량을 적어주세요." />
             </FormControl>
@@ -198,7 +197,6 @@ const BookAdminPage = () => {
               {bookForm.id ? '책 수정' : '책 추가'}
             </Button>
           </form>
-          <Link to='/admin/books'><Button colorScheme='gray'>책 목록</Button></Link>
         </VStack>
       </Box>
     );
