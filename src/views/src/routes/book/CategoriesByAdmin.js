@@ -8,7 +8,7 @@ function CategoriesByAdmin() {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:8080/api/categories')
+    fetch(`${process.env.REACT_APP_API_URL}/api/categories`)
       .then(response => response.json())
       .then(data => setCategories(data))
       .catch(error => console.error('카테고리를 가져오는 중 에러가 발생했습니다:', error));

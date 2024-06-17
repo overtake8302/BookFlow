@@ -48,6 +48,7 @@ public class BookController {
         return uniqueFileName;
     }
 
+    //배포시 vm ip, 개발시 localhost:8080사용하기
     private String serverHost = "http://localhost:8080";
 
     @PostMapping("/admin/book")
@@ -99,6 +100,14 @@ public class BookController {
         List<BookImg> bookImgs = new ArrayList<>();
         Category category = categoryService.getCategoryById(bookFormDto.getCategoryId());
         oldBook.setCategory(category);
+        oldBook.setStock(bookFormDto.getStock());
+        oldBook.setDate(bookFormDto.getDate());
+        oldBook.setAuthor(bookFormDto.getAuthor());
+        oldBook.setName(bookFormDto.getName());
+        oldBook.setDetail(bookFormDto.getDetail());
+        oldBook.setPrice(bookFormDto.getPrice());
+        oldBook.setPublisher(bookFormDto.getPublisher());
+        oldBook.setTableOfContents(bookFormDto.getTableOfContents());
 
         //이미지 삭제
         if (images == null || images.isEmpty()) {

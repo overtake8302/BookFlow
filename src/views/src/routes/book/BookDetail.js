@@ -33,7 +33,7 @@ function BookDetail(){
     {/*
     !부모카테고리추가!
     useEffect(() => {
-        fetch(`http://localhost:8080/api/book/${bookId}`)
+        fetch(`${process.env.REACT_APP_API_URL}/api/book/${bookId}`)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error("책 상세 정보 조회 에러");

@@ -22,7 +22,7 @@ const AdminUserList = () => {
   }
 
   const getUserList = () => {
-    fetch(`http://localhost:8080/api/admin/member?page=${page}`,{
+    fetch(`${process.env.REACT_APP_API_URL}/api/admin/member?page=${page}`,{
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -44,7 +44,7 @@ const AdminUserList = () => {
       .catch((error)=>{
         console.log(error);
       })
-      fetch('http://localhost:8080/api/admin/member/total',{
+      fetch(`${process.env.REACT_APP_API_URL}/api/admin/member/total`,{
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -63,7 +63,7 @@ const AdminUserList = () => {
     if (window.confirm("권한을 변경하시겠습니까?") === false){      
       return false;
     }
-    fetch(`http://localhost:8080/api/admin/member/${user.id}`, {
+    fetch(`${process.env.REACT_APP_API_URL}/api/admin/member/${user.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -88,7 +88,7 @@ const AdminUserList = () => {
       return false;
     }
 
-    fetch(`http://localhost:8080/api/admin/member/${id}`, {
+    fetch(`${process.env.REACT_APP_API_URL}/api/admin/member/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

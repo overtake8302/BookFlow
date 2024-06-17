@@ -38,8 +38,16 @@ public class Book extends BaseEntity {
     @Column(name = "book_detail", nullable = false)
     private String detail;
 
-    /*@Column(name = "book_img", nullable = false)
-    private String img;*/
+    @Column(name = "book_author")
+    private String author;
+
+    @Column(name = "book_publisher")
+    private String publisher;
+
+    @ElementCollection
+    @CollectionTable(name = "book_table_of_contents", joinColumns = @JoinColumn(name = "book_id"))
+    @Column(name = "content")
+    private List<String> tableOfContents = new ArrayList<>();
 
     @OneToMany
     private List<BookImg> bookImgList = new ArrayList<>();

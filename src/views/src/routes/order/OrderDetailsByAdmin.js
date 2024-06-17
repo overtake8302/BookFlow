@@ -24,7 +24,7 @@ function OrderDetailsByadmin() {
   });
 
   useEffect(() => {
-    fetch(`http://localhost:8080/api/admin/order/${orderId}`, {
+    fetch(`${process.env.REACT_APP_API_URL}/api/admin/order/${orderId}`, {
       headers: {
         'access': token,
       }
