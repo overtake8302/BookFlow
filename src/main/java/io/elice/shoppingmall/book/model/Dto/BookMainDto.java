@@ -23,6 +23,9 @@ public class BookMainDto {
     private String date;
     private List<BookImgDto> bookImgDtoList = new ArrayList<>();
     private Category category;
+    private String author;
+    private String publisher;
+    private List<String> tableOfContents;
 
 
 }

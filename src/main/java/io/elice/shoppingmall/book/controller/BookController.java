@@ -100,6 +100,14 @@ public class BookController {
         List<BookImg> bookImgs = new ArrayList<>();
         Category category = categoryService.getCategoryById(bookFormDto.getCategoryId());
         oldBook.setCategory(category);
+        oldBook.setStock(bookFormDto.getStock());
+        oldBook.setDate(bookFormDto.getDate());
+        oldBook.setAuthor(bookFormDto.getAuthor());
+        oldBook.setName(bookFormDto.getName());
+        oldBook.setDetail(bookFormDto.getDetail());
+        oldBook.setPrice(bookFormDto.getPrice());
+        oldBook.setPublisher(bookFormDto.getPublisher());
+        oldBook.setTableOfContents(bookFormDto.getTableOfContents());
 
         //이미지 삭제
         if (images == null || images.isEmpty()) {
