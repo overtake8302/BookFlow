@@ -55,6 +55,11 @@ function MyInfo() {
       valid = false;
     }
 
+    if (!profile.address) {
+      errors.name = "주소를 입력해 주세요.";
+      valid = false;
+    }
+
     if (!profile.phoneNumber) {
       errors.phoneNumber = "전화번호를 입력해 주세요.";
       valid = false;
@@ -139,7 +144,7 @@ function MyInfo() {
           <Input type="tel" name="phoneNumber" value={profile.phoneNumber} onChange={handleChange} />
           <FormErrorMessage>{errors.phoneNumber}</FormErrorMessage>
         </FormControl>
-        <FormControl id="address" isInvalid={errors.address} >
+        <FormControl id="address" isInvalid={errors.address} isRequired>
           <FormLabel>주소</FormLabel>
           <Input type="text" name="address" value={profile.address} onChange={handleChange} />
           <FormErrorMessage>{errors.address}</FormErrorMessage>

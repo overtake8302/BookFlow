@@ -81,7 +81,7 @@ const MyPage = () => {
         } catch (error) {
           toast({
             title: '회원 탈퇴 처리 중 문제가 발생했어요.',
-            description: '회원 탈퇴 처리 중 문제가 발생했어요.',
+            description: '회원 탈퇴 처리 중 문제가 발생했어요.\n비밀번호를 확인해 주세요.',
             status: 'error',
             duration: 9000,
             isClosable: true,
