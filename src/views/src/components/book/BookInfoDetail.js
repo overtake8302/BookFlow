@@ -16,17 +16,24 @@ function BookInfoDetail({book}){
                         <Text fontSize='sm' mt={1}> {book.book_detail} </Text>
                     </Stack>
                     <Stack spacing={1} direction='column'>
+                        <Text fontSize='md'> 목차 </Text>
+                        <Divider width={35} color="darkgray"/>
+                        <ul>
+                            {book.book_content && book.book_content.map((content, index) => (
+                                <Text key={index} fontSize='sm' mt={1}> {content} </Text>
+                            ))}
+                        </ul>
+                    </Stack>
+                    <Stack spacing={1} direction='column'>
                         <Text fontSize='md'> 관련 분류 </Text>
-                        <Divider width={66} color="darkgray" />
+                        <Divider width={66} color="darkgray"/>
                         <Text fontSize='sm' mt={1}> {book.category_name} > {book.category_name} </Text>
-
                         {/* 카테고리 페이지 이동 추가
                         <Link to={`경로`}>
                             <Text fontSize='sm' mt={1}>
                                 {book.category_name}
                              </Text>
                         </Link> */}
-
                     </Stack>
                 </Stack>
             </div>
