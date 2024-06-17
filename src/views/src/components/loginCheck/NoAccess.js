@@ -1,4 +1,4 @@
-import { Button } from '@chakra-ui/react';
+import { Button, Flex, Heading } from '@chakra-ui/react';
 import { withRouter } from 'react-router-dom';
 
 function NoAccess({ history }) {
@@ -6,13 +6,25 @@ function NoAccess({ history }) {
     history.push('/login');
   };
 
+  const handleJoinRedirect = () => {
+    history.push('/join');
+  };
+
   return (
-    <div>
-      <h1>로그인이 필요해요</h1>
+    <Flex
+      direction="column"
+      align="center"
+      justify="center"
+      height="100vh"
+    >
+      <Heading mb="20px" as="h2" size="lg">로그인이 필요해요</Heading>
       <Button colorScheme="teal" onClick={handleLoginRedirect}>
         로그인 페이지로 가기
       </Button>
-    </div>
+      <Button mt="20px" colorScheme="green" onClick={handleJoinRedirect}>
+        회원가입
+      </Button>
+    </Flex>
   );
 }
 

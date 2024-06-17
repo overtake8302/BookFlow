@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import HomeHeader from "../../components/home/HomeHeader";
 // import "./Order.css";
 import {
-  Box, Flex, Text, Button, Input, Image, VStack, FormControl, FormLabel, useToast, HStack
+  Box, Flex, Text, Button, Input, Image, VStack, FormControl, FormLabel, useToast, HStack,
 } from '@chakra-ui/react';
 const token = localStorage.getItem('token');
 
@@ -13,7 +13,7 @@ const Order = () => {
   const location = useLocation();
   const orderData = location.state?.orderData?.orderItemDtos;
   const [bookDetails, setBookDetails] = useState({}); 
-
+  const toast = useToast()
   const history = useHistory();  
   const [cartItems, setCartItems] = useState([]);
   const [orderCreateDto, setOrderCreateDto] = useState({
@@ -106,7 +106,13 @@ const Order = () => {
     if (!orderCreateDto.orderDeliveryDto.orderDeliveryPostalCode ||
       !orderCreateDto.orderDeliveryDto.orderDeliveryAddress1 ||
       !orderCreateDto.orderDeliveryDto.orderDeliveryAddress2) {
-    alert('모든 필수 입력 필드를 채워주세요.');
+        toast({
+          title: '주문 실패',
+          description: '주문에 실패했어요. 모든 정보를 입력해주세요. ',
+          status: 'error',
+          duration: 9000,
+          isClosable: true,
+        });
     return; // 필수 입력값이 없으면 여기서 함수 실행을 중단합니다.
   }
     const response = await fetch(`${process.env.REACT_APP_API_URL}/api/user/order`, {
@@ -131,10 +137,22 @@ const Order = () => {
       let cart = JSON.parse(localStorage.getItem(cartName));
       localStorage.setItem(`${cartName}`, JSON.stringify([]));
 
-      alert('감사합니다! 주문이 완료되었어요.');
+      toast({
+        title: '주문 완료',
+        description: '감사합니다. 주문을 완료 했어요.',
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+      });
       history.push('/order-completed');
     } else {
-      alert('주문에 실패했어요.\n상품의 재고가 부족하거나, 일시적인 에러일수 있어요.');
+      toast({
+        title: '주문 실패',
+        description: '주문에 실패했어요. 책의 재고가 부족하거나, 일시적인 에러일 수 있어요. ',
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+      });
     }
   };
 
@@ -172,7 +190,10 @@ const Order = () => {
 
   return (
     <Flex direction="column" align="center" m="4">
-      <HomeHeader/>
+      <Box className='homeHeader' w="100%">
+        <HomeHeader/>
+      </Box>
+      
       <VStack spacing="4" align="stretch">
         <Box p="6" shadow="md" borderWidth="1px">
           <Text fontSize="2xl" mb="4">결제를 시작할게요.</Text>
@@ -243,11 +264,11 @@ const Order = () => {
         </Box>
       {/* 결제 요약 및 버튼 */}
       <Flex justify="space-between" mt="8" p="4" shadow="md" borderWidth="1px">
-        <Text fontSize="xl"> 결제하실 금액이에요. {
-        orderData.reduce((acc, item) => acc + (bookDetails[item.bookId]?.bookPrice || 0) * item.orderItemQuantity, 0)}원
+        <Text fontSize="xl" mr="20px">{
+        orderData.reduce((acc, item) => acc + (bookDetails[item.bookId]?.bookPrice || 0) * item.orderItemQuantity, 0)}원을 결제할까요?
         </Text>
-        <Button colorScheme="blue" onClick={handleOrder}>결제할게요!</Button>
-        <Button colorScheme="red" onClick={handleCancel}>다음에 할게요.</Button>
+        <Button mr="20px" colorScheme="teal" onClick={handleOrder}>결제할게요!</Button>
+        <Button colorScheme="yellow" onClick={handleCancel}>다음에 할게요.</Button>
       </Flex>
     </VStack>
   </Flex>
