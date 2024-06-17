@@ -9,7 +9,7 @@ function BookDetail(){
     const {bookId} = useParams();
     const [books, setBooks] = useState([]);
 
-    // 테스트코드
+    /* 테스트코드
     useEffect(() => {
         const thisBook = bookData.find((book) => book.id === parseInt(bookId));
         if (thisBook) {
@@ -32,9 +32,8 @@ function BookDetail(){
             throw new Error("해당 책 정보를 찾을 수 없습니다.");
         }
     }, [bookId]);
+    */
 
-    {/*
-    !부모카테고리추가!
     useEffect(() => {
         fetch(`${process.env.REACT_APP_API_URL}/api/book/${bookId}`)
             .then((response) => {
@@ -67,7 +66,7 @@ function BookDetail(){
                 console.log("책 상세 정보 조회 에러", error)
             ))
     }, [bookId]);
-    */}
+
 
     return (
         <div>

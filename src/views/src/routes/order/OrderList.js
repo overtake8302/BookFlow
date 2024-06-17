@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading, Table, Tbody, Td, Text, Th, Thead, Tr, useDisclosure, useToast } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, Table, Tbody, Td, Text, Th, Thead, Tr, useDisclosure, useToast, Badge } from '@chakra-ui/react';
 import HomeHeader from "../../components/home/HomeHeader";
 import { useEffect, useState } from "react";
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton } from '@chakra-ui/react';
@@ -154,31 +154,59 @@ function OrderList() {
       }
 
       return (
-        <Box className="container">
-          <HomeHeader />
+        <Box className="container" w="100vw" textAlign="center">
+          <Box><HomeHeader /></Box>
           <Heading as="h1" size="xl" mb="8">결제하신 내역이에요.</Heading>
-          <Table variant="simple">
+          <Flex justify="space-around" p="4" mb="4">
+      <Box className="status-summary" textAlign="center">
+        <Text fontSize="xl" fontWeight="bold">총 주문</Text>
+        <Badge colorScheme="purple" p="2" borderRadius="lg">
+          {dto.ordersResponseDto.orderList.length}건
+        </Badge>
+      </Box>
+      <Box className="status-summary" textAlign="center">
+        <Text fontSize="xl" fontWeight="bold">상품 준비중</Text>
+        <Badge colorScheme="orange" p="2" borderRadius="lg">
+          {dto.ordersResponseDto.orderList.filter(order => order.order.orderStatus === 'PREPARING_PRODUCT').length}건
+        </Badge>
+      </Box>
+      <Box className="status-summary" textAlign="center">
+        <Text fontSize="xl" fontWeight="bold">배송중</Text>
+        <Badge colorScheme="blue" p="2" borderRadius="lg">
+          {dto.ordersResponseDto.orderList.filter(order => order.order.orderStatus === 'SHIPPING').length}건
+        </Badge>
+      </Box>
+      <Box className="status-summary" textAlign="center">
+        <Text fontSize="xl" fontWeight="bold">배송완료</Text>
+        <Badge colorScheme="green" p="2" borderRadius="lg">
+          {dto.ordersResponseDto.orderList.filter(order => order.order.orderStatus === 'DELIVERED').length}건
+        </Badge>
+      </Box>
+    </Flex>
+          <Flex display="flex" alignItems="center" justifyContent="center" w="100%">
+          <Box width="100%" mx="auto">
+            <Table variant="simple" textAlign="center">
             <Thead>
               <Tr>
-                <Th>주문일</Th>
-                <Th>주문정보</Th>
-                <Th>결제 금액</Th>
-                <Th>상태</Th>
-                <Th>주문취소</Th>
+                <Th textAlign="center">주문일</Th>
+                <Th textAlign="center">주문정보</Th>
+                <Th textAlign="center">결제 금액</Th>
+                <Th textAlign="center">상태</Th>
+                <Th textAlign="center">주문취소</Th>
               </Tr>
             </Thead>
             <Tbody>
               {dto.ordersResponseDto.orderList.map((list) => (
                 <Tr key={list.order.orderId}>
-                  <Td>{formatDate(list.order.createdAt)}</Td>
-                    <Td>
+                  <Td textAlign="center">{formatDate(list.order.createdAt)}</Td>
+                    <Td textAlign="center">
                     <Link to={`order-details/${list.order.orderId}`}>
                         {list.order.orderSummaryTitle}
                     </Link>
                     </Td>
-                  <Td>{list.order.orderTotalPrice}</Td>
-                  <Td>{orderStatusKorean[list.order.orderStatus]}</Td>
-                  <Td>
+                  <Td textAlign="center">{list.order.orderTotalPrice}</Td>
+                  <Td textAlign="center">{orderStatusKorean[list.order.orderStatus]}</Td>
+                  <Td textAlign="center">
                     {list.order.orderStatus !== 'SHIPPING' && list.order.orderStatus !== 'DELIVERED' && (
                       <Button colorScheme="red" onClick={() => openModal(list.order.orderId)}>
                         주문취소
@@ -189,6 +217,9 @@ function OrderList() {
               ))}
             </Tbody>
           </Table>
+          </Box>
+          </Flex>
+          
           <Flex justifyContent="center" mt="8">
             <PaginationComponent totalPages={dto.totalPages} onPageChange={handlePageChange} />
           </Flex>

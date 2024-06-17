@@ -54,7 +54,7 @@ function HomeHeader()  {
             <div id="icons">
                 <Link to="/search"><img src={SearchButton} /></Link>
                 <img src={CartButton} onClick={cartClick} />
-                <Link to="/login"><img src={UserButton} /></Link>
+                <Link to="/my"><img src={UserButton} /></Link>
                 <Logout />
                 {isAdmin && (
                      <Link to="/admin/menu"><img src={MenuButton} /></Link> 
