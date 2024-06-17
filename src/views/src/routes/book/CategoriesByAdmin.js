@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
-import { Box, List, ListItem, ListIcon, Heading } from '@chakra-ui/react';
+import { Box, List, ListItem, ListIcon, Heading, Button } from '@chakra-ui/react';
 import { MdCheckCircle } from 'react-icons/md';
 import withAdminCheck from '../../components/adminCheck/withAdminCheck';
 
@@ -27,6 +27,7 @@ function CategoriesByAdmin() {
           </ListItem>
         ))}
       </List>
+      <Link to='/book-admin'><Button>책 추가</Button></Link>
     </Box>
   );
 }
