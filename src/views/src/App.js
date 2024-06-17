@@ -62,7 +62,7 @@ function App() {
           <OrderCompleted {...props} />
         </ChakraProvider>
       )} />
-      <Route exact path="/order-list-by-admin" render={(props) => (
+      <Route exact path="/admin/orders" render={(props) => (
         <ChakraProvider>
           <OrderListByAdmin {...props} />
         </ChakraProvider>
@@ -125,7 +125,7 @@ function App() {
   </ChakraProvider>
 )} />
 
-<Route exact path="/book-admin" render={(props) => (
+<Route exact path="/product/add" render={(props) => (
   <ChakraProvider>
     <BookAdminPage {...props} />
   </ChakraProvider>
