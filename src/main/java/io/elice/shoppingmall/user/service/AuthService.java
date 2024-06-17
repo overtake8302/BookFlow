@@ -1,6 +1,7 @@
 package io.elice.shoppingmall.user.service;
 
 import io.elice.shoppingmall.user.exception.DuplicateUsernameException;
+import io.elice.shoppingmall.user.model.dto.AuthRoleGetDto;
 import io.elice.shoppingmall.user.model.dto.JoinDto;
 import io.elice.shoppingmall.user.model.User;
 import io.elice.shoppingmall.user.model.UserMapper;
@@ -75,5 +76,17 @@ public class AuthService {
         }
 
         return authRepository.save(user) != null ? true : false;
+    }
+
+    public AuthRoleGetDto roleCheck() {
+        AuthRoleGetDto authRoleGetDto = new AuthRoleGetDto();
+        String username = getCurrentUsername();
+        if (username.equals("anonymousUser")) {
+            authRoleGetDto.setRole("ROLE_ANONYMOUS");
+            return authRoleGetDto;
+        }
+        User user = getCurrentUser();
+        authRoleGetDto.setRole(user.getRole());
+        return authRoleGetDto;
     }
 }
