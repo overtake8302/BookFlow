@@ -19,9 +19,11 @@ function BookDetail(){
                     book_name: thisBook.bookName,
                     book_price: thisBook.bookPrice,
                     book_stock: thisBook.stock,
+                    book_author: thisBook.author,
+                    book_publisher: thisBook.publisher,
                     book_detail: thisBook.bookDetail,
                     category_id: thisBook.categoryId,
-                    category_name: thisBook.categoryName,
+                    book_category: thisBook.categoryName,
                     img_url: thisBook.bookImgUrl,
                     book_content: thisBook.tableOfContents,
                 }
@@ -49,11 +51,13 @@ function BookDetail(){
                         book_name: thisBook.bookName,
                         book_price: thisBook.bookPrice,
                         book_stock: thisBook.stock,
+                        book_author: thisBook.author,
+                        book_publisher: thisBook.publisher,
                         book_detail: thisBook.bookDetail,
-                        category_id: thisBook.category.id,
-                        category_name: thisBook.category.categoryName,
-                        img_url: thisBook.bookImgDtoList[0].imgUrl,
                         book_content: thisBook.tableOfContents,
+                        book_category: thisBook.category.categoryName,
+                        img_url: thisBook.bookImgUrl,
+                        //img_url: thisBook.bookImgDtoList[0].imgUrl
                     });
                 } else {
                     throw new Error("해당 책 정보를 찾을 수 없습니다.");
