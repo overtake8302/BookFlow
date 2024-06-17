@@ -17,7 +17,7 @@ const Join = () => {
   const joinProccess = (e) => {
     e.preventDefault();
     console.log(JSON.stringify(formData))
-    fetch("http://localhost:8080/join", {
+    fetch(`${process.env.REACT_APP_API_URL}/join`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

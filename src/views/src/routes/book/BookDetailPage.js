@@ -5,7 +5,7 @@ const BookDetailPage = ({ match }) => {
 
   const fetchBookDetail = async (bookId) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/book/${bookId}`);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/book/${bookId}`);
       if (!response.ok) {
         throw new Error('서버에서 책 정보를 가져오는데 문제가 발생했습니다.');
       }

@@ -35,7 +35,7 @@ function OrderDetails() {
   };
 
   useEffect(() => {
-    fetch(`http://localhost:8080/api/user/order/${orderId}`, {
+    fetch(`${process.env.REACT_APP_API_URL}/api/user/order/${orderId}`, {
       headers: {
         'access': token,
       }
@@ -64,7 +64,7 @@ function OrderDetails() {
 
   const handleUpdate = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/user/order/${orderId}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/user/order/${orderId}`, {
         method: 'PUT',
         headers: {
           'access': token,

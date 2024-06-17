@@ -9,7 +9,7 @@ const withAdminCheck = (WrappedComponent) => {
     useEffect(() => {
       const checkAdminAccess = async () => {
         try {
-          const response = await fetch('http://localhost:8080/api/admin/check',
+          const response = await fetch(`${process.env.REACT_APP_API_URL}/api/admin/check`,
             {
               headers: {
                 'access': token, 

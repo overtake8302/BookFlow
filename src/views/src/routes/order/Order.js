@@ -41,7 +41,7 @@ const Order = () => {
         // 책 ID들을 사용하여 서버에 책 정보를 요청합니다.
         const responses = await Promise.all(
           bookIds.map(bookId =>
-            fetch(`http://localhost:8080/api/book/${bookId}`)
+            fetch(`${process.env.REACT_APP_API_URL}/api/book/${bookId}`)
           )
         );
 
@@ -109,7 +109,7 @@ const Order = () => {
     alert('모든 필수 입력 필드를 채워주세요.');
     return; // 필수 입력값이 없으면 여기서 함수 실행을 중단합니다.
   }
-    const response = await fetch('http://localhost:8080/api/user/order', {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/user/order`, {
       method: 'POST',
       headers: {
         'access': token,

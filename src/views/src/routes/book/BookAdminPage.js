@@ -34,7 +34,7 @@ const BookAdminPage = () => {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const response = await fetch('http://localhost:8080/api/categories');
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/categories`);
       const data = await response.json();
       setCategories(data);
     };
@@ -46,7 +46,7 @@ const BookAdminPage = () => {
     if (bookId) {
       const fetchBookDetails = async () => {
         try {
-          const response = await fetch(`http://localhost:8080/api/book/${bookId}`);
+          const response = await fetch(`${process.env.REACT_APP_API_URL}/api/book/${bookId}`);
           const data = await response.json();
           setBookForm(prevBookForm => ({
             ...prevBookForm,
@@ -89,7 +89,7 @@ const BookAdminPage = () => {
     });
 
     try {
-        const url = bookForm.id ? `http://localhost:8080/api/admin/book/${bookForm.id}` : 'http://localhost:8080/api/admin/book';
+        const url = bookForm.id ? `${process.env.REACT_APP_API_URL}/api/admin/book/${bookForm.id}` : `${process.env.REACT_APP_API_URL}/api/admin/book`;
         const response = await fetch(url, {
           method: bookForm.id ? 'PUT' : 'POST',
           headers: {
