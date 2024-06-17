@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
-import { Box, Image, Heading, Button, useToast } from '@chakra-ui/react';
+import { useHistory, Link } from 'react-router-dom';
+import { Box, Image, Heading, Button, useToast, Text, Stack, Divider, Flex } from '@chakra-ui/react';
 import withAdminCheck from '../../components/adminCheck/withAdminCheck';
+import defaultBookCover from '../../resources/book/default book cover.png';
 
 function BookDetailByAdmin({ match }) {
   const [book, setBook] = useState(null);
@@ -59,9 +60,34 @@ function BookDetailByAdmin({ match }) {
 
   return (
     <Box p={5}>
-      <Heading mb={4}>{book.bookName}</Heading>
-      <Image src={book?.bookImgDtoList?.[0]?.imgUrl} alt="책 표지" mb={4} />
-      <p>{book.bookDetail}</p>
+      <Heading as="h2" fontSize="2em" fontWeight="bold">[관리자] 책 상세정보 조회</Heading>
+      <Link to='/admin/books'><Button m="5" colorScheme='gray'>책 목록</Button></Link>
+      <Stack spacing={3} mb={4}>
+        <Heading size="lg">{book.bookName}</Heading>
+        <Flex alignItems="center" justifyContent="flex-start">
+          <Image
+            maxHeight='40vh'
+            objectFit="contain"
+            src={book?.bookImgDtoList?.[0]?.imgUrl || defaultBookCover}
+            alt="책 표지"
+            mb={4}
+          />
+        </Flex>
+        <Text fontSize="md"><strong>저자:</strong> {book.author}</Text>
+        <Text fontSize="md"><strong>출판일:</strong> {book.publishDate}</Text>
+        <Text fontSize="md"><strong>카테고리:</strong> {book.categoryName}</Text>
+        <Text fontSize="md"><strong>출판사:</strong> {book.publisher}</Text>
+        <Text fontSize="md"><strong>가격:</strong> ₩{book.bookPrice}</Text>
+        <Text fontSize="md"><strong>재고:</strong> {book.stock}권</Text>
+        <Text fontSize="md"><strong>목차:</strong></Text>
+        <Box pl={4}>
+          {book.tableOfContents.map((content, index) => (
+            <Text key={index}>{content}</Text>
+          ))}
+        </Box>
+        <Divider />
+        <Text fontSize="md"><strong>설명:</strong> {book.bookDetail}</Text>
+      </Stack>
       <Button colorScheme="blue" onClick={handleEdit} mr={3}>
         수정
       </Button>

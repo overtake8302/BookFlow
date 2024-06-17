@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import './Books.css';
+import defaultBookCover from "../../resources/book/default book cover.png";
 
 function Books() {
     const [categories, setCategories] = useState([]);
@@ -56,7 +57,8 @@ function Books() {
                           {book.bookImgDtoList && book.bookImgDtoList.length > 0 && book.bookImgDtoList[0].imgUrl ? (
                             <img src={book.bookImgDtoList[0].imgUrl} alt={book.bookName} />
                           ) : (
-                            <div>이미지가 없습니다</div>
+                            // <div>이미지가 없습니다</div>
+                            <img src={defaultBookCover} alt={defaultBookCover} />
                           )}
                         </Link>
                         <div><Link to={`/bookDetail/${book.id}`}>{book.bookName}</Link></div>
