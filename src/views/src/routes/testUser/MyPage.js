@@ -12,9 +12,9 @@ const MyPage = () => {
     const toast = useToast();
     const history = useHistory();
 
-    const handleUserInfo = () => {
+    const handleMyInfo = () => {
 
-        history.push('/user-info');
+        history.push('/my-info');
     };
 
     const handleOrderList = () => {
@@ -63,8 +63,8 @@ const MyPage = () => {
             <VStack spacing={4} align="center">
             <HStack w="full" justifyContent="center" alignItems="center">
             <Icon as={FaUser} boxSize="11%" />
-            <Button w="33%" colorScheme="blue" onClick={handleUserInfo}>
-                회원 정보 조회/수정
+            <Button w="33%" colorScheme="blue" onClick={handleMyInfo}>
+                내정보 조회/수정
             </Button>
             </HStack>
             <HStack w="full" justifyContent="center" alignItems="center">
