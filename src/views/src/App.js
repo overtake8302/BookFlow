@@ -45,7 +45,7 @@ function App() {
           <OrderDetails {...props} />
         </ChakraProvider>
       )} />
-      <Route exact path="/order-details-by-admin/:orderId" render={(props) => (
+      <Route exact path="/admin/order-details-by-admin/:orderId" render={(props) => (
         <ChakraProvider>
           <OrderDetailsByAdmin {...props} />
         </ChakraProvider>

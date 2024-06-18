@@ -11,6 +11,7 @@ public class WebController {
 
     @RequestMapping(value = {
             "/",
+            "/join**",
             "/login**",
             "/order**/**",
             "/admin**/**",
