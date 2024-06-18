@@ -47,9 +47,9 @@ function HomeHeader()  {
       }, []);
 
       return (
-        <Flex className="home-header" align="center" justify="space-between" p="2">
+        <Flex className="home-header" align="center" justify="space-between">
           <Link as={RouterLink} to="/" display="flex" alignItems="center">
-            <Heading as="h1" ml="2" my="auto" size="lg">BookFlow</Heading>
+            <Heading as="h1" my="auto" size="lg">BookFlow</Heading>
           </Link>
           <Flex id="icons" justify="space-around" align="center">
             <Link as={RouterLink} to="/search">
