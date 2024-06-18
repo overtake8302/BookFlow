@@ -1,7 +1,7 @@
-import {ChakraProvider, Divider, Stack, Text, Button} from '@chakra-ui/react';
+import {ChakraProvider, Divider, Stack, Text, Box, Image} from '@chakra-ui/react';
 import {Link} from "react-router-dom";
 
-function BookInfoDetail({book}){
+function BookInfoDetail({book, images}){
     const Divider = ({ width, color }) => (
         <div style={{ width: `${width}px`, height: '1px', backgroundColor: color }} />
     );
@@ -28,12 +28,15 @@ function BookInfoDetail({book}){
                         <Text fontSize='lg'> 관련 분류 </Text>
                         <Divider width={66} color="darkgray"/>
                         <Text fontSize='md' mt={1}> {book.book_category} </Text>
-                        {/* 카테고리 페이지 이동 추가
-                        <Link to={`경로`}>
-                            <Text fontSize='sm' mt={1}>
-                                {book.category_name}
-                             </Text>
-                        </Link> */}
+                    </Stack>
+                    <Stack spacing={1} direction='column'>
+                        <Text fontSize='lg'> 상세 사진 </Text>
+                        <Divider width={66} color="darkgray"/>
+                        <Box>
+                            {images && images.map((imgUrl, index) => (
+                                <Image key={index} src={imgUrl} alt={`book image ${index + 1}`} mb={4} />
+                            ))}
+                        </Box>
                     </Stack>
                 </Stack>
             </div>
