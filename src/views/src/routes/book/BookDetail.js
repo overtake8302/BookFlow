@@ -3,6 +3,8 @@ import BookInfoDetail from "../../components/book/BookInfoDetail";
 import BookInfo from "../../components/book/BookInfo";
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
+import {ChakraProvider, Flex, Stack} from '@chakra-ui/react';
+
 
 function BookDetail(){
     const {bookId} = useParams();
@@ -36,15 +38,21 @@ function BookDetail(){
     }, [bookId]);
 
     return (
-        <div>
-            {/*{book.map((book) => (*/}
-            <div key={book.book_id}>
-                <HomeHeader/>
-                <BookInfo book={book} />
-                <BookInfoDetail book={book} />
+        <ChakraProvider>
+            <div>
+                <div key={book.book_id}>
+                    <HomeHeader/>
+                    <Flex
+                        justifyContent="center" /* 가로 중앙 정렬 */
+                    >
+                        <Stack direction='column' spacing={15}>
+                            <BookInfo book={book} />
+                            <BookInfoDetail book={book} />
+                        </Stack>
+                    </Flex>
+                </div>
             </div>
-            {/*))}*/}
-        </div>
+        </ChakraProvider>
     );
 }
 
