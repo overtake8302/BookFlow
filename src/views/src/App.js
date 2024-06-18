@@ -70,6 +70,16 @@ function App() {
           <Order {...props} />
         </ChakraProvider>
       )} />
+      <Route exact path="/my" render={(props) => (
+        <ChakraProvider>
+          <MyPage {...props} />
+        </ChakraProvider>
+      )} />
+      <Route exact path="/my-info" render={(props) => (
+        <ChakraProvider>
+          <MyInfo {...props} />
+        </ChakraProvider>
+      )} />
 
       <Route exact path="/join" render={(props) => (
         <ChakraProvider>
