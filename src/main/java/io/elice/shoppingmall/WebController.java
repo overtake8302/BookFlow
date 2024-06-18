@@ -19,7 +19,8 @@ public class WebController {
             "/admin/books/category",
             "/admin/book",
             "/product/add",
-            "/cart"
+            "/cart",
+            "/book-list-by-admin"
     })
     public String forward() {
         return "forward:/index.html";
