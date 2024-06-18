@@ -1,4 +1,5 @@
 import HomeHeader from "../../components/home/HomeHeader";
+import Footer from "../../components/home/Footer";
 import BookInfoDetail from "../../components/book/BookInfoDetail";
 import BookInfo from "../../components/book/BookInfo";
 import {useEffect, useState} from "react";
@@ -55,6 +56,7 @@ function BookDetail(){
                             <BookInfoDetail book={book} images={images} />
                         </Stack>
                     </Flex>
+                    <Footer />
                 </div>
             </div>
         </ChakraProvider>
