@@ -6,7 +6,7 @@ import Books from "../components/home/Books";
 import Footer from "../components/home/Footer";
 import BannerSlider from "../components/home/BannerSlider";
 import './Home.css';
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, Box } from "@chakra-ui/react";
 
 function Home() {
     const [activeCategory, setActiveCategory] = useState('홈');
@@ -14,9 +14,11 @@ function Home() {
     return (
         <div className="container">
             <div>
-                <ChakraProvider>
-                    <HomeHeader />
-                </ChakraProvider>
+            <ChakraProvider>
+                <Box>
+                    <HomeHeader activeCategory={activeCategory} />
+                </Box>
+            </ChakraProvider>
             </div>
             <div>
                 <Categories 
