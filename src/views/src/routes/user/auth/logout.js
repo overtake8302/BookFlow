@@ -4,7 +4,7 @@ import { useState } from 'react';
 const Logout = ({handleLogoutRender}) => {
   const history = useHistory();
   const [token, setToken] = useState(localStorage.getItem('token'));
-  const onClickHandler = ({logoutRender, setLogoutRender}) => {
+  const onClickHandler = () => {
     if (token === null) {
       history.push("/login")
       return;
