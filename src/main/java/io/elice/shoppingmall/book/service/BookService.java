@@ -9,6 +9,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +21,7 @@ import java.util.Optional;
 public class BookService {
 
     private final BookRepository bookRepository;
+    private final BookImgService bookImgService;
 
     //책 등록
     @Transactional
@@ -69,6 +74,17 @@ public class BookService {
         List<BookImg> imgs = findBook.getBookImgList();
         for (BookImg bookImg : imgs) {
             bookImg.setDeleted(true);
+            bookImgService.save(bookImg);
+            //실제 이미지 파일 삭제
+            Path path = Paths.get("./uploadImages", bookImg.getImgName());
+            if (Files.exists(path)) {
+                try {
+                    Files.delete(path);
+                } catch (IOException e) {
+                    // 로그 처리 또는 다른 예외 처리
+                    e.printStackTrace();
+                }
+            }
         }
         findBook.setBookImgList(imgs);
         bookRepository.save(findBook);
