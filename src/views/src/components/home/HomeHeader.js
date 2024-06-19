@@ -12,9 +12,15 @@ function HomeHeader({ activeCategory, cart })  {
   const headerPadding = activeCategory === '홈' ? '0px' : '20px';
   const headerMt = activeCategory === '홈' ? '20px' : '0px';
   const headerMb = activeCategory === '홈' ? '10px' : '0px';
-  const history = useHistory();
-  const [cartItems, setCartItems] = useState([]);
-
+  
+  const [logoutRender, setLogoutRender] = useState(false);
+  const handleLogoutRender = () => {
+    setLogoutRender(!logoutRender)
+  }
+    
+    const history = useHistory();
+    const [cartItems, setCartItems] = useState([]);
+    
     // 장바구니: 로그인 안 했을 경우, 게스트 장바구니 생성
     const cartClick = () => {
         let userName = 'guest';
@@ -51,7 +57,6 @@ function HomeHeader({ activeCategory, cart })  {
             });
             const json = await response.json();
             const role = json.role;
-            console.log("권한 : " + role);
             setIsRole(role);
           } catch (error) {
             console.error('Admin check failed:', error);
@@ -59,7 +64,7 @@ function HomeHeader({ activeCategory, cart })  {
         };
     
         checkRoleAccess();
-      }, []);
+      }, [logoutRender]);
 
       return (
         <Flex className="home-header" align="center" justify="space-between" p={headerPadding} mt={headerMt} mb={headerMb}>
@@ -84,7 +89,7 @@ function HomeHeader({ activeCategory, cart })  {
                 <Image src={UserButton} boxSize="30px" m="1" />
               </Link>
             )}
-            <Logout />
+            <Logout handleLogoutRender = {handleLogoutRender} />
             {isRole === "ROLE_ADMIN" && (
               <Link as={RouterLink} to="/admin/menu">
                 <Image src={MenuButton} boxSize="30px" m="1" />
