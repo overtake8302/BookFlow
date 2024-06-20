@@ -55,16 +55,16 @@ const BookAdminPage = () => {
       const fetchBookDetails = async () => {
         try {
           const response = await fetch(`${process.env.REACT_APP_API_URL}/api/book/${bookId}`);
-          const {id, name, detail, price, stock, date, categoryId, author, publisher, tableOfContents} = await response.json();
+          const {id, bookName, bookDetail, bookPrice, stock, date, category, author, publisher, tableOfContents} = await response.json();
           setBookForm(prevBookForm => ({
             ...prevBookForm,
             id,
-            name,
-            detail,
-            price,
+            name: bookName,
+            detail: bookDetail,
+            price: bookPrice,
             stock,
             date,
-            categoryId,
+            categoryId: category.id,
             author,
             publisher,
             tableOfContents: tableOfContents || []
