@@ -9,6 +9,7 @@ import {
   useToast,
   FormErrorMessage
 } from '@chakra-ui/react';
+import HomeHeader from '../../components/home/HomeHeader';
 
 function MyInfo() {
   const token = localStorage.getItem('token');
@@ -33,9 +34,16 @@ function MyInfo() {
       }
     })
     .then(response => response.json())
-    .then(data => setProfile({ ...profile, ...data }))
+    .then(data => {
+      setProfile(prevProfile => ({
+        ...prevProfile,
+        name: data.name || '',
+        phoneNumber: data.phoneNumber || '',
+        address: data.address || ''
+      }));
+    })
     .catch(error => console.error('Error:', error));
-  }, []);
+  }, [token]);
 
   const validateForm = () => {
     let valid = true;
@@ -121,8 +129,9 @@ function MyInfo() {
   };
 
   return (
-    <Box p={4}>
-      <Heading mb='20px' as="h2" fontSize="2em" fontWeight="bold">내정보 수정</Heading>
+    <Box mx="auto" maxW="80%" >
+      <HomeHeader/>
+      <Heading mt="50px" mb='20px' as="h2" fontSize="2em" fontWeight="bold">내정보 수정</Heading>
       <form onSubmit={handleSubmit}>
         <FormControl id="password" isInvalid={errors.password} isRequired>
           <FormLabel>비밀번호</FormLabel>
