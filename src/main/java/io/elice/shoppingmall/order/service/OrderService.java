@@ -50,9 +50,9 @@ public class OrderService {
         OrderDelivery savedOrderDelivery = orderDeliveryRepository.save(requestOrderDelivery);
         savedOrder.setOrderDelivery(savedOrderDelivery);
 
-        if (!StringUtils.isEmpty(currentUser.getOrderDeliveryPostalCode())   ||
-                !StringUtils.isEmpty(currentUser.getOrderDeliveryAddress1()) ||
-                !StringUtils.isEmpty(currentUser.getOrderDeliveryAddress2())) {
+        if (StringUtils.isEmpty(currentUser.getOrderDeliveryPostalCode())   ||
+                StringUtils.isEmpty(currentUser.getOrderDeliveryAddress1()) ||
+                StringUtils.isEmpty(currentUser.getOrderDeliveryAddress2())) {
 
             currentUser.setOrderDeliveryPostalCode(savedOrderDelivery.getOrderDeliveryPostalCode());
             currentUser.setOrderDeliveryAddress1(savedOrderDelivery.getOrderDeliveryAddress1());
@@ -257,6 +257,7 @@ public class OrderService {
 
         oldOrderDelivery.setOrderDeliveryReceiverName(dto.getName());
         oldOrderDelivery.setOrderDeliveryReceiverPhoneNumber(dto.getPhoneNumber());
+        oldOrderDelivery.setOrderDeliveryPostalCode(dto.getPostalCode());
         oldOrderDelivery.setOrderDeliveryAddress1(dto.getAddress1());
         oldOrderDelivery.setOrderDeliveryAddress2(dto.getAddress2());
         foundOrder.setOrderRequest(dto.getOrderRequest());
