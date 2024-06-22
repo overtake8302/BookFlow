@@ -7,6 +7,7 @@
 - 개발기간: 2024.05.27 ~ 2024.06.21
 - 노션주소: https://www.notion.so/elice-track/10-197e4fe6eb8e4bf59898e73639f75cc3?pvs=4
 
+![alt text](image.png)
 
 ## 프로젝트 소개
 - 주제: 도서 쇼핑몰 'BookFlow' 제작
