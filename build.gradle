@@ -53,7 +53,7 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
-/*def frontendDir = "$projectDir/src/views"
+def frontendDir = "$projectDir/src/views"
 
 sourceSets {
 	main {
@@ -100,4 +100,4 @@ task copyReactBuildFiles(type: Copy) {
 
 tasks.bootJar {
 	dependsOn "copyReactBuildFiles"
-}*/
+}
